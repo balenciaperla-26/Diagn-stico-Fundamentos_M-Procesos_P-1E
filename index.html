@@ -450,14 +450,32 @@ async function obtener(){
 }
 
 function limpiarAlmacenamientoLocal(){
-  if(confirm('⚠️ ¿Estás seguro de que quieres borrar TODOS los datos guardados en localStorage? Esto no se puede deshacer.')){
+  if(confirm('⚠️ ¿Estás seguro de que quieres borrar TODOS los datos guardados? Esto no se puede deshacer.')){
     try{
       localStorage.removeItem('diag_hist');
       localStorage.removeItem('puntoCorte');
-      alert('✅ Datos de localStorage eliminados correctamente.');
+      // También intentar limpiar window.storage si está disponible
+      if (!local() && typeof window.storage !== 'undefined') {
+        try {
+          // Limpiar todas las respuestas guardadas
+          const listado = await window.storage.list('resp:', true);
+          const claves = listado && listado.keys ? listado.keys : [];
+          for (const k of claves) {
+            try { await window.storage.delete(k, true); } catch(e) {}
+          }
+          // Limpiar punto de corte
+          try { await window.storage.delete('config:puntoCorte', true); } catch(e) {}
+        } catch(e) {}
+      }
+      alert('✅ Todos los datos han sido eliminados correctamente.');
+      // Reiniciar estado y recargar panel
+      E.registros = [];
+      E.totalRespuestasGrupo = 0;
+      E.promedioGrupo = null;
+      E.puntoCorte = null;
       cargarPanel();
     } catch(e){
-      alert('❌ Error al limpiar localStorage: ' + e.message);
+      alert('❌ Error al limpiar datos: ' + e.message);
     }
   }
 }
@@ -602,14 +620,27 @@ async function finalizar(){
   }
 }
 
-// FUNCIÓN CALCULAR PROMEDIO MEJORADA
+// ================================================================
+// CALCULAR PROMEDIO - CORREGIDO (VERSIÓN FINAL)
+// ================================================================
 async function calcularPromedio(){
   try {
     const todas = await obtener();
     
-    // Filtrar duplicados de manera más estricta
+    // Si hay punto de corte, filtrar
+    let filtrados = todas;
+    if (E.puntoCorte) {
+      const corte = new Date(E.puntoCorte);
+      filtrados = todas.filter(r => {
+        if (!r.fecha) return false;
+        return new Date(r.fecha) > corte;
+      });
+    }
+    
+    // Filtrar duplicados por nombre + día
     const vistos = new Set();
-    const unicos = todas.filter(r => {
+    const unicos = filtrados.filter(r => {
+      if (!r.nombre || r.nombre.trim() === '') return false;
       const fechaStr = r.fecha ? r.fecha.slice(0, 10) : '';
       const clave = (r.nombre || '').trim().toLowerCase() + '_' + fechaStr;
       if (vistos.has(clave)) return false;
@@ -617,30 +648,19 @@ async function calcularPromedio(){
       return true;
     });
     
-    // Filtrar registros sin nombre o con nombre vacío
-    let filtrados = unicos.filter(r => r.nombre && r.nombre.trim() !== '');
+    // Contar solo con puntaje válido
+    const validos = unicos.filter(r => typeof r.puntaje === 'number');
     
-    // Aplicar punto de corte si existe
-    if (E.puntoCorte) {
-      filtrados = filtrados.filter(r => {
-        const fecha = new Date(r.fecha);
-        const corte = new Date(E.puntoCorte);
-        return fecha > corte;
-      });
-    }
-    
-    // Contar solo registros con puntaje válido
-    filtrados = filtrados.filter(r => typeof r.puntaje === 'number');
-    
-    if (filtrados.length > 0) {
-      const sumaPuntajes = filtrados.reduce((a, r) => a + (r.puntaje || 0), 0);
-      E.promedioGrupo = sumaPuntajes / filtrados.length;
-      E.totalRespuestasGrupo = filtrados.length;
+    if (validos.length > 0) {
+      const sumaPuntajes = validos.reduce((a, r) => a + (r.puntaje || 0), 0);
+      E.promedioGrupo = sumaPuntajes / validos.length;
+      E.totalRespuestasGrupo = validos.length;
     } else {
       E.promedioGrupo = null;
       E.totalRespuestasGrupo = 0;
     }
   } catch (e) {
+    console.error('Error en calcularPromedio:', e);
     E.promedioGrupo = null;
     E.totalRespuestasGrupo = 0;
   }
@@ -668,16 +688,33 @@ function intentarAcceso(){
   }
 }
 
+// ================================================================
+// CARGAR PANEL - CORREGIDO (VERSIÓN FINAL)
+// ================================================================
 async function cargarPanel(){
   irA('guardando');
   try {
+    // Obtener punto de corte
+    let puntoCorte = null;
+    try {
+      const corte = await window.storage.get('config:puntoCorte', true);
+      if (corte && corte.value) puntoCorte = corte.value;
+    } catch(e) {}
+    if (!puntoCorte) {
+      puntoCorte = localStorage.getItem('puntoCorte');
+    }
+    E.puntoCorte = puntoCorte;
+    
+    // Obtener registros y aplicar corte
     E.registros = await obtener();
-    try{const corte=await window.storage.get('config:puntoCorte',true);E.puntoCorte=corte&&corte.value?corte.value:null;}catch(e){E.puntoCorte=null;}
     aplicarCorte();
     await calcularPromedio();
     irA('panel');
   } catch(e){
+    console.error('Error cargando panel:', e);
     E.registros = [];
+    E.totalRespuestasGrupo = 0;
+    E.promedioGrupo = null;
     irA('panel');
   }
 }
@@ -715,17 +752,48 @@ function exportarCSV(){
 function pedirBorrado(){E.confirmandoBorrado=true;render();}
 function cancelarBorrado(){E.confirmandoBorrado=false;render();}
 
+// ================================================================
+// CONFIRMAR BORRADO - CORREGIDO (VERSIÓN FINAL)
+// ================================================================
 async function confirmarBorrado(){
   irA('guardando');
   try{
-    const ahoraISO=new Date().toISOString();
-    if(typeof window.storage!=='undefined'&&window.storage.set){await window.storage.set('config:puntoCorte',ahoraISO,true);}else{localStorage.setItem('puntoCorte',ahoraISO);}
-    E.puntoCorte=ahoraISO;E.mostrandoHistorico=false;
-    const todas=await obtener();E.registros=todas;aplicarCorte();await calcularPromedio();
-    E.confirmandoBorrado=false;E.mensajeBorrado={tipo:'ok',texto:'✅ Las respuestas anteriores dejaron de contarse. Cualquier respuesta nueva volverá a contar con normalidad.'};
+    const ahoraISO = new Date().toISOString();
+    
+    // Guardar punto de corte en window.storage y localStorage
+    if(typeof window.storage !== 'undefined' && window.storage.set){
+      await window.storage.set('config:puntoCorte', ahoraISO, true);
+    }
+    localStorage.setItem('puntoCorte', ahoraISO);
+    
+    // Forzar recarga de datos
+    E.puntoCorte = ahoraISO;
+    E.mostrandoHistorico = false;
+    
+    // Limpiar registros en memoria
+    E.registros = [];
+    E.totalRespuestasGrupo = 0;
+    E.promedioGrupo = null;
+    
+    // Recargar desde el almacenamiento aplicando el corte
+    const todas = await obtener();
+    E.registros = todas;
+    aplicarCorte();
+    await calcularPromedio();
+    
+    E.confirmandoBorrado = false;
+    E.mensajeBorrado = {
+      tipo: 'ok',
+      texto: '✅ Las respuestas anteriores dejaron de contarse. Cualquier respuesta nueva volverá a contar con normalidad.'
+    };
     irA('panel');
   } catch(error){
-    E.confirmandoBorrado=false;E.mensajeBorrado={tipo:'error',texto:'❌ No se pudo aplicar el punto de corte. Si el problema persiste, intenta exportar el CSV y luego refresca la página.'};
+    console.error('Error al borrar:', error);
+    E.confirmandoBorrado = false;
+    E.mensajeBorrado = {
+      tipo: 'error',
+      texto: '❌ No se pudo aplicar el punto de corte. Intenta usar "🧹 Limpiar datos de prueba" en su lugar.'
+    };
     irA('panel');
   }
 }
