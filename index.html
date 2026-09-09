@@ -378,7 +378,14 @@ function formatoTiempo(segundos){
 function esc(t){const d=document.createElement('div');d.textContent=t;return d.innerHTML;}
 function frac(html){return html.replace(/\[\[([^|\]]+)\|([^\]]+)\]\]/g,(m,n,d)=>`<span class="frac"><span class="frac-num">${n}</span><span class="frac-den">${d}</span></span>`);}
 function txt(t){return frac(esc(t));}
-function local(){return typeof window.storage==='undefined';}
+
+// CORREGIDA: No mostrar mensaje local en GitHub Pages
+function local(){
+  if (window.location.hostname.includes('github.io')) {
+    return false;
+  }
+  return typeof window.storage === 'undefined';
+}
 
 // ================================================================
 // ALMACENAMIENTO
@@ -504,32 +511,37 @@ async function finalizar(){
   try{await guardar(reg);E.guardando=false;await calcularPromedio();irA('resultado');}catch(e){E.guardando=false;E.errorGuardado=true;irA('error');}
 }
 
+// CORREGIDA: Filtrar duplicados y aplicar punto de corte
 async function calcularPromedio(){
-  try{
-    const todas=await obtener();
-    const vistos=new Set();
-    const unicos=todas.filter(r=>{
-      const clave=(r.nombre||'')+'_'+(r.fecha||'').slice(0,10);
-      if(vistos.has(clave)) return false;
+  try {
+    const todas = await obtener();
+    
+    // Filtrar duplicados (mismo nombre en la misma fecha)
+    const vistos = new Set();
+    const unicos = todas.filter(r => {
+      const clave = (r.nombre || '').trim().toLowerCase() + '_' + (r.fecha || '').slice(0, 10);
+      if (vistos.has(clave)) return false;
       vistos.add(clave);
       return true;
     });
-    let filtrados=unicos;
-    if(E.puntoCorte){
-      filtrados=unicos.filter(r=>new Date(r.fecha)>new Date(E.puntoCorte));
+    
+    // Aplicar punto de corte si existe
+    let filtrados = unicos;
+    if (E.puntoCorte) {
+      filtrados = unicos.filter(r => new Date(r.fecha) > new Date(E.puntoCorte));
     }
-    if(filtrados.length>0){
-      const sumaPuntajes=filtrados.reduce((a,r)=>a+(r.puntaje||0),0);
-      const sumaTiempos=filtrados.reduce((a,r)=>a+(r.tiempoSegundos||0),0);
-      E.promedioGrupo=sumaPuntajes/filtrados.length;
-      E.totalRespuestasGrupo=filtrados.length;
+    
+    if (filtrados.length > 0) {
+      const sumaPuntajes = filtrados.reduce((a, r) => a + (r.puntaje || 0), 0);
+      E.promedioGrupo = sumaPuntajes / filtrados.length;
+      E.totalRespuestasGrupo = filtrados.length;
     } else {
-      E.promedioGrupo=null;
-      E.totalRespuestasGrupo=0;
+      E.promedioGrupo = null;
+      E.totalRespuestasGrupo = 0;
     }
-  } catch(e){
-    E.promedioGrupo=null;
-    E.totalRespuestasGrupo=0;
+  } catch (e) {
+    E.promedioGrupo = null;
+    E.totalRespuestasGrupo = 0;
   }
 }
 
@@ -557,7 +569,7 @@ function intentarAcceso(){
 
 async function cargarPanel(){
   irA('guardando');
-  try{E.registros=await obtener();try{const corte=await window.storage.get('config:puntoCorte',true);E.puntoCorte=corte&&corte.value?corte.value:null;}catch(e){E.puntoCorte=null;}aplicarCorte();irA('panel');}catch(e){E.registros=[];irA('panel');}
+  try{E.registros=await obtener();try{const corte=await window.storage.get('config:puntoCorte',true);E.puntoCorte=corte&&corte.value?corte.value:null;}catch(e){E.puntoCorte=null;}aplicarCorte();await calcularPromedio();irA('panel');}catch(e){E.registros=[];irA('panel');}
 }
 
 function aplicarCorte(){
@@ -599,7 +611,7 @@ async function confirmarBorrado(){
     const ahoraISO=new Date().toISOString();
     if(typeof window.storage!=='undefined'&&window.storage.set){await window.storage.set('config:puntoCorte',ahoraISO,true);}else{localStorage.setItem('puntoCorte',ahoraISO);}
     E.puntoCorte=ahoraISO;E.mostrandoHistorico=false;
-    const todas=await obtener();E.registros=todas;aplicarCorte();
+    const todas=await obtener();E.registros=todas;aplicarCorte();await calcularPromedio();
     E.confirmandoBorrado=false;E.mensajeBorrado={tipo:'ok',texto:'✅ Las respuestas anteriores dejaron de contarse. Cualquier respuesta nueva volverá a contar con normalidad.'};
     irA('panel');
   } catch(error){
@@ -624,7 +636,7 @@ function vistaInicio(){
     <h1>${CONFIG.materia}</h1>
     <h2 class="subtitulo">Diagnóstico de conocimientos previos</h2>
     <p class="institucion">${CONFIG.institucion}</p>
-    ${local()?'<div class="aviso-local">⚠️ Modo local: los resultados NO se guardarán en el panel docente.</div>':''}
+    ${local() ? '<div class="aviso-local">⚠️ Modo local: los resultados NO se guardarán en el panel docente.</div>' : ''}
     <ol class="instrucciones">
       <li>El diagnóstico consta de <b>${TOTAL} preguntas</b> de opción múltiple.</li>
       <li>Tienes la opción <b>"No identifico el tema"</b> si no reconoces el contenido.</li>
@@ -676,7 +688,7 @@ function vistaResultado(){
   const nivel={alto:'Nivel alto',medio:'Nivel medio',bajo:'Nivel bajo – requiere refuerzo'}[r.nivel];
   const clase={alto:'nivel-alto',medio:'nivel-medio',bajo:'nivel-bajo'}[r.nivel];
   let comp='';
-  if(E.promedioGrupo!==null){
+  if(E.promedioGrupo!==null && E.totalRespuestasGrupo > 0){
     const tu=Math.round((r.puntaje/r.total)*100);
     const grp=Math.round((E.promedioGrupo/r.total)*100);
     comp=`<div class="comparacion-barra-wrap">
@@ -817,24 +829,32 @@ function vincularEventos(){
 function handlePinEnter(e){if(e.key==='Enter'){e.preventDefault();intentarAcceso();}}
 
 // ================================================================
-// DETECCIÓN DE CAMBIOS DE PANTALLA
+// DETECCIÓN DE CAMBIOS DE PANTALLA - CORREGIDA
 // ================================================================
-document.addEventListener('visibilitychange',()=>{
-  if(document.hidden&&E.pantalla==='cuestionario'){
+function mostrarAvisoCambioPantalla(){
+  const overlay=document.createElement('div');
+  overlay.className='aviso-cambio-overlay';
+  overlay.innerHTML=`<div class="aviso-cambio-caja"><div class="aviso-cambio-titulo">AVISO</div><div class="aviso-cambio-mensaje">Se detectó que saliste de esta pantalla ${E.cambios} ${E.cambios===1?'vez':'veces'} durante el diagnóstico.</div><button class="btn btn-primario" onclick="this.closest('.aviso-cambio-overlay').remove()">Entendido</button></div>`;
+  document.body.appendChild(overlay);
+}
+
+document.addEventListener('visibilitychange', () => {
+  // Si hay un aviso de selección visible, NO contar como cambio
+  const avisoSeleccion = document.querySelector('.aviso-seleccion');
+  if (document.hidden && E.pantalla === 'cuestionario' && !avisoSeleccion) {
     E.cambios++;
-    const overlay=document.createElement('div');overlay.className='aviso-cambio-overlay';
-    overlay.innerHTML=`<div class="aviso-cambio-caja"><div class="aviso-cambio-titulo">AVISO</div><div class="aviso-cambio-mensaje">Se detectó que saliste de esta pantalla ${E.cambios} ${E.cambios===1?'vez':'veces'} durante el diagnóstico.</div><button class="btn btn-primario" onclick="this.closest('.aviso-cambio-overlay').remove()">Entendido</button></div>`;
-    document.body.appendChild(overlay);
+    mostrarAvisoCambioPantalla();
   }
 });
-document.addEventListener('fullscreenchange',()=>{
-  if(!document.fullscreenElement&&E.pantalla==='cuestionario'){
+
+document.addEventListener('fullscreenchange', () => {
+  const avisoSeleccion = document.querySelector('.aviso-seleccion');
+  if (!document.fullscreenElement && E.pantalla === 'cuestionario' && !avisoSeleccion) {
     E.cambios++;
-    const overlay=document.createElement('div');overlay.className='aviso-cambio-overlay';
-    overlay.innerHTML=`<div class="aviso-cambio-caja"><div class="aviso-cambio-titulo">AVISO</div><div class="aviso-cambio-mensaje">Se detectó que saliste de esta pantalla ${E.cambios} ${E.cambios===1?'vez':'veces'} durante el diagnóstico.</div><button class="btn btn-primario" onclick="this.closest('.aviso-cambio-overlay').remove()">Entendido</button></div>`;
-    document.body.appendChild(overlay);
+    mostrarAvisoCambioPantalla();
   }
 });
+
 window.addEventListener('beforeunload',e=>{if(E.pantalla==='cuestionario'){e.preventDefault();e.returnValue='';}});
 
 // ================================================================
