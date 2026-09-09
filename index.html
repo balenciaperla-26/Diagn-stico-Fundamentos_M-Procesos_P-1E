@@ -487,9 +487,7 @@ async function cargarPanel(){
 function aplicarCorte(){
   let puntoCorte = E.puntoCorte;
   
-  // Si no hay punto de corte en el estado, intentar recuperarlo
   if (!puntoCorte) {
-    // Intentar desde window.storage
     if (typeof window.storage !== 'undefined' && window.storage.get) {
       try {
         const corte = window.storage.get('config:puntoCorte', true);
@@ -500,7 +498,6 @@ function aplicarCorte(){
       } catch (e) {}
     }
     
-    // Si aún no hay, intentar desde localStorage
     if (!puntoCorte) {
       try {
         const localCorte = localStorage.getItem('puntoCorte');
@@ -519,15 +516,27 @@ function aplicarCorte(){
 
 function alternarHistorico(){E.mostrandoHistorico=!E.mostrandoHistorico;aplicarCorte();render();}
 
+// ================================================================
+// EXPORTAR CSV - CORREGIDO
+// ================================================================
 function exportarCSV(){
   const registros = E.registros || [];
   
-  // Cabeceras
-  const headers = ['Nombre', 'Carrera', 'Grupo', 'Puntaje', 'Total', 'Hora inicio', 'Tiempo (segundos)', 'Cambios de pantalla', 'Fecha'];
+  // Cabeceras en el orden correcto
+  const headers = [
+    'Nombre',
+    'Carrera',
+    'Grupo',
+    'Puntaje',
+    'Total',
+    'Hora inicio',
+    'Tiempo (segundos)',
+    'Cambios de pantalla',
+    'Fecha'
+  ];
   
-  // Crear filas
+  // Crear filas en el MISMO orden que las cabeceras
   const filas = registros.map(r => {
-    // Formatear fecha y hora para que sea legible
     let fechaLegible = '';
     let horaInicioLegible = '';
     
@@ -549,6 +558,7 @@ function exportarCSV(){
       });
     }
     
+    // El orden DEBE coincidir con el orden de las cabeceras
     return [
       r.nombre || '',
       r.carrera || CONFIG.carrera,
@@ -562,16 +572,16 @@ function exportarCSV(){
     ];
   });
   
-  // Construir CSV con separador de punto y coma (funciona mejor en Excel)
+  // Construir CSV con separador de punto y coma
   const cabecera = headers.join(';');
   const cuerpo = filas.map(f => f.join(';')).join('\n');
   const csv = cabecera + '\n' + cuerpo;
   
-  // Añadir BOM (Byte Order Mark) para que Excel reconozca UTF-8
+  // Añadir BOM para UTF-8
   const bom = '\uFEFF';
   const csvConBOM = bom + csv;
   
-  // Crear y descargar el archivo
+  // Descargar el archivo
   const blob = new Blob([csvConBOM], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -592,21 +602,16 @@ async function confirmarBorrado(){
   try {
     const ahoraISO = new Date().toISOString();
     
-    // Verificar si window.storage está disponible
     if (typeof window.storage !== 'undefined' && window.storage.set) {
-      // Usar window.storage (modo publicación)
       await window.storage.set('config:puntoCorte', ahoraISO, true);
     } else {
-      // Fallback: usar localStorage
       localStorage.setItem('puntoCorte', ahoraISO);
       console.log('Punto de corte guardado en localStorage');
     }
     
-    // Actualizar el estado local
     E.puntoCorte = ahoraISO;
     E.mostrandoHistorico = false;
     
-    // Recargar los registros aplicando el filtro
     const todas = await obtener();
     E.registros = todas;
     aplicarCorte();
@@ -1011,24 +1016,17 @@ function render(){
   }
   app.innerHTML=html;
   
-  // Vincular eventos después de renderizar
   vincularEventos();
 }
 
-// ================================================================
-// VINCULAR EVENTOS (para tecla Enter en PIN y otros)
-// ================================================================
 function vincularEventos(){
-  // Botón "Entrar" del PIN
   const btnEntrar = document.getElementById('btn-entrar-docente');
   if(btnEntrar) {
     btnEntrar.addEventListener('click', intentarAcceso);
   }
   
-  // Campo PIN - tecla Enter
   const campoPin = document.getElementById('campo-pin');
   if(campoPin) {
-    // Remover listener anterior para evitar duplicados
     campoPin.removeEventListener('keydown', handlePinEnter);
     campoPin.addEventListener('keydown', handlePinEnter);
   }
