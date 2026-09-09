@@ -346,9 +346,11 @@ let E = {
 // UTILIDADES
 // ================================================================
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a;}
+
+// Formato corto mm:ss para resultados del alumno
 function fmt(s){const m=Math.floor(s/60), seg=s%60;return String(m).padStart(2,'0')+':'+String(seg).padStart(2,'0');}
 
-// NUEVA FUNCIÓN: formato de tiempo hh:mm:ss
+// Formato completo hh:mm:ss para panel docente y CSV
 function formatoTiempo(segundos){
   const hrs = Math.floor(segundos / 3600);
   const mins = Math.floor((segundos % 3600) / 60);
@@ -526,7 +528,7 @@ function aplicarCorte(){
 function alternarHistorico(){E.mostrandoHistorico=!E.mostrandoHistorico;aplicarCorte();render();}
 
 // ================================================================
-// EXPORTAR CSV - CON TIEMPO hh:mm:ss
+// EXPORTAR CSV - CON TIEMPO EN hh:mm:ss
 // ================================================================
 function exportarCSV(){
   const registros = E.registros || [];
@@ -572,7 +574,7 @@ function exportarCSV(){
       r.puntaje || 0,
       r.total || TOTAL,
       horaInicioLegible,
-      formatoTiempo(r.tiempoSegundos || 0), // <-- CAMBIO: tiempo en hh:mm:ss
+      formatoTiempo(r.tiempoSegundos || 0),
       r.cambiosPantalla || 0,
       fechaLegible
     ];
@@ -986,7 +988,7 @@ function vistaPanel(){
     <div class="stats-grid"><div class="stat-box"><div class="valor">${n}</div><div class="etiqueta">Respuestas</div></div>
     <div class="stat-box"><div class="valor">${prom.toFixed(1)}/${regs[0]?.total||TOTAL}</div><div class="etiqueta">Promedio</div></div>
     <div class="stat-box"><div class="valor">${dom}%</div><div class="etiqueta">Dominio general</div></div>
-    <div class="stat-box"><div class="valor">${fmt(Math.round(tProm))}</div><div class="etiqueta">Tiempo promedio</div></div></div>
+    <div class="stat-box"><div class="valor">${formatoTiempo(Math.round(tProm))}</div><div class="etiqueta">Tiempo promedio</div></div></div>
   </div>
   <div class="tarjeta"><h2 class="subtitulo" style="text-align:left;">Desempeño por pregunta</h2><div class="tabla-scroll"><table class="tabla-docente"><thead><tr><th>#</th><th>Tema</th><th>% Acierto</th><th>% Sin identificar</th></tr></thead><tbody>${filasPreg||'<tr><td colspan="4" style="color:var(--texto-tenue);">Sin datos</td></tr>'}</tbody></table></div></div>
   <div class="tarjeta"><h2 class="subtitulo" style="text-align:left;">Respuestas individuales</h2><div class="tabla-scroll"><table class="tabla-docente"><thead><tr><th>Nombre</th><th>Carrera</th><th>Grupo</th><th>Puntaje</th><th>Hora inicio</th><th>Tiempo</th><th>Cambios</th><th>Fecha</th></tr></thead><tbody>${filasAlumnos||'<tr><td colspan="8" style="color:var(--texto-tenue);">Sin respuestas</td></tr>'}</tbody></table></div>
