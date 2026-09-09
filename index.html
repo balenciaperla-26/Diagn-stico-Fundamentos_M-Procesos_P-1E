@@ -361,7 +361,9 @@ let E = {
   guardando:false,
   errorGuardado:false,
   repasoPendientes:[],
-  repasoOrigen:'resultado'
+  repasoOrigen:'resultado',
+  // Bandera para evitar contar cambios de pantalla por el aviso de selección
+  _ignorarCambioPantalla: false
 };
 
 // ================================================================
@@ -379,7 +381,6 @@ function esc(t){const d=document.createElement('div');d.textContent=t;return d.i
 function frac(html){return html.replace(/\[\[([^|\]]+)\|([^\]]+)\]\]/g,(m,n,d)=>`<span class="frac"><span class="frac-num">${n}</span><span class="frac-den">${d}</span></span>`);}
 function txt(t){return frac(esc(t));}
 
-// CORREGIDA: No mostrar mensaje local en GitHub Pages
 function local(){
   if (window.location.hostname.includes('github.io')) {
     return false;
@@ -464,6 +465,7 @@ function comenzar(){
   E.respuestas={};
   E.cambios=0;
   E.inicio=Date.now();
+  E._ignorarCambioPantalla = false;
   if(document.documentElement.requestFullscreen)document.documentElement.requestFullscreen().catch(()=>{});
   irA('cuestionario');
 }
@@ -471,6 +473,9 @@ function comenzar(){
 function seleccionar(bi,val){E.respuestas[bi]=val;render();}
 
 function mostrarAvisoSeleccion(){
+  // Activar bandera para ignorar cambios de pantalla
+  E._ignorarCambioPantalla = true;
+  
   const avisoExistente = document.querySelector('.aviso-seleccion');
   if(avisoExistente) avisoExistente.remove();
   
@@ -478,11 +483,15 @@ function mostrarAvisoSeleccion(){
   aviso.className = 'aviso-seleccion';
   aviso.innerHTML = `
     <span>⚠️ Selecciona una opción antes de continuar.</span>
-    <button class="btn btn-primario" style="padding:8px 20px;font-size:0.85rem;" onclick="this.closest('.aviso-seleccion').remove()">Entendido</button>
+    <button class="btn btn-primario" style="padding:8px 20px;font-size:0.85rem;" onclick="this.closest('.aviso-seleccion').remove(); E._ignorarCambioPantalla = false;">Entendido</button>
   `;
   document.body.appendChild(aviso);
   
-  setTimeout(() => { if(aviso.parentNode) aviso.remove(); }, 5000);
+  // Desactivar la bandera después de 5 segundos o cuando se cierre el aviso
+  setTimeout(() => {
+    if(aviso.parentNode) aviso.remove();
+    E._ignorarCambioPantalla = false;
+  }, 5000);
 }
 
 function siguiente(){
@@ -530,6 +539,9 @@ async function calcularPromedio(){
     if (E.puntoCorte) {
       filtrados = unicos.filter(r => new Date(r.fecha) > new Date(E.puntoCorte));
     }
+    
+    // Filtrar registros sin nombre (pruebas vacías)
+    filtrados = filtrados.filter(r => r.nombre && r.nombre.trim() !== '');
     
     if (filtrados.length > 0) {
       const sumaPuntajes = filtrados.reduce((a, r) => a + (r.puntaje || 0), 0);
@@ -625,7 +637,10 @@ function prepararRepaso(origen){
   E.repasoPendientes=pendientes;E.repasoOrigen=origen;irA('repaso');
 }
 
-function volverInicio(){E={pantalla:'inicio',nombre:'',sesion:[],idx:0,respuestas:{},inicio:null,tiempo:0,cambios:0,resultado:null,promedioGrupo:null,totalRespuestasGrupo:0,consultaNombre:'',consultado:null,consultaError:false,autenticado:false,registros:[],mostrandoHistorico:false,puntoCorte:null,confirmandoBorrado:false,mensajeBorrado:null,guardando:false,errorGuardado:false,repasoPendientes:[],repasoOrigen:'resultado'};render();}
+function volverInicio(){
+  E={pantalla:'inicio',nombre:'',sesion:[],idx:0,respuestas:{},inicio:null,tiempo:0,cambios:0,resultado:null,promedioGrupo:null,totalRespuestasGrupo:0,consultaNombre:'',consultado:null,consultaError:false,autenticado:false,registros:[],mostrandoHistorico:false,puntoCorte:null,confirmandoBorrado:false,mensajeBorrado:null,guardando:false,errorGuardado:false,repasoPendientes:[],repasoOrigen:'resultado',_ignorarCambioPantalla:false};
+  render();
+}
 
 // ================================================================
 // VISTAS
@@ -839,7 +854,10 @@ function mostrarAvisoCambioPantalla(){
 }
 
 document.addEventListener('visibilitychange', () => {
-  // Si hay un aviso de selección visible, NO contar como cambio
+  // Si la bandera está activa, NO contar como cambio
+  if (E._ignorarCambioPantalla) return;
+  
+  // También verificar si hay un aviso de selección visible
   const avisoSeleccion = document.querySelector('.aviso-seleccion');
   if (document.hidden && E.pantalla === 'cuestionario' && !avisoSeleccion) {
     E.cambios++;
@@ -848,6 +866,9 @@ document.addEventListener('visibilitychange', () => {
 });
 
 document.addEventListener('fullscreenchange', () => {
+  // Si la bandera está activa, NO contar como cambio
+  if (E._ignorarCambioPantalla) return;
+  
   const avisoSeleccion = document.querySelector('.aviso-seleccion');
   if (!document.fullscreenElement && E.pantalla === 'cuestionario' && !avisoSeleccion) {
     E.cambios++;
