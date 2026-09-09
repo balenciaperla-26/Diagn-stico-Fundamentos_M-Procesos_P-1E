@@ -481,7 +481,36 @@ async function cargarPanel(){
 }
 
 function aplicarCorte(){
-  if(E.puntoCorte&&!E.mostrandoHistorico){E.registros=E.registros.filter(r=>new Date(r.fecha)>new Date(E.puntoCorte));}
+  let puntoCorte = E.puntoCorte;
+  
+  // Si no hay punto de corte en el estado, intentar recuperarlo
+  if (!puntoCorte) {
+    // Intentar desde window.storage
+    if (typeof window.storage !== 'undefined' && window.storage.get) {
+      try {
+        const corte = window.storage.get('config:puntoCorte', true);
+        if (corte && corte.value) {
+          puntoCorte = corte.value;
+          E.puntoCorte = puntoCorte;
+        }
+      } catch (e) {}
+    }
+    
+    // Si aún no hay, intentar desde localStorage
+    if (!puntoCorte) {
+      try {
+        const localCorte = localStorage.getItem('puntoCorte');
+        if (localCorte) {
+          puntoCorte = localCorte;
+          E.puntoCorte = puntoCorte;
+        }
+      } catch (e) {}
+    }
+  }
+  
+  if (puntoCorte && !E.mostrandoHistorico) {
+    E.registros = E.registros.filter(r => new Date(r.fecha) > new Date(puntoCorte));
+  }
 }
 
 function alternarHistorico(){E.mostrandoHistorico=!E.mostrandoHistorico;aplicarCorte();render();}
@@ -552,18 +581,51 @@ function exportarCSV(){
 
 function pedirBorrado(){E.confirmandoBorrado=true;render();}
 function cancelarBorrado(){E.confirmandoBorrado=false;render();}
+
 async function confirmarBorrado(){
   irA('guardando');
-  try{
-    const ahora=new Date().toISOString();
-    await window.storage.set('config:puntoCorte',ahora,true);
-    E.puntoCorte=ahora;
-    E.mostrandoHistorico=false;
+  
+  try {
+    const ahoraISO = new Date().toISOString();
+    
+    // Verificar si window.storage está disponible
+    if (typeof window.storage !== 'undefined' && window.storage.set) {
+      // Usar window.storage (modo publicación)
+      await window.storage.set('config:puntoCorte', ahoraISO, true);
+    } else {
+      // Fallback: usar localStorage
+      localStorage.setItem('puntoCorte', ahoraISO);
+      console.log('Punto de corte guardado en localStorage');
+    }
+    
+    // Actualizar el estado local
+    E.puntoCorte = ahoraISO;
+    E.mostrandoHistorico = false;
+    
+    // Recargar los registros aplicando el filtro
+    const todas = await obtener();
+    E.registros = todas;
     aplicarCorte();
-    E.confirmandoBorrado=false;
-    E.mensajeBorrado={tipo:'ok',texto:'Listo: las respuestas anteriores dejaron de contarse. Cualquier respuesta nueva volverá a contar con normalidad.'};
+    
+    E.confirmandoBorrado = false;
+    E.mensajeBorrado = {
+      tipo: 'ok',
+      texto: '✅ Las respuestas anteriores dejaron de contarse. Cualquier respuesta nueva volverá a contar con normalidad.'
+    };
+    
     irA('panel');
-  }catch(e){E.confirmandoBorrado=false;E.mensajeBorrado={tipo:'error',texto:'Error al aplicar el punto de corte.'};irA('panel');}
+    
+  } catch (error) {
+    console.error('Error al aplicar punto de corte:', error);
+    
+    E.confirmandoBorrado = false;
+    E.mensajeBorrado = {
+      tipo: 'error',
+      texto: '❌ No se pudo aplicar el punto de corte. Si el problema persiste, intenta exportar el CSV y luego refresca la página.'
+    };
+    
+    irA('panel');
+  }
 }
 
 function prepararRepaso(origen){
