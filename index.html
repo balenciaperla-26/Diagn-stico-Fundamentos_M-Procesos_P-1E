@@ -362,7 +362,6 @@ let E = {
   errorGuardado:false,
   repasoPendientes:[],
   repasoOrigen:'resultado',
-  // Bandera para evitar contar cambios de pantalla por el aviso de selección
   _ignorarCambioPantalla: false
 };
 
@@ -389,23 +388,70 @@ function local(){
 }
 
 // ================================================================
-// ALMACENAMIENTO
+// ALMACENAMIENTO - CORREGIDO
 // ================================================================
 async function guardar(reg){
-  if(local()){try{const h=JSON.parse(localStorage.getItem('diag_hist')||'[]');h.push(reg);localStorage.setItem('diag_hist',JSON.stringify(h));}catch(e){}return;}
-  if(typeof window.storage==='undefined')return;
-  const key='resp:'+Date.now()+'_'+Math.random().toString(36).slice(2,9);
-  for(let i=0;i<3;i++){try{await window.storage.set(key,JSON.stringify(reg),true);return;}catch(e){await new Promise(r=>setTimeout(r,500*(i+1)));}}
+  // Siempre guardar en localStorage como respaldo
+  try{
+    const h = JSON.parse(localStorage.getItem('diag_hist') || '[]');
+    h.push(reg);
+    localStorage.setItem('diag_hist', JSON.stringify(h));
+  } catch(e){
+    console.warn('Error guardando en localStorage (respaldo):', e);
+  }
+  
+  // Si estamos en modo local, ya guardamos en localStorage, retornar éxito
+  if(local()){
+    return true;
+  }
+  
+  // Si no hay window.storage, ya guardamos en localStorage
+  if(typeof window.storage === 'undefined'){
+    return true;
+  }
+  
+  // Intentar guardar en window.storage
+  const key = 'resp:' + Date.now() + '_' + Math.random().toString(36).slice(2, 9);
+  for(let i = 0; i < 3; i++){
+    try{
+      await window.storage.set(key, JSON.stringify(reg), true);
+      return true;
+    } catch(e){
+      console.warn('Intento ' + (i+1) + ' falló en window.storage:', e);
+      if(i < 2) await new Promise(r => setTimeout(r, 500 * (i+1)));
+    }
+  }
+  // Si falló window.storage pero ya tenemos localStorage, considerar éxito
+  return true;
 }
 
 async function obtener(){
-  if(local()){try{return JSON.parse(localStorage.getItem('diag_hist')||'[]');}catch(e){return[];}}
-  if(typeof window.storage==='undefined')return[];
-  const listado=await window.storage.list('resp:',true);
-  const claves=listado&&listado.keys?listado.keys:[];
-  const regs=[];
-  for(const k of claves){try{const r=await window.storage.get(k,true);if(r&&r.value)regs.push({key:k,...JSON.parse(r.value)});}catch(e){}}
-  return regs;
+  // Primero intentar obtener de window.storage
+  if(!local() && typeof window.storage !== 'undefined'){
+    try{
+      const listado = await window.storage.list('resp:', true);
+      const claves = listado && listado.keys ? listado.keys : [];
+      const regs = [];
+      for(const k of claves){
+        try{
+          const r = await window.storage.get(k, true);
+          if(r && r.value) regs.push({key: k, ...JSON.parse(r.value)});
+        } catch(e){}
+      }
+      // Si hay datos en window.storage, retornarlos
+      if(regs.length > 0) return regs;
+    } catch(e){
+      console.warn('Error obteniendo de window.storage:', e);
+    }
+  }
+  
+  // Fallback o complemento: obtener de localStorage
+  try{
+    const localData = JSON.parse(localStorage.getItem('diag_hist') || '[]');
+    return localData;
+  } catch(e){
+    return [];
+  }
 }
 
 // ================================================================
@@ -473,7 +519,6 @@ function comenzar(){
 function seleccionar(bi,val){E.respuestas[bi]=val;render();}
 
 function mostrarAvisoSeleccion(){
-  // Activar bandera para ignorar cambios de pantalla
   E._ignorarCambioPantalla = true;
   
   const avisoExistente = document.querySelector('.aviso-seleccion');
@@ -487,7 +532,6 @@ function mostrarAvisoSeleccion(){
   `;
   document.body.appendChild(aviso);
   
-  // Desactivar la bandera después de 5 segundos o cuando se cierre el aviso
   setTimeout(() => {
     if(aviso.parentNode) aviso.remove();
     E._ignorarCambioPantalla = false;
@@ -512,20 +556,43 @@ function siguiente(){
 function anterior(){if(E.idx>0){E.idx--;render();window.scrollTo(0,0);}}
 
 async function finalizar(){
-  E.tiempo=Math.round((Date.now()-E.inicio)/1000);
-  E.resultado=calificar();
-  E.guardando=true;
+  E.tiempo = Math.round((Date.now() - E.inicio) / 1000);
+  E.resultado = calificar();
+  E.guardando = true;
   irA('guardando');
-  const reg={nombre:E.nombre,carrera:CONFIG.carrera,grupo:CONFIG.grupo,puntaje:E.resultado.puntaje,total:E.resultado.total,incorrectas:E.resultado.incorrectas,noIdentifico:E.resultado.noIdentifico,tiempoSegundos:E.tiempo,horaInicio:new Date().toISOString(),fecha:new Date().toISOString(),respuestas:E.respuestas,cambiosPantalla:E.cambios};
-  try{await guardar(reg);E.guardando=false;await calcularPromedio();irA('resultado');}catch(e){E.guardando=false;E.errorGuardado=true;irA('error');}
+  
+  const reg = {
+    nombre: E.nombre,
+    carrera: CONFIG.carrera,
+    grupo: CONFIG.grupo,
+    puntaje: E.resultado.puntaje,
+    total: E.resultado.total,
+    incorrectas: E.resultado.incorrectas,
+    noIdentifico: E.resultado.noIdentifico,
+    tiempoSegundos: E.tiempo,
+    horaInicio: new Date().toISOString(),
+    fecha: new Date().toISOString(),
+    respuestas: E.respuestas,
+    cambiosPantalla: E.cambios
+  };
+  
+  try {
+    await guardar(reg);
+    E.guardando = false;
+    await calcularPromedio();
+    irA('resultado');
+  } catch(e) {
+    console.error('Error al finalizar:', e);
+    E.guardando = false;
+    E.errorGuardado = true;
+    irA('error');
+  }
 }
 
-// CORREGIDA: Filtrar duplicados y aplicar punto de corte
 async function calcularPromedio(){
   try {
     const todas = await obtener();
     
-    // Filtrar duplicados (mismo nombre en la misma fecha)
     const vistos = new Set();
     const unicos = todas.filter(r => {
       const clave = (r.nombre || '').trim().toLowerCase() + '_' + (r.fecha || '').slice(0, 10);
@@ -534,13 +601,11 @@ async function calcularPromedio(){
       return true;
     });
     
-    // Aplicar punto de corte si existe
     let filtrados = unicos;
     if (E.puntoCorte) {
       filtrados = unicos.filter(r => new Date(r.fecha) > new Date(E.puntoCorte));
     }
     
-    // Filtrar registros sin nombre (pruebas vacías)
     filtrados = filtrados.filter(r => r.nombre && r.nombre.trim() !== '');
     
     if (filtrados.length > 0) {
@@ -844,7 +909,7 @@ function vincularEventos(){
 function handlePinEnter(e){if(e.key==='Enter'){e.preventDefault();intentarAcceso();}}
 
 // ================================================================
-// DETECCIÓN DE CAMBIOS DE PANTALLA - CORREGIDA
+// DETECCIÓN DE CAMBIOS DE PANTALLA
 // ================================================================
 function mostrarAvisoCambioPantalla(){
   const overlay=document.createElement('div');
@@ -854,10 +919,8 @@ function mostrarAvisoCambioPantalla(){
 }
 
 document.addEventListener('visibilitychange', () => {
-  // Si la bandera está activa, NO contar como cambio
   if (E._ignorarCambioPantalla) return;
   
-  // También verificar si hay un aviso de selección visible
   const avisoSeleccion = document.querySelector('.aviso-seleccion');
   if (document.hidden && E.pantalla === 'cuestionario' && !avisoSeleccion) {
     E.cambios++;
@@ -866,7 +929,6 @@ document.addEventListener('visibilitychange', () => {
 });
 
 document.addEventListener('fullscreenchange', () => {
-  // Si la bandera está activa, NO contar como cambio
   if (E._ignorarCambioPantalla) return;
   
   const avisoSeleccion = document.querySelector('.aviso-seleccion');
