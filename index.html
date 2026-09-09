@@ -517,7 +517,7 @@ function aplicarCorte(){
 function alternarHistorico(){E.mostrandoHistorico=!E.mostrandoHistorico;aplicarCorte();render();}
 
 // ================================================================
-// EXPORTAR CSV - CORREGIDO
+// EXPORTAR CSV - CORREGIDO CON COMA
 // ================================================================
 function exportarCSV(){
   const registros = E.registros || [];
@@ -558,7 +558,6 @@ function exportarCSV(){
       });
     }
     
-    // El orden DEBE coincidir con el orden de las cabeceras
     return [
       r.nombre || '',
       r.carrera || CONFIG.carrera,
@@ -572,9 +571,9 @@ function exportarCSV(){
     ];
   });
   
-  // Construir CSV con separador de punto y coma
-  const cabecera = headers.join(';');
-  const cuerpo = filas.map(f => f.join(';')).join('\n');
+  // USAR COMA (,) como separador - Excel lo abre correctamente
+  const cabecera = headers.join(',');
+  const cuerpo = filas.map(f => f.join(',')).join('\n');
   const csv = cabecera + '\n' + cuerpo;
   
   // Añadir BOM para UTF-8
