@@ -388,70 +388,70 @@ function local(){
 }
 
 // ================================================================
-// ALMACENAMIENTO - CORREGIDO
+// ALMACENAMIENTO - SIMPLIFICADO Y FUNCIONAL
 // ================================================================
+
 async function guardar(reg){
-  // Siempre guardar en localStorage como respaldo
-  try{
-    const h = JSON.parse(localStorage.getItem('diag_hist') || '[]');
-    h.push(reg);
-    localStorage.setItem('diag_hist', JSON.stringify(h));
-  } catch(e){
-    console.warn('Error guardando en localStorage (respaldo):', e);
+  // 1. SIEMPRE guardar en localStorage (funciona en cualquier navegador)
+  try {
+    const historial = JSON.parse(localStorage.getItem('diag_hist') || '[]');
+    historial.push(reg);
+    localStorage.setItem('diag_hist', JSON.stringify(historial));
+    console.log('✅ Resultado guardado en localStorage');
+  } catch (e) {
+    console.error('❌ Error guardando en localStorage:', e);
+    return false;
   }
   
-  // Si estamos en modo local, ya guardamos en localStorage, retornar éxito
-  if(local()){
-    return true;
-  }
-  
-  // Si no hay window.storage, ya guardamos en localStorage
-  if(typeof window.storage === 'undefined'){
-    return true;
-  }
-  
-  // Intentar guardar en window.storage
-  const key = 'resp:' + Date.now() + '_' + Math.random().toString(36).slice(2, 9);
-  for(let i = 0; i < 3; i++){
-    try{
+  // 2. Si window.storage está disponible, guardar también allí
+  if (!local() && typeof window.storage !== 'undefined') {
+    try {
+      const key = 'resp:' + Date.now() + '_' + Math.random().toString(36).slice(2, 9);
       await window.storage.set(key, JSON.stringify(reg), true);
-      return true;
-    } catch(e){
-      console.warn('Intento ' + (i+1) + ' falló en window.storage:', e);
-      if(i < 2) await new Promise(r => setTimeout(r, 500 * (i+1)));
+      console.log('✅ Resultado guardado en window.storage');
+    } catch (e) {
+      console.warn('⚠️ No se pudo guardar en window.storage (se mantiene en localStorage):', e);
+      // No fallamos, porque ya tenemos localStorage
     }
   }
-  // Si falló window.storage pero ya tenemos localStorage, considerar éxito
+  
   return true;
 }
 
 async function obtener(){
-  // Primero intentar obtener de window.storage
-  if(!local() && typeof window.storage !== 'undefined'){
-    try{
+  // 1. Primero intentar obtener de localStorage (siempre disponible)
+  try {
+    const localData = JSON.parse(localStorage.getItem('diag_hist') || '[]');
+    if (localData.length > 0) {
+      console.log('📊 Datos obtenidos de localStorage:', localData.length);
+      return localData;
+    }
+  } catch (e) {
+    console.warn('⚠️ Error leyendo localStorage:', e);
+  }
+  
+  // 2. Si no hay datos en localStorage, intentar window.storage
+  if (!local() && typeof window.storage !== 'undefined') {
+    try {
       const listado = await window.storage.list('resp:', true);
       const claves = listado && listado.keys ? listado.keys : [];
       const regs = [];
-      for(const k of claves){
-        try{
+      for (const k of claves) {
+        try {
           const r = await window.storage.get(k, true);
-          if(r && r.value) regs.push({key: k, ...JSON.parse(r.value)});
-        } catch(e){}
+          if (r && r.value) regs.push({key: k, ...JSON.parse(r.value)});
+        } catch (e) {}
       }
-      // Si hay datos en window.storage, retornarlos
-      if(regs.length > 0) return regs;
-    } catch(e){
-      console.warn('Error obteniendo de window.storage:', e);
+      if (regs.length > 0) {
+        console.log('📊 Datos obtenidos de window.storage:', regs.length);
+        return regs;
+      }
+    } catch (e) {
+      console.warn('⚠️ Error leyendo window.storage:', e);
     }
   }
   
-  // Fallback o complemento: obtener de localStorage
-  try{
-    const localData = JSON.parse(localStorage.getItem('diag_hist') || '[]');
-    return localData;
-  } catch(e){
-    return [];
-  }
+  return [];
 }
 
 // ================================================================
@@ -577,10 +577,15 @@ async function finalizar(){
   };
   
   try {
-    await guardar(reg);
+    const guardado = await guardar(reg);
     E.guardando = false;
-    await calcularPromedio();
-    irA('resultado');
+    if (guardado) {
+      await calcularPromedio();
+      irA('resultado');
+    } else {
+      E.errorGuardado = true;
+      irA('error');
+    }
   } catch(e) {
     console.error('Error al finalizar:', e);
     E.guardando = false;
@@ -646,7 +651,16 @@ function intentarAcceso(){
 
 async function cargarPanel(){
   irA('guardando');
-  try{E.registros=await obtener();try{const corte=await window.storage.get('config:puntoCorte',true);E.puntoCorte=corte&&corte.value?corte.value:null;}catch(e){E.puntoCorte=null;}aplicarCorte();await calcularPromedio();irA('panel');}catch(e){E.registros=[];irA('panel');}
+  try {
+    E.registros = await obtener();
+    try{const corte=await window.storage.get('config:puntoCorte',true);E.puntoCorte=corte&&corte.value?corte.value:null;}catch(e){E.puntoCorte=null;}
+    aplicarCorte();
+    await calcularPromedio();
+    irA('panel');
+  } catch(e){
+    E.registros = [];
+    irA('panel');
+  }
 }
 
 function aplicarCorte(){
