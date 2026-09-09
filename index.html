@@ -471,8 +471,12 @@ async function buscarResultado(){
 function intentarAcceso(){
   const pin=document.getElementById('campo-pin');
   if(!pin)return;
-  if(pin.value.trim().toUpperCase()===CONFIG.pin.toUpperCase()){E.autenticado=true;cargarPanel();}
-  else alert('PIN incorrecto');
+  if(pin.value.trim().toUpperCase()===CONFIG.pin.toUpperCase()){
+    E.autenticado=true;
+    cargarPanel();
+  } else {
+    alert('PIN incorrecto');
+  }
 }
 
 async function cargarPanel(){
@@ -942,7 +946,7 @@ function vistaLogin(){
   return `<div class="tarjeta"><div class="logo">UTSC</div><h1>${CONFIG.materia}</h1><h2 class="subtitulo">🔒 Panel docente</h2><p class="institucion">${CONFIG.institucion}</p>
     <label>PIN de acceso</label>
     <input type="password" id="campo-pin" placeholder="Ingresa el PIN" autocomplete="off">
-    <button class="btn btn-primario btn-bloque" onclick="intentarAcceso()">Entrar</button>
+    <button class="btn btn-primario btn-bloque" id="btn-entrar-docente" onclick="intentarAcceso()">Entrar</button>
     <div class="centrado" style="margin-top:16px;"><span class="enlace-tenue" onclick="irA('inicio')">Volver al inicio</span></div>
   </div>`;
 }
@@ -1006,6 +1010,35 @@ function render(){
     default:html=vistaInicio();
   }
   app.innerHTML=html;
+  
+  // Vincular eventos después de renderizar
+  vincularEventos();
+}
+
+// ================================================================
+// VINCULAR EVENTOS (para tecla Enter en PIN y otros)
+// ================================================================
+function vincularEventos(){
+  // Botón "Entrar" del PIN
+  const btnEntrar = document.getElementById('btn-entrar-docente');
+  if(btnEntrar) {
+    btnEntrar.addEventListener('click', intentarAcceso);
+  }
+  
+  // Campo PIN - tecla Enter
+  const campoPin = document.getElementById('campo-pin');
+  if(campoPin) {
+    // Remover listener anterior para evitar duplicados
+    campoPin.removeEventListener('keydown', handlePinEnter);
+    campoPin.addEventListener('keydown', handlePinEnter);
+  }
+}
+
+function handlePinEnter(e) {
+  if(e.key === 'Enter') {
+    e.preventDefault();
+    intentarAcceso();
+  }
 }
 
 // ================================================================
