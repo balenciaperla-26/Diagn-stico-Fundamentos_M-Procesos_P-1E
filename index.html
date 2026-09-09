@@ -5,40 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Diagnóstico - Fundamentos Matemáticos</title>
 <style>
-:root {
-  --naranja: #FF8201;
-  --teal: #49C2B3;
-  --bg: #1B1E22;
-  --bg-card: #24282E;
-  --bg-card-2: #2D3239;
-  --borde: #3A3F47;
-  --texto: #EDEEF0;
-  --texto-tenue: #A7ADB6;
-  --verde: #3FB56F;
-  --rojo: #E15554;
-  --amarillo: #F0A93F;
-  --radio: 14px;
-}
+:root{--naranja:#FF8201;--teal:#49C2B3;--bg:#1B1E22;--bg-card:#24282E;--bg-card-2:#2D3239;--borde:#3A3F47;--texto:#EDEEF0;--texto-tenue:#A7ADB6;--verde:#3FB56F;--rojo:#E15554;--amarillo:#F0A93F;--radio:14px;}
 *{box-sizing:border-box;margin:0;padding:0;}
-body{
-  background:var(--bg);
-  color:var(--texto);
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  padding:20px 16px 40px;
-}
+body{background:var(--bg);color:var(--texto);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:20px 16px 40px;}
 .contenedor{width:100%;max-width:720px;}
-.tarjeta{
-  background:var(--bg-card);
-  border:1px solid var(--borde);
-  border-radius:var(--radio);
-  padding:24px;
-  margin-bottom:16px;
-  box-shadow:0 4px 24px rgba(0,0,0,0.25);
-}
+.tarjeta{background:var(--bg-card);border:1px solid var(--borde);border-radius:var(--radio);padding:24px;margin-bottom:16px;box-shadow:0 4px 24px rgba(0,0,0,0.25);}
 .logo{text-align:center;font-size:2rem;font-weight:900;color:var(--naranja);letter-spacing:2px;margin-bottom:4px;}
 h1{text-align:center;font-size:1.3rem;color:var(--texto);font-weight:700;}
 h2.subtitulo{text-align:center;font-size:0.95rem;font-weight:500;color:var(--naranja);margin:4px 0;}
@@ -47,16 +18,10 @@ p.institucion{text-align:center;color:var(--texto-tenue);font-size:0.8rem;margin
 ol.instrucciones{padding-left:20px;color:var(--texto);font-size:0.9rem;line-height:1.6;}
 ol.instrucciones li{margin-bottom:4px;}
 label{display:block;font-size:0.8rem;color:var(--texto-tenue);margin:14px 0 4px;font-weight:600;}
-input[type=text],input[type=password]{
-  width:100%;background:var(--bg-card-2);border:1px solid var(--borde);border-radius:8px;
-  padding:12px 14px;color:var(--texto);font-size:16px;outline:none;
-}
+input[type=text],input[type=password]{width:100%;background:var(--bg-card-2);border:1px solid var(--borde);border-radius:8px;padding:12px 14px;color:var(--texto);font-size:16px;outline:none;}
 input[type=text]:focus,input[type=password]:focus{border-color:var(--naranja);}
 input[readonly]{color:var(--texto-tenue);background:#20242a;}
-.btn{
-  display:inline-block;border:none;border-radius:10px;padding:12px 20px;font-size:15px;
-  font-weight:700;cursor:pointer;transition:transform .08s,opacity .15s;font-family:inherit;
-}
+.btn{display:inline-block;border:none;border-radius:10px;padding:12px 20px;font-size:15px;font-weight:700;cursor:pointer;transition:transform .08s,opacity .15s;font-family:inherit;}
 .btn:active{transform:scale(0.97);}
 .btn-primario{background:var(--naranja);color:#1B1E22;}
 .btn-primario:hover{background:#D96D00;}
@@ -143,69 +108,51 @@ table.tabla-docente td{padding:6px 8px;border-bottom:1px solid var(--borde);}
 .zona-riesgo{border:1.5px dashed var(--rojo);border-radius:8px;padding:14px;margin-top:20px;}
 .zona-riesgo h3{color:var(--rojo);margin:0 0 6px;font-size:0.9rem;}
 .zona-riesgo p{color:var(--texto-tenue);font-size:0.78rem;margin:0 0 10px;line-height:1.4;}
-@media (max-width:480px){
-  body{padding:12px 8px 30px;}
-  .tarjeta{padding:16px;}
-  .logo{font-size:1.6rem;}
-  h1{font-size:1.1rem;}
-  .pregunta-texto{font-size:0.95rem;}
-  .resumen-puntaje .numero{font-size:2rem;}
-  .stats-grid{gap:6px;}
-  .stat-box{min-width:80px;padding:8px;}
-  input[type=text],input[type=password]{font-size:16px;}
-  .btn{padding:10px 14px;font-size:13px;}
-}
+@media (max-width:480px){body{padding:12px 8px 30px;}.tarjeta{padding:16px;}.logo{font-size:1.6rem;}h1{font-size:1.1rem;}.pregunta-texto{font-size:0.95rem;}.resumen-puntaje .numero{font-size:2rem;}.stats-grid{gap:6px;}.stat-box{min-width:80px;padding:8px;}input[type=text],input[type=password]{font-size:16px;}.btn{padding:10px 14px;font-size:13px;}}
 </style>
 </head>
 <body>
 <div class="contenedor" id="app"></div>
 <script>
 // ================================================================
-// BANCO DE PREGUNTAS
+// CONFIGURACIÓN Y PREGUNTAS
 // ================================================================
 var PREGUNTAS = [
-  {topic:"Fracciones - Simplificación",q:"Simplifica la fracci\u00f3n [[18|24]] a su m\u00ednima expresi\u00f3n",opts:["[[3|4]]","[[2|3]]","[[4|5]]","[[5|6]]"],correct:0,variantes:[{e:"Simplifica la fracci\u00f3n [[20|30]] a su m\u00ednima expresi\u00f3n",r:"[[2|3]]"}]},
-  {topic:"Fracciones - Suma",q:"Calcula: [[2|3]] + [[1|6]]",opts:["[[5|6]]","[[3|9]]","[[1|2]]","[[5|9]]"],correct:0,variantes:[{e:"Calcula: [[1|4]] + [[1|2]]",r:"[[3|4]]"}]},
-  {topic:"Fracciones - Multiplicaci\u00f3n",q:"Calcula: [[3|4]] \u00b7 [[2|5]]",opts:["[[3|10]]","[[5|9]]","[[2|3]]","[[6|5]]"],correct:0,variantes:[{e:"Calcula: [[2|3]] \u00b7 [[3|4]]",r:"[[1|2]]"}]},
-  {topic:"N\u00fameros negativos - Suma",q:"Calcula: 8 + (\u22123) + (\u22127)",opts:["\u22122","18","\u221212","2"],correct:0,variantes:[{e:"Calcula: 9 + (\u22124) + (\u22128)",r:"\u22123"}]},
-  {topic:"N\u00fameros negativos - Multiplicaci\u00f3n",q:"Calcula: (\u22124)(\u22122)",opts:["8","\u22128","6","\u22126"],correct:0,variantes:[{e:"Calcula: (\u22125)(\u22123)",r:"15"}]},
-  {topic:"Porcentaje",q:"Calcula el 10% de 240",opts:["24","36","15","30"],correct:0,variantes:[{e:"Calcula el 10% de 150",r:"15"}]},
-  {topic:"Jerarqu\u00eda de operaciones",q:"Calcula: 3 + (4)(2) \u2212 [[6|3]]",opts:["9","11","5","7"],correct:0,variantes:[{e:"Calcula: 4 + (5)(2) \u2212 [[8|4]]",r:"12"}]},
-  {topic:"Jerarqu\u00eda de operaciones",q:"Calcula: (5 \u2212 2)\u00b2 + (4)(3)",opts:["21","33","15","27"],correct:0,variantes:[{e:"Calcula: (4 \u2212 1)\u00b2 + (5)(2)",r:"19"}]},
-  {topic:"M\u00ednimo com\u00fan m\u00faltiplo",q:"Calcula el m\u00ednimo com\u00fan m\u00faltiplo (m.c.m.) de 6 y 8",opts:["24","12","48","2"],correct:0,variantes:[{e:"Calcula el m.c.m. de 4 y 6",r:"12"}]},
-  {topic:"Ley de signos",q:"Calcula: (\u22125) \u2212 (\u22123)",opts:["\u22122","2","\u22128","8"],correct:0,variantes:[{e:"Calcula: (\u22127) \u2212 (\u22122)",r:"\u22125"}]},
-  {topic:"Lenguaje algebraico - Traducci\u00f3n",q:"\u00bfQu\u00e9 expresi\u00f3n representa 'el doble de un n\u00famero aumentado en 5'?",opts:["2x + 5","2(x + 5)","x + 5","2x \u2212 5"],correct:0,variantes:[{e:"\u00bfQu\u00e9 expresi\u00f3n representa 'el triple de un n\u00famero aumentado en 4'?",r:"3x + 4"}]},
-  {topic:"Lenguaje algebraico - Traducci\u00f3n",q:"\u00bfQu\u00e9 expresi\u00f3n representa 'el triple de la diferencia de un n\u00famero y 2'?",opts:["3(x \u2212 2)","3x \u2212 2","x \u2212 6","3(2 \u2212 x)"],correct:0,variantes:[{e:"\u00bfQu\u00e9 expresi\u00f3n representa 'el doble de la diferencia de un n\u00famero y 3'?",r:"2(x \u2212 3)"}]},
-  {topic:"Lenguaje algebraico - Simplificaci\u00f3n",q:"Simplifica: 5x + 3x \u2212 2x",opts:["6x","8x","4x","6x\u00b2"],correct:0,variantes:[{e:"Simplifica: 4x + 6x \u2212 3x",r:"7x"}]},
-  {topic:"Lenguaje algebraico - Simplificaci\u00f3n",q:"Simplifica: 3(2x + 4) \u2212 2x",opts:["4x + 12","6x + 12","4x + 4","2x + 12"],correct:0,variantes:[{e:"Simplifica: 2(3x + 5) \u2212 4x",r:"2x + 10"}]},
-  {topic:"Lenguaje algebraico - Evaluaci\u00f3n",q:"Eval\u00faa: 2x\u00b2 \u2212 3x + 1 para x = 2",opts:["3","7","11","5"],correct:0,variantes:[{e:"Eval\u00faa: 3x\u00b2 \u2212 2x + 1 para x = 2",r:"9"}]},
-  {topic:"Ecuaciones lineales",q:"Resuelve: 3x + 5 = 20",opts:["x = 5","x = 15","x = [[25|3]]","x = 6"],correct:0,variantes:[{e:"Resuelve: 4x + 3 = 19",r:"x = 4"}]},
-  {topic:"Ecuaciones lineales",q:"Resuelve: 2(x \u2212 3) = 10",opts:["x = 8","x = 5","x = 13","x = 3.5"],correct:0,variantes:[{e:"Resuelve: 3(x \u2212 2) = 12",r:"x = 6"}]},
-  {topic:"Ecuaciones lineales",q:"Resuelve: [[x|4]] \u2212 2 = 3",opts:["x = 20","x = 4","x = 12","x = 5"],correct:0,variantes:[{e:"Resuelve: [[x|3]] \u2212 1 = 4",r:"x = 15"}]},
-  {topic:"Raz\u00f3n y proporci\u00f3n",q:"Si 3 cuadernos cuestan $45, \u00bfcu\u00e1nto cuestan 5 cuadernos al mismo precio?",opts:["$75","$60","$90","$67.50"],correct:0,variantes:[{e:"Si 2 l\u00e1pices cuestan $18, \u00bfcu\u00e1nto cuestan 5 l\u00e1pices?",r:"$45"}]},
-  {topic:"Raz\u00f3n y proporci\u00f3n",q:"Si 4 obreros terminan un muro en 6 d\u00edas, \u00bfen cu\u00e1ntos d\u00edas lo terminar\u00e1n 8 obreros?",opts:["3 d\u00edas","12 d\u00edas","6 d\u00edas","4 d\u00edas"],correct:0,variantes:[{e:"Si 3 pintores pintan una casa en 8 d\u00edas, \u00bfen cu\u00e1ntos d\u00edas la pintar\u00e1n 6 pintores?",r:"4 d\u00edas"}]}
+{topic:"Fracciones - Simplificación",q:"Simplifica la fracción [[18|24]] a su mínima expresión",opts:["[[3|4]]","[[2|3]]","[[4|5]]","[[5|6]]"],correct:0,variantes:[{e:"Simplifica la fracción [[20|30]] a su mínima expresión",r:"[[2|3]]"}]},
+{topic:"Fracciones - Suma",q:"Calcula: [[2|3]] + [[1|6]]",opts:["[[5|6]]","[[3|9]]","[[1|2]]","[[5|9]]"],correct:0,variantes:[{e:"Calcula: [[1|4]] + [[1|2]]",r:"[[3|4]]"}]},
+{topic:"Fracciones - Multiplicación",q:"Calcula: [[3|4]] · [[2|5]]",opts:["[[3|10]]","[[5|9]]","[[2|3]]","[[6|5]]"],correct:0,variantes:[{e:"Calcula: [[2|3]] · [[3|4]]",r:"[[1|2]]"}]},
+{topic:"Números negativos - Suma",q:"Calcula: 8 + (−3) + (−7)",opts:["−2","18","−12","2"],correct:0,variantes:[{e:"Calcula: 9 + (−4) + (−8)",r:"−3"}]},
+{topic:"Números negativos - Multiplicación",q:"Calcula: (−4)(−2)",opts:["8","−8","6","−6"],correct:0,variantes:[{e:"Calcula: (−5)(−3)",r:"15"}]},
+{topic:"Porcentaje",q:"Calcula el 10% de 240",opts:["24","36","15","30"],correct:0,variantes:[{e:"Calcula el 10% de 150",r:"15"}]},
+{topic:"Jerarquía de operaciones",q:"Calcula: 3 + (4)(2) − [[6|3]]",opts:["9","11","5","7"],correct:0,variantes:[{e:"Calcula: 4 + (5)(2) − [[8|4]]",r:"12"}]},
+{topic:"Jerarquía de operaciones",q:"Calcula: (5 − 2)² + (4)(3)",opts:["21","33","15","27"],correct:0,variantes:[{e:"Calcula: (4 − 1)² + (5)(2)",r:"19"}]},
+{topic:"Mínimo común múltiplo",q:"Calcula el mínimo común múltiplo (m.c.m.) de 6 y 8",opts:["24","12","48","2"],correct:0,variantes:[{e:"Calcula el m.c.m. de 4 y 6",r:"12"}]},
+{topic:"Ley de signos",q:"Calcula: (−5) − (−3)",opts:["−2","2","−8","8"],correct:0,variantes:[{e:"Calcula: (−7) − (−2)",r:"−5"}]},
+{topic:"Lenguaje algebraico - Traducción",q:"¿Qué expresión representa 'el doble de un número aumentado en 5'?",opts:["2x + 5","2(x + 5)","x + 5","2x − 5"],correct:0,variantes:[{e:"¿Qué expresión representa 'el triple de un número aumentado en 4'?",r:"3x + 4"}]},
+{topic:"Lenguaje algebraico - Traducción",q:"¿Qué expresión representa 'el triple de la diferencia de un número y 2'?",opts:["3(x − 2)","3x − 2","x − 6","3(2 − x)"],correct:0,variantes:[{e:"¿Qué expresión representa 'el doble de la diferencia de un número y 3'?",r:"2(x − 3)"}]},
+{topic:"Lenguaje algebraico - Simplificación",q:"Simplifica: 5x + 3x − 2x",opts:["6x","8x","4x","6x²"],correct:0,variantes:[{e:"Simplifica: 4x + 6x − 3x",r:"7x"}]},
+{topic:"Lenguaje algebraico - Simplificación",q:"Simplifica: 3(2x + 4) − 2x",opts:["4x + 12","6x + 12","4x + 4","2x + 12"],correct:0,variantes:[{e:"Simplifica: 2(3x + 5) − 4x",r:"2x + 10"}]},
+{topic:"Lenguaje algebraico - Evaluación",q:"Evalúa: 2x² − 3x + 1 para x = 2",opts:["3","7","11","5"],correct:0,variantes:[{e:"Evalúa: 3x² − 2x + 1 para x = 2",r:"9"}]},
+{topic:"Ecuaciones lineales",q:"Resuelve: 3x + 5 = 20",opts:["x = 5","x = 15","x = [[25|3]]","x = 6"],correct:0,variantes:[{e:"Resuelve: 4x + 3 = 19",r:"x = 4"}]},
+{topic:"Ecuaciones lineales",q:"Resuelve: 2(x − 3) = 10",opts:["x = 8","x = 5","x = 13","x = 3.5"],correct:0,variantes:[{e:"Resuelve: 3(x − 2) = 12",r:"x = 6"}]},
+{topic:"Ecuaciones lineales",q:"Resuelve: [[x|4]] − 2 = 3",opts:["x = 20","x = 4","x = 12","x = 5"],correct:0,variantes:[{e:"Resuelve: [[x|3]] − 1 = 4",r:"x = 15"}]},
+{topic:"Razón y proporción",q:"Si 3 cuadernos cuestan $45, ¿cuánto cuestan 5 cuadernos al mismo precio?",opts:["$75","$60","$90","$67.50"],correct:0,variantes:[{e:"Si 2 lápices cuestan $18, ¿cuánto cuestan 5 lápices?",r:"$45"}]},
+{topic:"Razón y proporción",q:"Si 4 obreros terminan un muro en 6 días, ¿en cuántos días lo terminarán 8 obreros?",opts:["3 días","12 días","6 días","4 días"],correct:0,variantes:[{e:"Si 3 pintores pintan una casa en 8 días, ¿en cuántos días la pintarán 6 pintores?",r:"4 días"}]}
 ];
-var TOTAL = PREGUNTAS.length;
-var CONFIG = {pin:"UTP2025",grupo:"1\u00b0 E",carrera:"Procesos Productivos",institucion:"Universidad Tecnol\u00f3gica Santa Catarina",materia:"Fundamentos Matem\u00e1ticos"};
+var TOTAL = 20;
+var CONFIG = {pin:"UTP2025",grupo:"1° E",carrera:"Procesos Productivos",institucion:"Universidad Tecnológica Santa Catarina",materia:"Fundamentos Matemáticos"};
 
 // ================================================================
 // ESTADO
 // ================================================================
-var E = {
-  pantalla:'inicio',nombre:'',sesion:[],idx:0,respuestas:{},inicio:null,
-  tiempo:0,cambios:0,resultado:null,promedioGrupo:null,totalRespuestasGrupo:0,
-  consultaNombre:'',consultado:null,consultaError:false,
-  autenticado:false,registros:[],mostrandoHistorico:false,puntoCorte:null,
-  confirmandoBorrado:false,mensajeBorrado:null,guardando:false,errorGuardado:false,
-  repasoPendientes:[],repasoOrigen:'resultado',_ignorarCambioPantalla:false
-};
+var E = {pantalla:'inicio',nombre:'',sesion:[],idx:0,respuestas:{},inicio:null,tiempo:0,cambios:0,resultado:null,promedioGrupo:null,totalRespuestasGrupo:0,consultaNombre:'',consultado:null,consultaError:false,autenticado:false,registros:[],mostrandoHistorico:false,puntoCorte:null,confirmandoBorrado:false,mensajeBorrado:null,guardando:false,errorGuardado:false,repasoPendientes:[],repasoOrigen:'resultado',_ignorarCambioPantalla:false};
 
 // ================================================================
 // UTILIDADES
 // ================================================================
 function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
-function fmt(s){var m=Math.floor(s/60);var seg=s%60;return (m<10?'0':'')+m+':'+(seg<10?'0':'')+seg;}
-function formatoTiempo(s){var h=Math.floor(s/3600);var m=Math.floor((s%3600)/60);var seg=s%60;return (h<10?'0':'')+h+':'+(m<10?'0':'')+m+':'+(seg<10?'0':'')+seg;}
+function fmt(s){var m=Math.floor(s/60);var seg=s%60;return String(m).padStart(2,'0')+':'+String(seg).padStart(2,'0');}
+function formatoTiempo(s){var h=Math.floor(s/3600);var m=Math.floor((s%3600)/60);var seg=s%60;return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(seg).padStart(2,'0');}
 function esc(t){var d=document.createElement('div');d.textContent=t;return d.innerHTML;}
 function frac(html){return html.replace(/\[\[([^|\]]+)\|([^\]]+)\]\]/g,function(m,n,d){return '<span class="frac"><span class="frac-num">'+n+'</span><span class="frac-den">'+d+'</span></span>';});}
 function txt(t){return frac(esc(t));}
@@ -214,182 +161,128 @@ function local(){if(window.location.hostname.includes('github.io')){return false
 // ================================================================
 // ALMACENAMIENTO
 // ================================================================
-async function guardar(reg){
-  try{var h=JSON.parse(localStorage.getItem('diag_hist')||'[]');h.push(reg);localStorage.setItem('diag_hist',JSON.stringify(h));}catch(e){return false;}
-  if(!local()&&typeof window.storage!=='undefined'){
-    try{var key='resp:'+Date.now()+'_'+Math.random().toString(36).slice(2,9);await window.storage.set(key,JSON.stringify(reg),true);}catch(e){}
-  }
-  return true;
-}
-async function obtener(){
-  try{var localData=JSON.parse(localStorage.getItem('diag_hist')||'[]');if(localData.length>0){return localData;}}catch(e){}
-  if(!local()&&typeof window.storage!=='undefined'){
-    try{var listado=await window.storage.list('resp:',true);var claves=listado&&listado.keys?listado.keys:[];var regs=[];for(var k of claves){try{var r=await window.storage.get(k,true);if(r&&r.value)regs.push({key:k,...JSON.parse(r.value)});}catch(e){}}if(regs.length>0){return regs;}}catch(e){}
-  }
-  return [];
-}
-function limpiarAlmacenamientoLocal(){
-  if(confirm('\u26a0\ufe0f \u00bfEst\u00e1s seguro de que quieres borrar TODOS los datos guardados? Esto no se puede deshacer.')){
-    try{localStorage.removeItem('diag_hist');localStorage.removeItem('puntoCorte');if(!local()&&typeof window.storage!=='undefined'){try{var listado=await window.storage.list('resp:',true);var claves=listado&&listado.keys?listado.keys:[];for(var k of claves){try{await window.storage.delete(k,true);}catch(e){}}try{await window.storage.delete('config:puntoCorte',true);}catch(e){}}catch(e){}}alert('\u2705 Todos los datos han sido eliminados correctamente.');E.registros=[];E.totalRespuestasGrupo=0;E.promedioGrupo=null;E.puntoCorte=null;cargarPanel();}catch(e){alert('\u274c Error al limpiar datos: '+e.message);}
-  }
-}
+async function guardar(reg){try{var h=JSON.parse(localStorage.getItem('diag_hist')||'[]');h.push(reg);localStorage.setItem('diag_hist',JSON.stringify(h));}catch(e){return false;}if(!local()&&typeof window.storage!=='undefined'){try{var key='resp:'+Date.now()+'_'+Math.random().toString(36).slice(2,9);await window.storage.set(key,JSON.stringify(reg),true);}catch(e){}}return true;}
+async function obtener(){try{var localData=JSON.parse(localStorage.getItem('diag_hist')||'[]');if(localData.length>0){return localData;}}catch(e){}if(!local()&&typeof window.storage!=='undefined'){try{var listado=await window.storage.list('resp:',true);var claves=listado&&listado.keys?listado.keys:[];var regs=[];for(var k of claves){try{var r=await window.storage.get(k,true);if(r&&r.value)regs.push({key:k,...JSON.parse(r.value)});}catch(e){}}if(regs.length>0){return regs;}}catch(e){}}return [];}
+function limpiarAlmacenamientoLocal(){if(confirm('⚠️ ¿Estás seguro de que quieres borrar TODOS los datos guardados? Esto no se puede deshacer.')){try{localStorage.removeItem('diag_hist');localStorage.removeItem('puntoCorte');if(!local()&&typeof window.storage!=='undefined'){try{var listado=await window.storage.list('resp:',true);var claves=listado&&listado.keys?listado.keys:[];for(var k of claves){try{await window.storage.delete(k,true);}catch(e){}}try{await window.storage.delete('config:puntoCorte',true);}catch(e){}}catch(e){}}alert('✅ Todos los datos han sido eliminados correctamente.');E.registros=[];E.totalRespuestasGrupo=0;E.promedioGrupo=null;E.puntoCorte=null;cargarPanel();}catch(e){alert('❌ Error al limpiar datos: '+e.message);}}}
 
 // ================================================================
 // LÓGICA
 // ================================================================
 function crearSesion(){return shuffle([...Array(TOTAL).keys()]).map(function(bi){return {baseIndex:bi,optOrder:shuffle([0,1,2,3])};});}
-function calificar(){
-  var c=0,inc=0,no=0;
-  for(var bi=0;bi<TOTAL;bi++){var r=E.respuestas[bi];if(r==='no_identifico')no++;else if(r===PREGUNTAS[bi].correct)c++;else inc++;}
-  var pct=c/TOTAL;var nivel=pct>=0.8?'alto':pct>=0.5?'medio':'bajo';
-  var temas={};PREGUNTAS.forEach(function(q,bi){if(!temas[q.topic])temas[q.topic]={correctas:0,total:0};temas[q.topic].total++;if(E.respuestas[bi]===q.correct)temas[q.topic].correctas++;});
-  var arr=Object.keys(temas).map(function(t){var corr=temas[t].correctas;var tot=temas[t].total;var p=corr/tot;return {topic:t,correctas:corr,total:tot,porcentaje:p,nivel:p>=0.8?'alto':p>=0.5?'medio':'bajo'};}).sort(function(a,b){return a.porcentaje-b.porcentaje;});
-  var detalle=PREGUNTAS.map(function(q,bi){var r=E.respuestas[bi];return {baseIndex:bi,topic:q.topic,question:q.q,correctOption:q.opts[q.correct],resp:r,esCorrecta:r===q.correct};});
-  return {puntaje:c,total:TOTAL,correctas:c,incorrectas:inc,noIdentifico:no,porcentaje:pct,nivel:nivel,detalle:detalle,temas:arr};
-}
-function recomendar(temas){
-  var bajo=temas.filter(function(t){return t.nivel==='bajo';}).map(function(t){return t.topic;});
-  var medio=temas.filter(function(t){return t.nivel==='medio';}).map(function(t){return t.topic;});
-  if(!bajo.length&&!medio.length)return "\u00a1Bien hecho! Dominas la totalidad de los temas evaluados.";
-  var rec="Te recomiendo ";
-  if(bajo.length)rec+="dar prioridad a "+bajo.join(', ');
-  if(bajo.length&&medio.length)rec+=", y repasar ";
-  else if(!bajo.length&&medio.length)rec+="repasar ";
-  if(medio.length)rec+=medio.join(', ');
-  rec+=" antes de iniciar el curso.";
-  return rec;
-}
+function calificar(){var c=0,inc=0,no=0;for(var bi=0;bi<TOTAL;bi++){var r=E.respuestas[bi];if(r==='no_identifico')no++;else if(r===PREGUNTAS[bi].correct)c++;else inc++;}var pct=c/TOTAL;var nivel=pct>=0.8?'alto':pct>=0.5?'medio':'bajo';var temas={};PREGUNTAS.forEach(function(q,bi){if(!temas[q.topic])temas[q.topic]={correctas:0,total:0};temas[q.topic].total++;if(E.respuestas[bi]===q.correct)temas[q.topic].correctas++;});var arr=Object.keys(temas).map(function(t){var corr=temas[t].correctas;var tot=temas[t].total;var p=corr/tot;return {topic:t,correctas:corr,total:tot,porcentaje:p,nivel:p>=0.8?'alto':p>=0.5?'medio':'bajo'};}).sort(function(a,b){return a.porcentaje-b.porcentaje;});var detalle=PREGUNTAS.map(function(q,bi){var r=E.respuestas[bi];return {baseIndex:bi,topic:q.topic,question:q.q,correctOption:q.opts[q.correct],resp:r,esCorrecta:r===q.correct};});return {puntaje:c,total:TOTAL,correctas:c,incorrectas:inc,noIdentifico:no,porcentaje:pct,nivel:nivel,detalle:detalle,temas:arr};}
+function recomendar(temas){var bajo=temas.filter(function(t){return t.nivel==='bajo';}).map(function(t){return t.topic;});var medio=temas.filter(function(t){return t.nivel==='medio';}).map(function(t){return t.topic;});if(!bajo.length&&!medio.length){return "¡Bien hecho! Dominas la totalidad de los temas evaluados.";}var rec="Te recomiendo ";if(bajo.length){rec+="dar prioridad a "+bajo.join(', ');}if(bajo.length&&medio.length){rec+=", y repasar ";}else if(!bajo.length&&medio.length){rec+="repasar ";}if(medio.length){rec+=medio.join(', ');}rec+=" antes de iniciar el curso.";return rec;}
 function irA(p){E.pantalla=p;render();window.scrollTo(0,0);}
-function comenzar(){
-  var nom=document.getElementById('campo-nombre');if(!nom||!nom.value.trim()){alert('Escribe tu nombre completo');return;}
-  E.nombre=nom.value.trim();E.sesion=crearSesion();E.idx=0;E.respuestas={};E.cambios=0;E.inicio=Date.now();E._ignorarCambioPantalla=false;
-  if(document.documentElement.requestFullscreen)document.documentElement.requestFullscreen().catch(function(){});
-  irA('cuestionario');
-}
+function comenzar(){var nom=document.getElementById('campo-nombre');if(!nom||!nom.value.trim()){alert('Escribe tu nombre completo');return;}E.nombre=nom.value.trim();E.sesion=crearSesion();E.idx=0;E.respuestas={};E.cambios=0;E.inicio=Date.now();E._ignorarCambioPantalla=false;if(document.documentElement.requestFullscreen){document.documentElement.requestFullscreen().catch(function(){});}irA('cuestionario');}
 function seleccionar(bi,val){E.respuestas[bi]=val;render();}
-function mostrarAvisoSeleccion(){
-  E._ignorarCambioPantalla=true;
-  var avisoExistente=document.querySelector('.aviso-seleccion');if(avisoExistente)avisoExistente.remove();
-  var aviso=document.createElement('div');aviso.className='aviso-seleccion';
-  aviso.innerHTML='<span>\u26a0\ufe0f Selecciona una opci\u00f3n antes de continuar.</span><button class="btn btn-primario" style="padding:6px 16px;font-size:0.8rem;" onclick="this.closest(\'.aviso-seleccion\').remove(); E._ignorarCambioPantalla=false;">Entendido</button>';
-  document.body.appendChild(aviso);
-  setTimeout(function(){if(aviso.parentNode)aviso.remove();E._ignorarCambioPantalla=false;},5000);
-}
-function siguiente(){
-  var actual=E.sesion[E.idx];if(E.respuestas[actual.baseIndex]===undefined){mostrarAvisoSeleccion();return;}
-  if(E.idx<E.sesion.length-1){E.idx++;render();window.scrollTo(0,0);}else{finalizar();}
-}
+function mostrarAvisoSeleccion(){E._ignorarCambioPantalla=true;var avisoExistente=document.querySelector('.aviso-seleccion');if(avisoExistente){avisoExistente.remove();}var aviso=document.createElement('div');aviso.className='aviso-seleccion';aviso.innerHTML='<span>⚠️ Selecciona una opción antes de continuar.</span><button class="btn btn-primario" style="padding:6px 16px;font-size:0.8rem;" onclick="this.closest(\'.aviso-seleccion\').remove(); E._ignorarCambioPantalla=false;">Entendido</button>';document.body.appendChild(aviso);setTimeout(function(){if(aviso.parentNode){aviso.remove();}E._ignorarCambioPantalla=false;},5000);}
+function siguiente(){var actual=E.sesion[E.idx];if(E.respuestas[actual.baseIndex]===undefined){mostrarAvisoSeleccion();return;}if(E.idx<E.sesion.length-1){E.idx++;render();window.scrollTo(0,0);}else{finalizar();}}
 function anterior(){if(E.idx>0){E.idx--;render();window.scrollTo(0,0);}}
-async function finalizar(){
-  E.tiempo=Math.round((Date.now()-E.inicio)/1000);E.resultado=calificar();E.guardando=true;irA('guardando');
-  var reg={nombre:E.nombre,carrera:CONFIG.carrera,grupo:CONFIG.grupo,puntaje:E.resultado.puntaje,total:E.resultado.total,incorrectas:E.resultado.incorrectas,noIdentifico:E.resultado.noIdentifico,tiempoSegundos:E.tiempo,horaInicio:new Date().toISOString(),fecha:new Date().toISOString(),respuestas:E.respuestas,cambiosPantalla:E.cambios};
-  try{var guardado=await guardar(reg);E.guardando=false;if(guardado){await calcularPromedio();irA('resultado');}else{E.errorGuardado=true;irA('error');}}catch(e){E.guardando=false;E.errorGuardado=true;irA('error');}
-}
-async function calcularPromedio(){
-  try{var todas=await obtener();var filtrados=todas;if(E.puntoCorte){var corte=new Date(E.puntoCorte);filtrados=todas.filter(function(r){if(!r.fecha)return false;return new Date(r.fecha)>corte;});}
-  var vistos=new Set();var unicos=filtrados.filter(function(r){if(!r.nombre||r.nombre.trim()==='')return false;var fechaStr=r.fecha?r.fecha.slice(0,10):'';var clave=(r.nombre||'').trim().toLowerCase()+'_'+fechaStr;if(vistos.has(clave))return false;vistos.add(clave);return true;});
-  var validos=unicos.filter(function(r){return typeof r.puntaje==='number';});
-  if(validos.length>0){var suma=validos.reduce(function(a,r){return a+(r.puntaje||0);},0);E.promedioGrupo=suma/validos.length;E.totalRespuestasGrupo=validos.length;}else{E.promedioGrupo=null;E.totalRespuestasGrupo=0;}}catch(e){E.promedioGrupo=null;E.totalRespuestasGrupo=0;}
-}
-async function buscarResultado(){var val=document.getElementById('campo-consulta');if(!val||!val.value.trim())return;E.consultaNombre=val.value.trim();E.consultaError=false;E.consultado=null;irA('buscando');try{var todas=await obtener();var match=todas.filter(function(r){return (r.nombre||'').trim().toLowerCase()===E.consultaNombre.toLowerCase();});if(!match.length){E.consultaError=true;}else{match.sort(function(a,b){return new Date(b.fecha)-new Date(a.fecha);});E.consultado=match[0];}}catch(e){E.consultaError=true;}irA('consultado');}
-function intentarAcceso(){var pin=document.getElementById('campo-pin');if(!pin)return;if(pin.value.trim().toUpperCase()===CONFIG.pin.toUpperCase()){E.autenticado=true;cargarPanel();}else{alert('PIN incorrecto');}}
-async function cargarPanel(){irA('guardando');try{var puntoCorte=null;try{var corte=await window.storage.get('config:puntoCorte',true);if(corte&&corte.value)puntoCorte=corte.value;}catch(e){}if(!puntoCorte){puntoCorte=localStorage.getItem('puntoCorte');}E.puntoCorte=puntoCorte;E.registros=await obtener();aplicarCorte();await calcularPromedio();irA('panel');}catch(e){E.registros=[];E.totalRespuestasGrupo=0;E.promedioGrupo=null;irA('panel');}}
-function aplicarCorte(){var puntoCorte=E.puntoCorte;if(!puntoCorte){if(typeof window.storage!=='undefined'&&window.storage.get){try{var corte=window.storage.get('config:puntoCorte',true);if(corte&&corte.value){puntoCorte=corte.value;E.puntoCorte=puntoCorte;}}catch(e){}}if(!puntoCorte){try{var localCorte=localStorage.getItem('puntoCorte');if(localCorte){puntoCorte=localCorte;E.puntoCorte=puntoCorte;}}catch(e){}}}
-  if(puntoCorte&&!E.mostrandoHistorico){E.registros=E.registros.filter(function(r){return new Date(r.fecha)>new Date(puntoCorte);});}
-}
+async function finalizar(){E.tiempo=Math.round((Date.now()-E.inicio)/1000);E.resultado=calificar();E.guardando=true;irA('guardando');var reg={nombre:E.nombre,carrera:CONFIG.carrera,grupo:CONFIG.grupo,puntaje:E.resultado.puntaje,total:E.resultado.total,incorrectas:E.resultado.incorrectas,noIdentifico:E.resultado.noIdentifico,tiempoSegundos:E.tiempo,horaInicio:new Date().toISOString(),fecha:new Date().toISOString(),respuestas:E.respuestas,cambiosPantalla:E.cambios};try{var guardado=await guardar(reg);E.guardando=false;if(guardado){await calcularPromedio();irA('resultado');}else{E.errorGuardado=true;irA('error');}}catch(e){E.guardando=false;E.errorGuardado=true;irA('error');}}
+async function calcularPromedio(){try{var todas=await obtener();var filtrados=todas;if(E.puntoCorte){var corte=new Date(E.puntoCorte);filtrados=todas.filter(function(r){if(!r.fecha){return false;}return new Date(r.fecha)>corte;});}var vistos=new Set();var unicos=filtrados.filter(function(r){if(!r.nombre||r.nombre.trim()===''){return false;}var fechaStr=r.fecha?r.fecha.slice(0,10):'';var clave=(r.nombre||'').trim().toLowerCase()+'_'+fechaStr;if(vistos.has(clave)){return false;}vistos.add(clave);return true;});var validos=unicos.filter(function(r){return typeof r.puntaje==='number';});if(validos.length>0){var suma=validos.reduce(function(a,r){return a+(r.puntaje||0);},0);E.promedioGrupo=suma/validos.length;E.totalRespuestasGrupo=validos.length;}else{E.promedioGrupo=null;E.totalRespuestasGrupo=0;}}catch(e){E.promedioGrupo=null;E.totalRespuestasGrupo=0;}}
+async function buscarResultado(){var val=document.getElementById('campo-consulta');if(!val||!val.value.trim()){return;}E.consultaNombre=val.value.trim();E.consultaError=false;E.consultado=null;irA('buscando');try{var todas=await obtener();var match=todas.filter(function(r){return (r.nombre||'').trim().toLowerCase()===E.consultaNombre.toLowerCase();});if(!match.length){E.consultaError=true;}else{match.sort(function(a,b){return new Date(b.fecha)-new Date(a.fecha);});E.consultado=match[0];}}catch(e){E.consultaError=true;}irA('consultado');}
+function intentarAcceso(){var pin=document.getElementById('campo-pin');if(!pin){return;}if(pin.value.trim().toUpperCase()===CONFIG.pin.toUpperCase()){E.autenticado=true;cargarPanel();}else{alert('PIN incorrecto');}}
+async function cargarPanel(){irA('guardando');try{var puntoCorte=null;try{var corte=await window.storage.get('config:puntoCorte',true);if(corte&&corte.value){puntoCorte=corte.value;}}catch(e){}if(!puntoCorte){puntoCorte=localStorage.getItem('puntoCorte');}E.puntoCorte=puntoCorte;E.registros=await obtener();aplicarCorte();await calcularPromedio();irA('panel');}catch(e){E.registros=[];E.totalRespuestasGrupo=0;E.promedioGrupo=null;irA('panel');}}
+function aplicarCorte(){var puntoCorte=E.puntoCorte;if(!puntoCorte){if(typeof window.storage!=='undefined'&&window.storage.get){try{var corte=window.storage.get('config:puntoCorte',true);if(corte&&corte.value){puntoCorte=corte.value;E.puntoCorte=puntoCorte;}}catch(e){}}if(!puntoCorte){try{var localCorte=localStorage.getItem('puntoCorte');if(localCorte){puntoCorte=localCorte;E.puntoCorte=puntoCorte;}}catch(e){}}}if(puntoCorte&&!E.mostrandoHistorico){E.registros=E.registros.filter(function(r){return new Date(r.fecha)>new Date(puntoCorte);});}}
 function alternarHistorico(){E.mostrandoHistorico=!E.mostrandoHistorico;aplicarCorte();render();}
-function exportarCSV(){
-  var registros=E.registros||[];var headers=['Nombre','Carrera','Grupo','Puntaje','Total','Hora inicio','Tiempo','Cambios de pantalla','Fecha'];
-  var filas=registros.map(function(r){var fechaLegible='',horaInicioLegible='';
-    if(r.fecha){var fecha=new Date(r.fecha);fechaLegible=fecha.toLocaleDateString('es-MX',{day:'2-digit',month:'2-digit',year:'numeric'});}
-    if(r.horaInicio){var hora=new Date(r.horaInicio);horaInicioLegible=hora.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit',second:'2-digit'});}
-    return [r.nombre||'',r.carrera||CONFIG.carrera,r.grupo||CONFIG.grupo,r.puntaje||0,r.total||TOTAL,horaInicioLegible,formatoTiempo(r.tiempoSegundos||0),r.cambiosPantalla||0,fechaLegible];
-  });
-  var cabecera=headers.join(',');var cuerpo=filas.map(function(f){return f.join(',');}).join('\n');var csv=cabecera+'\n'+cuerpo;var bom='\uFEFF';var csvConBOM=bom+csv;
-  var blob=new Blob([csvConBOM],{type:'text/csv;charset=utf-8;'});var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download='diagnostico_resultados.csv';document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
-}
+function exportarCSV(){var registros=E.registros||[];var headers=['Nombre','Carrera','Grupo','Puntaje','Total','Hora inicio','Tiempo','Cambios de pantalla','Fecha'];var filas=registros.map(function(r){var fechaLegible='',horaInicioLegible='';if(r.fecha){var fecha=new Date(r.fecha);fechaLegible=fecha.toLocaleDateString('es-MX',{day:'2-digit',month:'2-digit',year:'numeric'});}if(r.horaInicio){var hora=new Date(r.horaInicio);horaInicioLegible=hora.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit',second:'2-digit'});}return [r.nombre||'',r.carrera||CONFIG.carrera,r.grupo||CONFIG.grupo,r.puntaje||0,r.total||TOTAL,horaInicioLegible,formatoTiempo(r.tiempoSegundos||0),r.cambiosPantalla||0,fechaLegible];});var cabecera=headers.join(',');var cuerpo=filas.map(function(f){return f.join(',');}).join('\n');var csv=cabecera+'\n'+cuerpo;var bom='\uFEFF';var csvConBOM=bom+csv;var blob=new Blob([csvConBOM],{type:'text/csv;charset=utf-8;'});var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download='diagnostico_resultados.csv';document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);}
 function pedirBorrado(){E.confirmandoBorrado=true;render();}
 function cancelarBorrado(){E.confirmandoBorrado=false;render();}
-async function confirmarBorrado(){irA('guardando');try{var ahoraISO=new Date().toISOString();if(typeof window.storage!=='undefined'&&window.storage.set){await window.storage.set('config:puntoCorte',ahoraISO,true);}localStorage.setItem('puntoCorte',ahoraISO);E.puntoCorte=ahoraISO;E.mostrandoHistorico=false;E.registros=[];E.totalRespuestasGrupo=0;E.promedioGrupo=null;var todas=await obtener();E.registros=todas;aplicarCorte();await calcularPromedio();E.confirmandoBorrado=false;E.mensajeBorrado={tipo:'ok',texto:'\u2705 Las respuestas anteriores dejaron de contarse. Cualquier respuesta nueva volver\u00e1 a contar con normalidad.'};irA('panel');}catch(error){E.confirmandoBorrado=false;E.mensajeBorrado={tipo:'error',texto:'\u274c No se pudo aplicar el punto de corte. Intenta usar "\ud83e\uddf9 Limpiar datos de prueba" en su lugar.'};irA('panel');}}
-function prepararRepaso(origen){var pendientes=[];for(var bi=0;bi<TOTAL;bi++){var r=E.respuestas[bi];if(r!==PREGUNTAS[bi].correct)pendientes.push(bi);}E.repasoPendientes=pendientes;E.repasoOrigen=origen;irA('repaso');}
+async function confirmarBorrado(){irA('guardando');try{var ahoraISO=new Date().toISOString();if(typeof window.storage!=='undefined'&&window.storage.set){await window.storage.set('config:puntoCorte',ahoraISO,true);}localStorage.setItem('puntoCorte',ahoraISO);E.puntoCorte=ahoraISO;E.mostrandoHistorico=false;E.registros=[];E.totalRespuestasGrupo=0;E.promedioGrupo=null;var todas=await obtener();E.registros=todas;aplicarCorte();await calcularPromedio();E.confirmandoBorrado=false;E.mensajeBorrado={tipo:'ok',texto:'✅ Las respuestas anteriores dejaron de contarse. Cualquier respuesta nueva volverá a contar con normalidad.'};irA('panel');}catch(error){E.confirmandoBorrado=false;E.mensajeBorrado={tipo:'error',texto:'❌ No se pudo aplicar el punto de corte. Intenta usar "🧹 Limpiar datos de prueba" en su lugar.'};irA('panel');}}
+function prepararRepaso(origen){var pendientes=[];for(var bi=0;bi<TOTAL;bi++){var r=E.respuestas[bi];if(r!==PREGUNTAS[bi].correct){pendientes.push(bi);}}E.repasoPendientes=pendientes;E.repasoOrigen=origen;irA('repaso');}
 function volverInicio(){E={pantalla:'inicio',nombre:'',sesion:[],idx:0,respuestas:{},inicio:null,tiempo:0,cambios:0,resultado:null,promedioGrupo:null,totalRespuestasGrupo:0,consultaNombre:'',consultado:null,consultaError:false,autenticado:false,registros:[],mostrandoHistorico:false,puntoCorte:null,confirmandoBorrado:false,mensajeBorrado:null,guardando:false,errorGuardado:false,repasoPendientes:[],repasoOrigen:'resultado',_ignorarCambioPantalla:false};render();}
 
 // ================================================================
-// RENDER
+// RENDER (FUNCIÓN PRINCIPAL)
 // ================================================================
 function render(){
-  var app=document.getElementById('app');var html='';
+  var app=document.getElementById('app');
+  var html='';
   switch(E.pantalla){
-    case'inicio':html=vistaInicio();break;case'cuestionario':html=vistaCuestionario();break;case'guardando':html='<div class="tarjeta centrado"><div class="spinner"></div><p>Procesando...</p></div>';break;case'error':html='<div class="tarjeta"><div class="logo">UTSC</div><div class="mensaje-error">No fue posible guardar tus respuestas. Intenta de nuevo.</div><button class="btn btn-primario btn-bloque" onclick="finalizar()">Reintentar</button></div>';break;case'resultado':html=vistaResultado();break;case'repaso':html=vistaRepaso();break;case'consultar':html='<div class="tarjeta"><div class="logo">UTSC</div><h1>Fundamentos Matem\u00e1ticos</h1><h2 class="subtitulo">Consultar resultado</h2><p class="institucion">Universidad Tecnol\u00f3gica Santa Catarina</p><label>Nombre completo</label><input type="text" id="campo-consulta" placeholder="Escribe tu nombre exacto"><button class="btn btn-primario btn-bloque" onclick="buscarResultado()">Buscar mi resultado</button><div class="centrado" style="margin-top:16px;"><span class="enlace-tenue" onclick="irA(\'inicio\')">Volver al inicio</span></div></div>';break;case'buscando':html='<div class="tarjeta centrado"><div class="spinner"></div><p>Buscando...</p></div>';break;case'consultado':html=vistaConsultado();break;case'login':html='<div class="tarjeta"><div class="logo">UTSC</div><h1>Fundamentos Matem\u00e1ticos</h1><h2 class="subtitulo">\ud83d\udd12 Panel docente</h2><p class="institucion">Universidad Tecnol\u00f3gica Santa Catarina</p><label>PIN de acceso</label><input type="password" id="campo-pin" placeholder="Ingresa el PIN" autocomplete="off"><button class="btn btn-primario btn-bloque" id="btn-entrar-docente" onclick="intentarAcceso()">Entrar</button><div class="centrado" style="margin-top:16px;"><span class="enlace-tenue" onclick="irA(\'inicio\')">Volver al inicio</span></div></div>';break;case'panel':html=vistaPanel();break;default:html=vistaInicio();
+    case'inicio': html = vistaInicio(); break;
+    case'cuestionario': html = vistaCuestionario(); break;
+    case'guardando': html = '<div class="tarjeta centrado"><div class="spinner"></div><p>Procesando...</p></div>'; break;
+    case'error': html = '<div class="tarjeta"><div class="logo">UTSC</div><div class="mensaje-error">No fue posible guardar tus respuestas. Intenta de nuevo.</div><button class="btn btn-primario btn-bloque" onclick="finalizar()">Reintentar</button></div>'; break;
+    case'resultado': html = vistaResultado(); break;
+    case'repaso': html = vistaRepaso(); break;
+    case'consultar': html = '<div class="tarjeta"><div class="logo">UTSC</div><h1>Fundamentos Matemáticos</h1><h2 class="subtitulo">Consultar resultado</h2><p class="institucion">Universidad Tecnológica Santa Catarina</p><label>Nombre completo</label><input type="text" id="campo-consulta" placeholder="Escribe tu nombre exacto"><button class="btn btn-primario btn-bloque" onclick="buscarResultado()">Buscar mi resultado</button><div class="centrado" style="margin-top:16px;"><span class="enlace-tenue" onclick="irA(\'inicio\')">Volver al inicio</span></div></div>'; break;
+    case'buscando': html = '<div class="tarjeta centrado"><div class="spinner"></div><p>Buscando...</p></div>'; break;
+    case'consultado': html = vistaConsultado(); break;
+    case'login': html = '<div class="tarjeta"><div class="logo">UTSC</div><h1>Fundamentos Matemáticos</h1><h2 class="subtitulo">🔒 Panel docente</h2><p class="institucion">Universidad Tecnológica Santa Catarina</p><label>PIN de acceso</label><input type="password" id="campo-pin" placeholder="Ingresa el PIN" autocomplete="off"><button class="btn btn-primario btn-bloque" id="btn-entrar-docente" onclick="intentarAcceso()">Entrar</button><div class="centrado" style="margin-top:16px;"><span class="enlace-tenue" onclick="irA(\'inicio\')">Volver al inicio</span></div></div>'; break;
+    case'panel': html = vistaPanel(); break;
+    default: html = vistaInicio();
   }
   app.innerHTML=html;
   var btnEntrar=document.getElementById('btn-entrar-docente');if(btnEntrar){btnEntrar.addEventListener('click',intentarAcceso);}
   var campoPin=document.getElementById('campo-pin');if(campoPin){campoPin.removeEventListener('keydown',handlePinEnter);campoPin.addEventListener('keydown',handlePinEnter);}
 }
 function handlePinEnter(e){if(e.key==='Enter'){e.preventDefault();intentarAcceso();}}
-function mostrarAvisoCambioPantalla(){var overlay=document.createElement('div');overlay.className='aviso-cambio-overlay';overlay.innerHTML='<div class="aviso-cambio-caja"><div class="aviso-cambio-titulo">AVISO</div><div class="aviso-cambio-mensaje">Se detect\u00f3 que saliste de esta pantalla '+E.cambios+' '+(E.cambios===1?'vez':'veces')+' durante el diagn\u00f3stico.</div><button class="btn btn-primario" onclick="this.closest(\'.aviso-cambio-overlay\').remove()">Entendido</button></div>';document.body.appendChild(overlay);}
+function mostrarAvisoCambioPantalla(){var overlay=document.createElement('div');overlay.className='aviso-cambio-overlay';overlay.innerHTML='<div class="aviso-cambio-caja"><div class="aviso-cambio-titulo">AVISO</div><div class="aviso-cambio-mensaje">Se detectó que saliste de esta pantalla '+E.cambios+' '+(E.cambios===1?'vez':'veces')+' durante el diagnóstico.</div><button class="btn btn-primario" onclick="this.closest(\'.aviso-cambio-overlay\').remove()">Entendido</button></div>';document.body.appendChild(overlay);}
 
 // ================================================================
 // VISTAS DETALLADAS
 // ================================================================
 function vistaInicio(){
-  return '<div class="tarjeta"><div class="logo">UTSC</div><h1>Fundamentos Matem\u00e1ticos</h1><h2 class="subtitulo">Diagn\u00f3stico de conocimientos previos</h2><p class="institucion">Universidad Tecnol\u00f3gica Santa Catarina</p>'+(local()?'<div class="aviso-local">\u26a0\ufe0f Modo local: los resultados NO se guardar\u00e1n en el panel docente.</div>':'')+'<ol class="instrucciones"><li>El diagn\u00f3stico consta de <b>20 preguntas</b> de opci\u00f3n m\u00faltiple.</li><li>Tienes la opci\u00f3n <b>"No identifico el tema"</b> si no reconoces el contenido.</li><li>El tiempo comienza al presionar <b>"Comenzar"</b>.</li><li>Responde con honestidad \u2014 este no es un examen con calificaci\u00f3n.</li><li>Al finalizar recibir\u00e1s recomendaciones personalizadas.</li></ol><label>Nombre completo</label><input type="text" id="campo-nombre" placeholder="Escribe tu nombre completo"><label>Carrera</label><input type="text" value="Procesos Productivos" readonly><label>Cuatrimestre / Grupo</label><input type="text" value="1\u00b0 E" readonly><button class="btn btn-primario btn-bloque" onclick="comenzar()">Comenzar diagn\u00f3stico</button><div class="centrado" style="margin-top:16px;"><span class="enlace-tenue" onclick="irA(\'consultar\')">\u00bfYa respondiste? Consulta tu resultado</span></div><div class="centrado" style="margin-top:10px;"><span class="enlace-tenue" onclick="irA(\'login\')">Acceso al panel docente</span></div></div>';
+  return '<div class="tarjeta"><div class="logo">UTSC</div><h1>Fundamentos Matemáticos</h1><h2 class="subtitulo">Diagnóstico de conocimientos previos</h2><p class="institucion">Universidad Tecnológica Santa Catarina</p>'+(local()?'<div class="aviso-local">⚠️ Modo local: los resultados NO se guardarán en el panel docente.</div>':'')+'<ol class="instrucciones"><li>El diagnóstico consta de <b>20 preguntas</b> de opción múltiple.</li><li>Tienes la opción <b>"No identifico el tema"</b> si no reconoces el contenido.</li><li>El tiempo comienza al presionar <b>"Comenzar"</b>.</li><li>Responde con honestidad — este no es un examen con calificación.</li><li>Al finalizar recibirás recomendaciones personalizadas.</li></ol><label>Nombre completo</label><input type="text" id="campo-nombre" placeholder="Escribe tu nombre completo"><label>Carrera</label><input type="text" value="Procesos Productivos" readonly><label>Cuatrimestre / Grupo</label><input type="text" value="1° E" readonly><button class="btn btn-primario btn-bloque" onclick="comenzar()">Comenzar diagnóstico</button><div class="centrado" style="margin-top:16px;"><span class="enlace-tenue" onclick="irA(\'consultar\')">¿Ya respondiste? Consulta tu resultado</span></div><div class="centrado" style="margin-top:10px;"><span class="enlace-tenue" onclick="irA(\'login\')">Acceso al panel docente</span></div></div>';
 }
-
 function vistaCuestionario(){
   var sp=E.sesion[E.idx];var q=PREGUNTAS[sp.baseIndex];var sel=E.respuestas[sp.baseIndex];var pct=Math.round((E.idx/E.sesion.length)*100);
   var optsHtml=sp.optOrder.map(function(orig,pos){return '<button class="opcion '+(sel===orig?'seleccionada':'')+'" onclick="seleccionar('+sp.baseIndex+','+orig+')">'+String.fromCharCode(65+pos)+') '+txt(q.opts[orig])+'</button>';}).join('');
   return '<div class="tarjeta"><div class="barra-progreso"><div class="barra-progreso-fill" style="width:'+pct+'%;"></div></div><div class="progreso-texto">Pregunta '+(E.idx+1)+' de '+E.sesion.length+'</div><div class="etiqueta-tema">'+esc(q.topic)+'</div><div class="pregunta-texto">'+txt(q.q)+'</div>'+optsHtml+'<button class="opcion opcion-noidentifico '+(sel==='no_identifico'?'seleccionada':'')+'" onclick="seleccionar('+sp.baseIndex+',\'no_identifico\')">E) No identifico el tema</button><div class="fila-botones"><button class="btn btn-secundario" onclick="anterior()" '+(E.idx===0?'disabled':'')+'>Anterior</button><button class="btn btn-primario" onclick="siguiente()">'+(E.idx===E.sesion.length-1?'Enviar respuestas':'Siguiente')+'</button></div></div>';
 }
-
 function vistaResultado(){
-  var r=E.resultado;var nivel={alto:'Nivel alto',medio:'Nivel medio',bajo:'Nivel bajo \u2013 requiere refuerzo'}[r.nivel];var clase={alto:'nivel-alto',medio:'nivel-medio',bajo:'nivel-bajo'}[r.nivel];
-  var comp='';if(E.promedioGrupo!==null&&E.totalRespuestasGrupo>0){var tu=Math.round((r.puntaje/r.total)*100);var grp=Math.round((E.promedioGrupo/r.total)*100);comp='<div class="comparacion-barra-wrap"><div class="comparacion-fila"><div class="nombre">T\u00fa</div><div class="comparacion-track"><div class="comparacion-fill tu" style="width:'+tu+'%;"></div></div><div class="comparacion-valor">'+tu+'%</div></div><div class="comparacion-fila"><div class="nombre">Grupo</div><div class="comparacion-track"><div class="comparacion-fill grupo" style="width:'+grp+'%;"></div></div><div class="comparacion-valor">'+grp+'%</div></div></div><p style="text-align:center;color:var(--texto-tenue);font-size:0.75rem;margin-top:4px;">Comparaci\u00f3n contra '+E.totalRespuestasGrupo+' participante'+(E.totalRespuestasGrupo!==1?'s':'')+'.</p>';}else{comp='<p style="text-align:center;color:var(--texto-tenue);font-size:0.78rem;margin-top:12px;">No hay datos del grupo para comparar.</p>';}
-  var revHtml=r.detalle.map(function(d,i){var cl,pill,det;if(d.resp==='no_identifico'){cl='revision-noidentifico';pill='pill-noidentifico';det='Marcaste "No identifico". Correcta: <b class="ok">'+txt(d.correctOption)+'</b>';}else if(d.esCorrecta){cl='revision-correcta';pill='pill-correcta';det='Respuesta: <b class="ok">'+txt(PREGUNTAS[d.baseIndex].opts[d.resp])+'</b>';}else{cl='revision-incorrecta';pill='pill-incorrecta';det='Respuesta: <b class="mal">'+txt(PREGUNTAS[d.baseIndex].opts[d.resp])+'</b> \u00b7 Correcta: <b class="ok">'+txt(d.correctOption)+'</b>';}var estadoTxt=d.resp==='no_identifico'?'No identifico':d.esCorrecta?'Correcta':'Incorrecta';return '<div class="revision-item '+cl+'"><div class="revision-pregunta">'+(i+1)+'. '+txt(d.question)+'<span class="pill-estado '+pill+'">'+estadoTxt+'</span></div><div class="revision-detalle">'+det+'</div></div>';}).join('');
+  var r=E.resultado;var nivel={alto:'Nivel alto',medio:'Nivel medio',bajo:'Nivel bajo – requiere refuerzo'}[r.nivel];var clase={alto:'nivel-alto',medio:'nivel-medio',bajo:'nivel-bajo'}[r.nivel];
+  var comp='';if(E.promedioGrupo!==null&&E.totalRespuestasGrupo>0){var tu=Math.round((r.puntaje/r.total)*100);var grp=Math.round((E.promedioGrupo/r.total)*100);comp='<div class="comparacion-barra-wrap"><div class="comparacion-fila"><div class="nombre">Tú</div><div class="comparacion-track"><div class="comparacion-fill tu" style="width:'+tu+'%;"></div></div><div class="comparacion-valor">'+tu+'%</div></div><div class="comparacion-fila"><div class="nombre">Grupo</div><div class="comparacion-track"><div class="comparacion-fill grupo" style="width:'+grp+'%;"></div></div><div class="comparacion-valor">'+grp+'%</div></div></div><p style="text-align:center;color:var(--texto-tenue);font-size:0.75rem;margin-top:4px;">Comparación contra '+E.totalRespuestasGrupo+' participante'+(E.totalRespuestasGrupo!==1?'s':'')+'.</p>';}else{comp='<p style="text-align:center;color:var(--texto-tenue);font-size:0.78rem;margin-top:12px;">No hay datos del grupo para comparar.</p>';}
+  var revHtml=r.detalle.map(function(d,i){var cl,pill,det;if(d.resp==='no_identifico'){cl='revision-noidentifico';pill='pill-noidentifico';det='Marcaste "No identifico". Correcta: <b class="ok">'+txt(d.correctOption)+'</b>';}else if(d.esCorrecta){cl='revision-correcta';pill='pill-correcta';det='Respuesta: <b class="ok">'+txt(PREGUNTAS[d.baseIndex].opts[d.resp])+'</b>';}else{cl='revision-incorrecta';pill='pill-incorrecta';det='Respuesta: <b class="mal">'+txt(PREGUNTAS[d.baseIndex].opts[d.resp])+'</b> · Correcta: <b class="ok">'+txt(d.correctOption)+'</b>';}var estadoTxt=d.resp==='no_identifico'?'No identifico':d.esCorrecta?'Correcta':'Incorrecta';return '<div class="revision-item '+cl+'"><div class="revision-pregunta">'+(i+1)+'. '+txt(d.question)+'<span class="pill-estado '+pill+'">'+estadoTxt+'</span></div><div class="revision-detalle">'+det+'</div></div>';}).join('');
   var temasHtml=r.temas.map(function(t){return '<div class="tema-item tema-'+t.nivel+'"><div><div class="tema-nombre">'+esc(t.topic)+'</div><div class="tema-puntaje">'+t.correctas+' de '+t.total+' correctas</div></div><span class="tema-badge nivel-'+t.nivel+'">'+(t.nivel==='alto'?'Dominado':t.nivel==='medio'?'Repasar':'Requiere refuerzo')+'</span></div>';}).join('');
-  return '<div class="tarjeta"><div class="logo">UTSC</div><h1>Fundamentos Matem\u00e1ticos</h1><h2 class="subtitulo">Diagn\u00f3stico de conocimientos previos</h2><p class="institucion">Universidad Tecnol\u00f3gica Santa Catarina</p><div class="centrado" style="color:var(--texto-tenue);font-size:0.85rem;">'+esc(E.nombre)+' \u00b7 Procesos Productivos \u00b7 1\u00b0 E</div><div class="resumen-puntaje"><div class="numero">'+r.puntaje+'<span class="de-total"> / '+r.total+'</span></div><div class="nivel-badge '+clase+'">'+nivel+'</div></div>'+(E.cambios>0?'<div class="aviso-cambios-resultado">\u26a0\ufe0f Se registr\u00f3 que saliste de esta pantalla '+E.cambios+' '+(E.cambios===1?'vez':'veces')+' durante el diagn\u00f3stico.</div>':'')+'<div class="stats-grid"><div class="stat-box"><div class="valor">'+r.correctas+'</div><div class="etiqueta">Correctas</div></div><div class="stat-box"><div class="valor">'+r.incorrectas+'</div><div class="etiqueta">Incorrectas</div></div><div class="stat-box"><div class="valor">'+r.noIdentifico+'</div><div class="etiqueta">Sin identificar</div></div><div class="stat-box"><div class="valor">'+fmt(E.tiempo)+'</div><div class="etiqueta">Tiempo</div></div></div>'+comp+'</div><div class="tarjeta"><h2 class="subtitulo" style="text-align:left;">Temas a reforzar</h2><p class="recomendacion-texto">'+esc(recomendar(r.temas))+'</p>'+temasHtml+'</div><div class="tarjeta"><h2 class="subtitulo" style="text-align:left;">Revisi\u00f3n de respuestas</h2>'+revHtml+'</div><button class="btn btn-secundario btn-bloque" onclick="prepararRepaso(\'resultado\')" style="margin-bottom:10px;">Ver hoja de repaso</button><button class="btn btn-primario btn-bloque" onclick="volverInicio()">Volver al inicio</button>';
+  return '<div class="tarjeta"><div class="logo">UTSC</div><h1>Fundamentos Matemáticos</h1><h2 class="subtitulo">Diagnóstico de conocimientos previos</h2><p class="institucion">Universidad Tecnológica Santa Catarina</p><div class="centrado" style="color:var(--texto-tenue);font-size:0.85rem;">'+esc(E.nombre)+' · Procesos Productivos · 1° E</div><div class="resumen-puntaje"><div class="numero">'+r.puntaje+'<span class="de-total"> / '+r.total+'</span></div><div class="nivel-badge '+clase+'">'+nivel+'</div></div>'+(E.cambios>0?'<div class="aviso-cambios-resultado">⚠️ Se registró que saliste de esta pantalla '+E.cambios+' '+(E.cambios===1?'vez':'veces')+' durante el diagnóstico.</div>':'')+'<div class="stats-grid"><div class="stat-box"><div class="valor">'+r.correctas+'</div><div class="etiqueta">Correctas</div></div><div class="stat-box"><div class="valor">'+r.incorrectas+'</div><div class="etiqueta">Incorrectas</div></div><div class="stat-box"><div class="valor">'+r.noIdentifico+'</div><div class="etiqueta">Sin identificar</div></div><div class="stat-box"><div class="valor">'+fmt(E.tiempo)+'</div><div class="etiqueta">Tiempo</div></div></div>'+comp+'</div><div class="tarjeta"><h2 class="subtitulo" style="text-align:left;">Temas a reforzar</h2><p class="recomendacion-texto">'+esc(recomendar(r.temas))+'</p>'+temasHtml+'</div><div class="tarjeta"><h2 class="subtitulo" style="text-align:left;">Revisión de respuestas</h2>'+revHtml+'</div><button class="btn btn-secundario btn-bloque" onclick="prepararRepaso(\'resultado\')" style="margin-bottom:10px;">Ver hoja de repaso</button><button class="btn btn-primario btn-bloque" onclick="volverInicio()">Volver al inicio</button>';
 }
-
 function vistaRepaso(){
-  var pendientes=E.repasoPendientes;if(!pendientes||pendientes.length===0){return '<div class="tarjeta"><div class="logo">UTSC</div><p class="centrado" style="color:var(--texto-tenue);">\u00a1Felicidades! No tienes reactivos pendientes de repasar.</p><button class="btn btn-primario btn-bloque" onclick="irA(\''+E.repasoOrigen+'\')">Volver</button></div>';}
+  var pendientes=E.repasoPendientes;if(!pendientes||pendientes.length===0){return '<div class="tarjeta"><div class="logo">UTSC</div><p class="centrado" style="color:var(--texto-tenue);">¡Felicidades! No tienes reactivos pendientes de repasar.</p><button class="btn btn-primario btn-bloque" onclick="irA(\''+E.repasoOrigen+'\')">Volver</button></div>';}
   var ej='',resp='',c=1;pendientes.forEach(function(bi){var q=PREGUNTAS[bi];if(q.variantes&&q.variantes.length>0){q.variantes.forEach(function(v){ej+='<div class="revision-item"><div class="etiqueta-tema" style="margin-bottom:4px;">'+esc(q.topic)+'</div><div class="revision-pregunta">'+c+'. '+txt(v.e)+'</div></div>';resp+='<li style="margin-bottom:4px;">'+txt(v.r)+'</li>';c++;});}});
   var fecha=new Date().toLocaleDateString('es-MX');
-  return '<div id="repaso-content"><div class="tarjeta"><div class="logo">UTSC</div><h2 class="subtitulo">\ud83d\udcd8 Hoja de repaso</h2><p style="color:var(--texto-tenue);font-size:0.8rem;">'+esc(E.nombre)+' \u00b7 Procesos Productivos \u00b7 1\u00b0 E</p><p style="color:var(--texto-tenue);font-size:0.7rem;margin-top:2px;">Fecha: '+fecha+'</p></div><div class="tarjeta"><h2 class="subtitulo" style="text-align:left;">Ejercicios para practicar</h2>'+ej+'</div><div class="tarjeta"><h2 class="subtitulo" style="text-align:left;">Respuestas</h2><ol style="color:var(--texto);font-size:0.85rem;padding-left:18px;">'+resp+'</ol></div><div class="fila-botones" style="margin-top:8px;padding:0 0 12px 0;"><button class="btn btn-primario" onclick="imprimirRepaso()" style="flex:1;">\ud83d\udda8 Imprimir / Guardar como PDF</button><button class="btn btn-secundario" onclick="irA(\''+E.repasoOrigen+'\')" style="flex:1;">Volver al resultado</button></div></div>';
+  return '<div id="repaso-content"><div class="tarjeta"><div class="logo">UTSC</div><h2 class="subtitulo">📘 Hoja de repaso</h2><p style="color:var(--texto-tenue);font-size:0.8rem;">'+esc(E.nombre)+' · Procesos Productivos · 1° E</p><p style="color:var(--texto-tenue);font-size:0.7rem;margin-top:2px;">Fecha: '+fecha+'</p></div><div class="tarjeta"><h2 class="subtitulo" style="text-align:left;">Ejercicios para practicar</h2>'+ej+'</div><div class="tarjeta"><h2 class="subtitulo" style="text-align:left;">Respuestas</h2><ol style="color:var(--texto);font-size:0.85rem;padding-left:18px;">'+resp+'</ol></div><div class="fila-botones" style="margin-top:8px;padding:0 0 12px 0;"><button class="btn btn-primario" onclick="imprimirRepaso()" style="flex:1;">🖨️ Imprimir / Guardar como PDF</button><button class="btn btn-secundario" onclick="irA(\''+E.repasoOrigen+'\')" style="flex:1;">Volver al resultado</button></div></div>';
 }
-
 function imprimirRepaso(){
   var contenido=document.getElementById('repaso-content');if(!contenido){window.print();return;}
   var ventana=window.open('','_blank','width=800,height=600');if(!ventana){window.print();return;}
   var tarjetas=contenido.querySelectorAll('.tarjeta');var ejerciciosHtml='',respuestasHtml='';
   if(tarjetas.length>=3){ejerciciosHtml=tarjetas[1].outerHTML;respuestasHtml=tarjetas[2].outerHTML;}else{ejerciciosHtml=contenido.innerHTML;}
   var fecha=new Date().toLocaleDateString('es-MX');var nombre=esc(E.nombre);
-  ventana.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Hoja de repaso - Fundamentos Matem\u00e1ticos</title><style>*{box-sizing:border-box;margin:0;padding:0;}body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;padding:40px;max-width:800px;margin:0 auto;color:#222;background:#fff;line-height:1.6;}.logo{text-align:center;font-size:2.5rem;font-weight:900;color:#FF8201;letter-spacing:2px;}.materia-titulo{text-align:center;font-size:1.5rem;color:#FF8201;margin-top:-4px;margin-bottom:4px;font-weight:700;}.subtitulo{text-align:center;font-size:1rem;color:#49C2B3;font-weight:500;margin-bottom:16px;}.datos{text-align:center;color:#555;font-size:0.9rem;margin-bottom:20px;}h2{color:#49C2B3;border-bottom:2px solid #49C2B3;padding-bottom:6px;margin-top:20px;margin-bottom:16px;page-break-after:avoid;}.etiqueta-tema{display:inline-block;background:rgba(73,194,179,0.15);color:#49C2B3;font-size:0.72rem;font-weight:700;letter-spacing:0.03em;text-transform:uppercase;padding:4px 10px;border-radius:20px;margin-bottom:6px;page-break-after:avoid;}.revision-item{margin-bottom:16px;padding:12px 16px;border-left:4px solid #49C2B3;background:#f5f5f5;border-radius:4px;page-break-inside:avoid;}.revision-pregunta{font-weight:600;font-size:1rem;margin-top:4px;}.frac{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;vertical-align:middle;margin:0 3px;line-height:1.05;font-size:0.94em;position:relative;top:0.05em;}.frac-num{padding:0 3px 1px;border-bottom:1.4px solid currentColor;}.frac-den{padding:1px 3px 0;}.footer{text-align:center;color:#999;font-size:0.7rem;margin-top:30px;border-top:1px solid #ddd;padding-top:16px;}.btn,.fila-botones{display:none;}@media print{body{padding:20px;}.btn,.fila-botones{display:none!important;}}</style></head><body><div class="logo">UTSC</div><div class="materia-titulo">Fundamentos Matem\u00e1ticos</div><div class="subtitulo">Hoja de repaso</div><div class="datos">'+nombre+' \u00b7 Procesos Productivos \u00b7 1\u00b0 E \u00b7 '+fecha+'</div>'+ejerciciosHtml+respuestasHtml+'<div class="footer">Universidad Tecnol\u00f3gica Santa Catarina \u00b7 Fundamentos Matem\u00e1ticos \u00b7 Hoja de repaso generada el '+fecha+'</div><script>window.onload=function(){var botones=document.querySelectorAll(\'.btn, .fila-botones\');botones.forEach(function(b){b.style.display=\'none\';});window.print();};<\/script></body></html>');
+  ventana.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Hoja de repaso - Fundamentos Matemáticos</title><style>*{box-sizing:border-box;margin:0;padding:0;}body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;padding:40px;max-width:800px;margin:0 auto;color:#222;background:#fff;line-height:1.6;}.logo{text-align:center;font-size:2.5rem;font-weight:900;color:#FF8201;letter-spacing:2px;}.materia-titulo{text-align:center;font-size:1.5rem;color:#FF8201;margin-top:-4px;margin-bottom:4px;font-weight:700;}.subtitulo{text-align:center;font-size:1rem;color:#49C2B3;font-weight:500;margin-bottom:16px;}.datos{text-align:center;color:#555;font-size:0.9rem;margin-bottom:20px;}h2{color:#49C2B3;border-bottom:2px solid #49C2B3;padding-bottom:6px;margin-top:20px;margin-bottom:16px;page-break-after:avoid;}.etiqueta-tema{display:inline-block;background:rgba(73,194,179,0.15);color:#49C2B3;font-size:0.72rem;font-weight:700;letter-spacing:0.03em;text-transform:uppercase;padding:4px 10px;border-radius:20px;margin-bottom:6px;page-break-after:avoid;}.revision-item{margin-bottom:16px;padding:12px 16px;border-left:4px solid #49C2B3;background:#f5f5f5;border-radius:4px;page-break-inside:avoid;}.revision-pregunta{font-weight:600;font-size:1rem;margin-top:4px;}.frac{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;vertical-align:middle;margin:0 3px;line-height:1.05;font-size:0.94em;position:relative;top:0.05em;}.frac-num{padding:0 3px 1px;border-bottom:1.4px solid currentColor;}.frac-den{padding:1px 3px 0;}.footer{text-align:center;color:#999;font-size:0.7rem;margin-top:30px;border-top:1px solid #ddd;padding-top:16px;}.btn,.fila-botones{display:none;}@media print{body{padding:20px;}.btn,.fila-botones{display:none!important;}}</style></head><body><div class="logo">UTSC</div><div class="materia-titulo">Fundamentos Matemáticos</div><div class="subtitulo">Hoja de repaso</div><div class="datos">'+nombre+' · Procesos Productivos · 1° E · '+fecha+'</div>'+ejerciciosHtml+respuestasHtml+'<div class="footer">Universidad Tecnológica Santa Catarina · Fundamentos Matemáticos · Hoja de repaso generada el '+fecha+'</div><script>window.onload=function(){var botones=document.querySelectorAll(\'.btn, .fila-botones\');botones.forEach(function(b){b.style.display=\'none\';});window.print();};<\/script></body></html>');
   ventana.document.close();
 }
-
 function vistaConsultado(){
-  if(E.consultaError||!E.consultado){return '<div class="tarjeta"><div class="logo">UTSC</div><div class="mensaje-error">No se encontr\u00f3 un resultado con ese nombre.</div><button class="btn btn-primario btn-bloque" onclick="irA(\'consultar\')">Intentar de nuevo</button></div>';}
-  var reg=E.consultado;var pct=Math.round((reg.puntaje/reg.total)*100);var nivel=pct>=80?'alto':pct>=50?'medio':'bajo';var nTxt={alto:'Nivel alto',medio:'Nivel medio',bajo:'Nivel bajo \u2013 requiere refuerzo'}[nivel];var nCls={alto:'nivel-alto',medio:'nivel-medio',bajo:'nivel-bajo'}[nivel];var fecha=new Date(reg.fecha);var respGuardadas=reg.respuestas||{};var temas={};PREGUNTAS.forEach(function(q,bi){if(!temas[q.topic])temas[q.topic]={correctas:0,total:0};temas[q.topic].total++;if(respGuardadas[bi]===q.correct)temas[q.topic].correctas++;});var arr=Object.keys(temas).map(function(t){var corr=temas[t].correctas;var tot=temas[t].total;var p=corr/tot;return {topic:t,correctas:corr,total:tot,porcentaje:p,nivel:p>=0.8?'alto':p>=0.5?'medio':'bajo'};}).sort(function(a,b){return a.porcentaje-b.porcentaje;});var temasHtml=arr.map(function(t){return '<div class="tema-item tema-'+t.nivel+'"><div><div class="tema-nombre">'+esc(t.topic)+'</div><div class="tema-puntaje">'+t.correctas+' de '+t.total+' correctas</div></div><span class="tema-badge nivel-'+t.nivel+'">'+(t.nivel==='alto'?'Dominado':t.nivel==='medio'?'Repasar':'Requiere refuerzo')+'</span></div>';}).join('');
-  return '<div class="tarjeta"><div class="logo">UTSC</div><h1>Fundamentos Matem\u00e1ticos</h1><h2 class="subtitulo">Diagn\u00f3stico de conocimientos previos</h2><p class="institucion">Universidad Tecnol\u00f3gica Santa Catarina</p><div class="centrado" style="color:var(--texto-tenue);font-size:0.85rem;">'+esc(reg.nombre)+' \u00b7 '+esc(reg.carrera||'Procesos Productivos')+' \u00b7 '+esc(reg.grupo||'1\u00b0 E')+'</div><div class="resumen-puntaje"><div class="numero">'+reg.puntaje+'<span class="de-total"> / '+reg.total+'</span></div><div class="nivel-badge '+nCls+'">'+nTxt+'</div></div>'+(reg.cambiosPantalla||0>0?'<div class="aviso-cambios-resultado">\u26a0\ufe0f Se registr\u00f3 que saliste de esta pantalla '+reg.cambiosPantalla+' '+(reg.cambiosPantalla===1?'vez':'veces')+' durante el diagn\u00f3stico.</div>':'')+'<div class="stats-grid"><div class="stat-box"><div class="valor">'+reg.incorrectas+'</div><div class="etiqueta">Incorrectas</div></div><div class="stat-box"><div class="valor">'+reg.noIdentifico+'</div><div class="etiqueta">Sin identificar</div></div><div class="stat-box"><div class="valor">'+fmt(reg.tiempoSegundos||0)+'</div><div class="etiqueta">Tiempo</div></div></div><p class="centrado" style="color:var(--texto-tenue);font-size:0.75rem;margin-top:10px;">Registrado el '+fecha.toLocaleDateString('es-MX')+'</p></div><div class="tarjeta"><h2 class="subtitulo" style="text-align:left;">Temas a reforzar</h2><p class="recomendacion-texto">'+esc(recomendar(arr))+'</p>'+temasHtml+'</div><button class="btn btn-secundario btn-bloque" onclick="irA(\'consultar\')" style="margin-bottom:10px;">Volver a buscar</button><button class="btn btn-primario btn-bloque" onclick="volverInicio()">Volver al inicio</button>';
+  if(E.consultaError||!E.consultado){return '<div class="tarjeta"><div class="logo">UTSC</div><div class="mensaje-error">No se encontró un resultado con ese nombre.</div><button class="btn btn-primario btn-bloque" onclick="irA(\'consultar\')">Intentar de nuevo</button></div>';}
+  var reg=E.consultado;var pct=Math.round((reg.puntaje/reg.total)*100);var nivel=pct>=80?'alto':pct>=50?'medio':'bajo';var nTxt={alto:'Nivel alto',medio:'Nivel medio',bajo:'Nivel bajo – requiere refuerzo'}[nivel];var nCls={alto:'nivel-alto',medio:'nivel-medio',bajo:'nivel-bajo'}[nivel];var fecha=new Date(reg.fecha);var respGuardadas=reg.respuestas||{};var temas={};PREGUNTAS.forEach(function(q,bi){if(!temas[q.topic])temas[q.topic]={correctas:0,total:0};temas[q.topic].total++;if(respGuardadas[bi]===q.correct){temas[q.topic].correctas++;}});var arr=Object.keys(temas).map(function(t){var corr=temas[t].correctas;var tot=temas[t].total;var p=corr/tot;return {topic:t,correctas:corr,total:tot,porcentaje:p,nivel:p>=0.8?'alto':p>=0.5?'medio':'bajo'};}).sort(function(a,b){return a.porcentaje-b.porcentaje;});var temasHtml=arr.map(function(t){return '<div class="tema-item tema-'+t.nivel+'"><div><div class="tema-nombre">'+esc(t.topic)+'</div><div class="tema-puntaje">'+t.correctas+' de '+t.total+' correctas</div></div><span class="tema-badge nivel-'+t.nivel+'">'+(t.nivel==='alto'?'Dominado':t.nivel==='medio'?'Repasar':'Requiere refuerzo')+'</span></div>';}).join('');
+  return '<div class="tarjeta"><div class="logo">UTSC</div><h1>Fundamentos Matemáticos</h1><h2 class="subtitulo">Diagnóstico de conocimientos previos</h2><p class="institucion">Universidad Tecnológica Santa Catarina</p><div class="centrado" style="color:var(--texto-tenue);font-size:0.85rem;">'+esc(reg.nombre)+' · '+esc(reg.carrera||'Procesos Productivos')+' · '+esc(reg.grupo||'1° E')+'</div><div class="resumen-puntaje"><div class="numero">'+reg.puntaje+'<span class="de-total"> / '+reg.total+'</span></div><div class="nivel-badge '+nCls+'">'+nTxt+'</div></div>'+(reg.cambiosPantalla||0>0?'<div class="aviso-cambios-resultado">⚠️ Se registró que saliste de esta pantalla '+reg.cambiosPantalla+' '+(reg.cambiosPantalla===1?'vez':'veces')+' durante el diagnóstico.</div>':'')+'<div class="stats-grid"><div class="stat-box"><div class="valor">'+reg.incorrectas+'</div><div class="etiqueta">Incorrectas</div></div><div class="stat-box"><div class="valor">'+reg.noIdentifico+'</div><div class="etiqueta">Sin identificar</div></div><div class="stat-box"><div class="valor">'+fmt(reg.tiempoSegundos||0)+'</div><div class="etiqueta">Tiempo</div></div></div><p class="centrado" style="color:var(--texto-tenue);font-size:0.75rem;margin-top:10px;">Registrado el '+fecha.toLocaleDateString('es-MX')+'</p></div><div class="tarjeta"><h2 class="subtitulo" style="text-align:left;">Temas a reforzar</h2><p class="recomendacion-texto">'+esc(recomendar(arr))+'</p>'+temasHtml+'</div><button class="btn btn-secundario btn-bloque" onclick="irA(\'consultar\')" style="margin-bottom:10px;">Volver a buscar</button><button class="btn btn-primario btn-bloque" onclick="volverInicio()">Volver al inicio</button>';
 }
-
 function vistaPanel(){
   var regs=E.registros||[];var n=regs.length;var prom=n>0?regs.reduce(function(a,r){return a+(r.puntaje||0);},0)/n:0;var dom=n>0?Math.round((prom/(regs[0]?.total||TOTAL))*100):0;var tProm=n>0?regs.reduce(function(a,r){return a+(r.tiempoSegundos||0);},0)/n:0;
-  var acierto=new Array(TOTAL).fill(0);var noId=new Array(TOTAL).fill(0);regs.forEach(function(r){var resp=r.respuestas||{};for(var bi=0;bi<TOTAL;bi++){if(resp[bi]===PREGUNTAS[bi].correct)acierto[bi]++;if(resp[bi]==='no_identifico')noId[bi]++;}});
+  var acierto=new Array(TOTAL).fill(0);var noId=new Array(TOTAL).fill(0);regs.forEach(function(r){var resp=r.respuestas||{};for(var bi=0;bi<TOTAL;bi++){if(resp[bi]===PREGUNTAS[bi].correct){acierto[bi]++;}if(resp[bi]==='no_identifico'){noId[bi]++;}}});
   var filasPreg=PREGUNTAS.map(function(q,bi){var pa=n>0?Math.round((acierto[bi]/n)*100):0;var pn=n>0?Math.round((noId[bi]/n)*100):0;var qp=q.q.replace(/\[\[([^|\]]+)\|([^\]]+)\]\]/g,'$1/$2');return '<tr><td>'+(bi+1)+'</td><td>'+esc(q.topic)+'</td><td>'+pa+'%</td><td>'+pn+'%</td></tr>';}).join('');
-  var filasAlumnos=regs.slice().sort(function(a,b){return new Date(b.fecha)-new Date(a.fecha);}).map(function(r){var fecha=new Date(r.fecha);var camb=r.cambiosPantalla||0;var hi=r.horaInicio?new Date(r.horaInicio).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'}):'\u2014';return '<tr><td>'+esc(r.nombre)+'</td><td>'+esc(r.carrera||'Procesos Productivos')+'</td><td>'+esc(r.grupo||'1\u00b0 E')+'</td><td>'+r.puntaje+'/'+r.total+'</td><td>'+hi+'</td><td>'+formatoTiempo(r.tiempoSegundos||0)+'</td><td style="'+(camb>0?'color:var(--amarillo);font-weight:700;':'')+'">'+camb+'</td><td>'+fecha.toLocaleDateString('es-MX')+'</td></tr>';}).join('');
-  var zona='';if(E.confirmandoBorrado){zona='<div class="mensaje-error">\u26a0\ufe0f Esto dejar\u00e1 de contar las '+n+' respuestas guardadas. \u00bfConfirmas?</div><div class="fila-botones"><button class="btn btn-secundario" onclick="cancelarBorrado()">Cancelar</button><button class="btn btn-peligro" onclick="confirmarBorrado()">S\u00ed, continuar</button></div>';}else{zona='<button class="btn btn-peligro" onclick="pedirBorrado()">Borrar todas las respuestas guardadas</button><button class="btn btn-peligro" onclick="limpiarAlmacenamientoLocal()" style="margin-top:10px;">\ud83e\uddf9 Limpiar datos de prueba (localStorage)</button>';}
-  return '<div class="tarjeta"><div class="logo">UTSC</div><h2 class="subtitulo">\ud83d\udcca Panel docente</h2><p class="institucion">Universidad Tecnol\u00f3gica Santa Catarina</p>'+(E.mensajeBorrado?'<div class="mensaje-'+E.mensajeBorrado.tipo+'">'+esc(E.mensajeBorrado.texto)+'</div>':'')+'<div class="stats-grid"><div class="stat-box"><div class="valor">'+n+'</div><div class="etiqueta">Respuestas</div></div><div class="stat-box"><div class="valor">'+prom.toFixed(1)+'/'+(regs[0]?.total||TOTAL)+'</div><div class="etiqueta">Promedio</div></div><div class="stat-box"><div class="valor">'+dom+'%</div><div class="etiqueta">Dominio general</div></div><div class="stat-box"><div class="valor">'+formatoTiempo(Math.round(tProm))+'</div><div class="etiqueta">Tiempo promedio</div></div></div></div><div class="tarjeta"><h2 class="subtitulo" style="text-align:left;">Desempe\u00f1o por pregunta</h2><div class="tabla-scroll"><table class="tabla-docente"><thead><tr><th>#</th><th>Tema</th><th>% Acierto</th><th>% Sin identificar</th></tr></thead><tbody>'+(filasPreg||'<tr><td colspan="4" style="color:var(--texto-tenue);">Sin datos</td></tr>')+'</tbody></table></div></div><div class="tarjeta"><h2 class="subtitulo" style="text-align:left;">Respuestas individuales</h2><div class="tabla-scroll"><table class="tabla-docente"><thead><tr><th>Nombre</th><th>Carrera</th><th>Grupo</th><th>Puntaje</th><th>Hora inicio</th><th>Tiempo</th><th>Cambios</th><th>Fecha</th></tr></thead><tbody>'+(filasAlumnos||'<tr><td colspan="8" style="color:var(--texto-tenue);">Sin respuestas</td></tr>')+'</tbody></table></div><button class="btn btn-secundario btn-bloque" onclick="exportarCSV()" style="margin-top:12px;">Exportar a CSV</button>'+(E.puntoCorte?'<p style="margin-top:10px;font-size:0.7rem;color:var(--texto-tenue);text-align:center;">Mostrando desde '+new Date(E.puntoCorte).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'})+'. <span class="enlace-tenue" onclick="alternarHistorico()">'+(E.mostrandoHistorico?'Ocultar hist\u00f3rico':'Ver todo el hist\u00f3rico')+'</span></p>':'')+'<div class="zona-riesgo"><h3>\u26a0\ufe0f Zona de riesgo</h3><p>Usa esta opci\u00f3n para dejar el panel en cero antes del examen real. Los datos no se borran permanentemente, solo dejan de contarse.</p>'+zona+'</div></div><button class="btn btn-secundario btn-bloque" onclick="volverInicio()">Salir del panel</button>';
+  var filasAlumnos=regs.slice().sort(function(a,b){return new Date(b.fecha)-new Date(a.fecha);}).map(function(r){var fecha=new Date(r.fecha);var camb=r.cambiosPantalla||0;var hi=r.horaInicio?new Date(r.horaInicio).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'}):'—';return '<tr><td>'+esc(r.nombre)+'</td><td>'+esc(r.carrera||'Procesos Productivos')+'</td><td>'+esc(r.grupo||'1° E')+'</td><td>'+r.puntaje+'/'+r.total+'</td><td>'+hi+'</td><td>'+formatoTiempo(r.tiempoSegundos||0)+'</td><td style="'+(camb>0?'color:var(--amarillo);font-weight:700;':'')+'">'+camb+'</td><td>'+fecha.toLocaleDateString('es-MX')+'</td></tr>';}).join('');
+  var zona='';if(E.confirmandoBorrado){zona='<div class="mensaje-error">⚠️ Esto dejará de contar las '+n+' respuestas guardadas. ¿Confirmas?</div><div class="fila-botones"><button class="btn btn-secundario" onclick="cancelarBorrado()">Cancelar</button><button class="btn btn-peligro" onclick="confirmarBorrado()">Sí, continuar</button></div>';}else{zona='<button class="btn btn-peligro" onclick="pedirBorrado()">Borrar todas las respuestas guardadas</button><button class="btn btn-peligro" onclick="limpiarAlmacenamientoLocal()" style="margin-top:10px;">🧹 Limpiar datos de prueba (localStorage)</button>';}
+  return '<div class="tarjeta"><div class="logo">UTSC</div><h2 class="subtitulo">📊 Panel docente</h2><p class="institucion">Universidad Tecnológica Santa Catarina</p>'+(E.mensajeBorrado?'<div class="mensaje-'+E.mensajeBorrado.tipo+'">'+esc(E.mensajeBorrado.texto)+'</div>':'')+'<div class="stats-grid"><div class="stat-box"><div class="valor">'+n+'</div><div class="etiqueta">Respuestas</div></div><div class="stat-box"><div class="valor">'+prom.toFixed(1)+'/'+(regs[0]?.total||TOTAL)+'</div><div class="etiqueta">Promedio</div></div><div class="stat-box"><div class="valor">'+dom+'%</div><div class="etiqueta">Dominio general</div></div><div class="stat-box"><div class="valor">'+formatoTiempo(Math.round(tProm))+'</div><div class="etiqueta">Tiempo promedio</div></div></div></div><div class="tarjeta"><h2 class="subtitulo" style="text-align:left;">Desempeño por pregunta</h2><div class="tabla-scroll"><table class="tabla-docente"><thead><tr><th>#</th><th>Tema</th><th>% Acierto</th><th>% Sin identificar</th></tr></thead><tbody>'+(filasPreg||'<tr><td colspan="4" style="color:var(--texto-tenue);">Sin datos</td></tr>')+'</tbody></table></div></div><div class="tarjeta"><h2 class="subtitulo" style="text-align:left;">Respuestas individuales</h2><div class="tabla-scroll"><table class="tabla-docente"><thead><tr><th>Nombre</th><th>Carrera</th><th>Grupo</th><th>Puntaje</th><th>Hora inicio</th><th>Tiempo</th><th>Cambios</th><th>Fecha</th></tr></thead><tbody>'+(filasAlumnos||'<tr><td colspan="8" style="color:var(--texto-tenue);">Sin respuestas</td></tr>')+'</tbody></table></div><button class="btn btn-secundario btn-bloque" onclick="exportarCSV()" style="margin-top:12px;">Exportar a CSV</button>'+(E.puntoCorte?'<p style="margin-top:10px;font-size:0.7rem;color:var(--texto-tenue);text-align:center;">Mostrando desde '+new Date(E.puntoCorte).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'})+'. <span class="enlace-tenue" onclick="alternarHistorico()">'+(E.mostrandoHistorico?'Ocultar histórico':'Ver todo el histórico')+'</span></p>':'')+'<div class="zona-riesgo"><h3>⚠️ Zona de riesgo</h3><p>Usa esta opción para dejar el panel en cero antes del examen real. Los datos no se borran permanentemente, solo dejan de contarse.</p>'+zona+'</div></div><button class="btn btn-secundario btn-bloque" onclick="volverInicio()">Salir del panel</button>';
 }
 
 // ================================================================
 // EVENTOS DE PANTALLA
 // ================================================================
 document.addEventListener('visibilitychange', function(){
-  if(E._ignorarCambioPantalla)return;var avisoSeleccion=document.querySelector('.aviso-seleccion');if(document.hidden&&E.pantalla==='cuestionario'&&!avisoSeleccion){E.cambios++;mostrarAvisoCambioPantalla();}
+  if(E._ignorarCambioPantalla){return;}
+  var avisoSeleccion=document.querySelector('.aviso-seleccion');
+  if(document.hidden&&E.pantalla==='cuestionario'&&!avisoSeleccion){
+    E.cambios++;
+    mostrarAvisoCambioPantalla();
+  }
 });
 document.addEventListener('fullscreenchange', function(){
-  if(E._ignorarCambioPantalla)return;var avisoSeleccion=document.querySelector('.aviso-seleccion');if(!document.fullscreenElement&&E.pantalla==='cuestionario'&&!avisoSeleccion){E.cambios++;mostrarAvisoCambioPantalla();}
+  if(E._ignorarCambioPantalla){return;}
+  var avisoSeleccion=document.querySelector('.aviso-seleccion');
+  if(!document.fullscreenElement&&E.pantalla==='cuestionario'&&!avisoSeleccion){
+    E.cambios++;
+    mostrarAvisoCambioPantalla();
+  }
 });
 window.addEventListener('beforeunload',function(e){if(E.pantalla==='cuestionario'){e.preventDefault();e.returnValue='';}});
 
