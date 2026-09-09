@@ -388,11 +388,10 @@ function local(){
 }
 
 // ================================================================
-// ALMACENAMIENTO - SIMPLIFICADO Y FUNCIONAL
+// ALMACENAMIENTO
 // ================================================================
 
 async function guardar(reg){
-  // 1. SIEMPRE guardar en localStorage (funciona en cualquier navegador)
   try {
     const historial = JSON.parse(localStorage.getItem('diag_hist') || '[]');
     historial.push(reg);
@@ -403,7 +402,6 @@ async function guardar(reg){
     return false;
   }
   
-  // 2. Si window.storage está disponible, guardar también allí
   if (!local() && typeof window.storage !== 'undefined') {
     try {
       const key = 'resp:' + Date.now() + '_' + Math.random().toString(36).slice(2, 9);
@@ -411,7 +409,6 @@ async function guardar(reg){
       console.log('✅ Resultado guardado en window.storage');
     } catch (e) {
       console.warn('⚠️ No se pudo guardar en window.storage (se mantiene en localStorage):', e);
-      // No fallamos, porque ya tenemos localStorage
     }
   }
   
@@ -419,7 +416,6 @@ async function guardar(reg){
 }
 
 async function obtener(){
-  // 1. Primero intentar obtener de localStorage (siempre disponible)
   try {
     const localData = JSON.parse(localStorage.getItem('diag_hist') || '[]');
     if (localData.length > 0) {
@@ -430,7 +426,6 @@ async function obtener(){
     console.warn('⚠️ Error leyendo localStorage:', e);
   }
   
-  // 2. Si no hay datos en localStorage, intentar window.storage
   if (!local() && typeof window.storage !== 'undefined') {
     try {
       const listado = await window.storage.list('resp:', true);
@@ -452,6 +447,19 @@ async function obtener(){
   }
   
   return [];
+}
+
+function limpiarAlmacenamientoLocal(){
+  if(confirm('⚠️ ¿Estás seguro de que quieres borrar TODOS los datos guardados en localStorage? Esto no se puede deshacer.')){
+    try{
+      localStorage.removeItem('diag_hist');
+      localStorage.removeItem('puntoCorte');
+      alert('✅ Datos de localStorage eliminados correctamente.');
+      cargarPanel();
+    } catch(e){
+      alert('❌ Error al limpiar localStorage: ' + e.message);
+    }
+  }
 }
 
 // ================================================================
@@ -594,24 +602,35 @@ async function finalizar(){
   }
 }
 
+// FUNCIÓN CALCULAR PROMEDIO MEJORADA
 async function calcularPromedio(){
   try {
     const todas = await obtener();
     
+    // Filtrar duplicados de manera más estricta
     const vistos = new Set();
     const unicos = todas.filter(r => {
-      const clave = (r.nombre || '').trim().toLowerCase() + '_' + (r.fecha || '').slice(0, 10);
+      const fechaStr = r.fecha ? r.fecha.slice(0, 10) : '';
+      const clave = (r.nombre || '').trim().toLowerCase() + '_' + fechaStr;
       if (vistos.has(clave)) return false;
       vistos.add(clave);
       return true;
     });
     
-    let filtrados = unicos;
+    // Filtrar registros sin nombre o con nombre vacío
+    let filtrados = unicos.filter(r => r.nombre && r.nombre.trim() !== '');
+    
+    // Aplicar punto de corte si existe
     if (E.puntoCorte) {
-      filtrados = unicos.filter(r => new Date(r.fecha) > new Date(E.puntoCorte));
+      filtrados = filtrados.filter(r => {
+        const fecha = new Date(r.fecha);
+        const corte = new Date(E.puntoCorte);
+        return fecha > corte;
+      });
     }
     
-    filtrados = filtrados.filter(r => r.nombre && r.nombre.trim() !== '');
+    // Contar solo registros con puntaje válido
+    filtrados = filtrados.filter(r => typeof r.puntaje === 'number');
     
     if (filtrados.length > 0) {
       const sumaPuntajes = filtrados.reduce((a, r) => a + (r.puntaje || 0), 0);
@@ -887,7 +906,16 @@ function vistaPanel(){
   regs.forEach(r=>{const resp=r.respuestas||{};for(let bi=0;bi<TOTAL;bi++){if(resp[bi]===PREGUNTAS[bi].correct)acierto[bi]++;if(resp[bi]==='no_identifico')noId[bi]++;}});
   let filasPreg=PREGUNTAS.map((q,bi)=>{const pa=n>0?Math.round((acierto[bi]/n)*100):0;const pn=n>0?Math.round((noId[bi]/n)*100):0;const qp=q.q.replace(/\[\[([^|\]]+)\|([^\]]+)\]\]/g,'$1/$2');return `<tr><td>${bi+1}</td><td>${esc(q.topic)}</td><td>${pa}%</td><td>${pn}%</td></tr>`;}).join('');
   let filasAlumnos=regs.slice().sort((a,b)=>new Date(b.fecha)-new Date(a.fecha)).map(r=>{const fecha=new Date(r.fecha);const camb=r.cambiosPantalla||0;const hi=r.horaInicio?new Date(r.horaInicio).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'}):'—';return `<tr><td>${esc(r.nombre)}</td><td>${esc(r.carrera||CONFIG.carrera)}</td><td>${esc(r.grupo||CONFIG.grupo)}</td><td>${r.puntaje}/${r.total}</td><td>${hi}</td><td>${formatoTiempo(r.tiempoSegundos||0)}</td><td style="${camb>0?'color:var(--amarillo);font-weight:700;':''}">${camb}</td><td>${fecha.toLocaleDateString('es-MX')}</td></tr>`;}).join('');
-  let zona='';if(E.confirmandoBorrado){zona=`<div class="mensaje-error">⚠️ Esto dejará de contar las ${n} respuestas guardadas. ¿Confirmas?</div><div class="fila-botones"><button class="btn btn-secundario" onclick="cancelarBorrado()">Cancelar</button><button class="btn btn-peligro" onclick="confirmarBorrado()">Sí, continuar</button></div>`;}else{zona=`<button class="btn btn-peligro" onclick="pedirBorrado()">Borrar todas las respuestas guardadas</button>`;}
+  let zona='';
+  if(E.confirmandoBorrado){
+    zona=`<div class="mensaje-error">⚠️ Esto dejará de contar las ${n} respuestas guardadas. ¿Confirmas?</div>
+      <div class="fila-botones"><button class="btn btn-secundario" onclick="cancelarBorrado()">Cancelar</button><button class="btn btn-peligro" onclick="confirmarBorrado()">Sí, continuar</button></div>`;
+  }else{
+    zona=`
+      <button class="btn btn-peligro" onclick="pedirBorrado()">Borrar todas las respuestas guardadas</button>
+      <button class="btn btn-peligro" onclick="limpiarAlmacenamientoLocal()" style="margin-top:10px;">🧹 Limpiar datos de prueba (localStorage)</button>
+    `;
+  }
   return `<div class="tarjeta"><div class="logo">UTSC</div><h2 class="subtitulo">📊 Panel docente</h2><p class="institucion">${CONFIG.institucion}</p>
     ${E.mensajeBorrado?`<div class="mensaje-${E.mensajeBorrado.tipo}">${esc(E.mensajeBorrado.texto)}</div>`:''}
     <div class="stats-grid"><div class="stat-box"><div class="valor">${n}</div><div class="etiqueta">Respuestas</div></div>
