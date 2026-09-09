@@ -347,6 +347,15 @@ let E = {
 // ================================================================
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a;}
 function fmt(s){const m=Math.floor(s/60), seg=s%60;return String(m).padStart(2,'0')+':'+String(seg).padStart(2,'0');}
+
+// NUEVA FUNCIÓN: formato de tiempo hh:mm:ss
+function formatoTiempo(segundos){
+  const hrs = Math.floor(segundos / 3600);
+  const mins = Math.floor((segundos % 3600) / 60);
+  const segs = segundos % 60;
+  return String(hrs).padStart(2, '0') + ':' + String(mins).padStart(2, '0') + ':' + String(segs).padStart(2, '0');
+}
+
 function esc(t){const d=document.createElement('div');d.textContent=t;return d.innerHTML;}
 function frac(html){return html.replace(/\[\[([^|\]]+)\|([^\]]+)\]\]/g,(m,n,d)=>`<span class="frac"><span class="frac-num">${n}</span><span class="frac-den">${d}</span></span>`);}
 function txt(t){return frac(esc(t));}
@@ -517,12 +526,11 @@ function aplicarCorte(){
 function alternarHistorico(){E.mostrandoHistorico=!E.mostrandoHistorico;aplicarCorte();render();}
 
 // ================================================================
-// EXPORTAR CSV - CORREGIDO CON COMA
+// EXPORTAR CSV - CON TIEMPO hh:mm:ss
 // ================================================================
 function exportarCSV(){
   const registros = E.registros || [];
   
-  // Cabeceras en el orden correcto
   const headers = [
     'Nombre',
     'Carrera',
@@ -530,12 +538,11 @@ function exportarCSV(){
     'Puntaje',
     'Total',
     'Hora inicio',
-    'Tiempo (segundos)',
+    'Tiempo',
     'Cambios de pantalla',
     'Fecha'
   ];
   
-  // Crear filas en el MISMO orden que las cabeceras
   const filas = registros.map(r => {
     let fechaLegible = '';
     let horaInicioLegible = '';
@@ -565,22 +572,19 @@ function exportarCSV(){
       r.puntaje || 0,
       r.total || TOTAL,
       horaInicioLegible,
-      r.tiempoSegundos || 0,
+      formatoTiempo(r.tiempoSegundos || 0), // <-- CAMBIO: tiempo en hh:mm:ss
       r.cambiosPantalla || 0,
       fechaLegible
     ];
   });
   
-  // USAR COMA (,) como separador - Excel lo abre correctamente
   const cabecera = headers.join(',');
   const cuerpo = filas.map(f => f.join(',')).join('\n');
   const csv = cabecera + '\n' + cuerpo;
   
-  // Añadir BOM para UTF-8
   const bom = '\uFEFF';
   const csvConBOM = bom + csv;
   
-  // Descargar el archivo
   const blob = new Blob([csvConBOM], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -968,7 +972,7 @@ function vistaPanel(){
     const fecha=new Date(r.fecha);
     const camb=r.cambiosPantalla||0;
     const hi=r.horaInicio?new Date(r.horaInicio).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'}):'—';
-    return `<tr><td>${esc(r.nombre)}</td><td>${esc(r.carrera||CONFIG.carrera)}</td><td>${esc(r.grupo||CONFIG.grupo)}</td><td>${r.puntaje}/${r.total}</td><td>${hi}</td><td>${fmt(r.tiempoSegundos||0)}</td><td style="${camb>0?'color:var(--amarillo);font-weight:700;':''}">${camb}</td><td>${fecha.toLocaleDateString('es-MX')}</td></tr>`;
+    return `<tr><td>${esc(r.nombre)}</td><td>${esc(r.carrera||CONFIG.carrera)}</td><td>${esc(r.grupo||CONFIG.grupo)}</td><td>${r.puntaje}/${r.total}</td><td>${hi}</td><td>${formatoTiempo(r.tiempoSegundos||0)}</td><td style="${camb>0?'color:var(--amarillo);font-weight:700;':''}">${camb}</td><td>${fecha.toLocaleDateString('es-MX')}</td></tr>`;
   }).join('');
   let zona='';
   if(E.confirmandoBorrado){
