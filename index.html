@@ -69,6 +69,8 @@ input[readonly]{color:var(--texto-tenue);background:#20242a;}
 .btn-primario:hover{background:#D96D00;}
 .btn-secundario{background:transparent;color:var(--teal);border:1.5px solid var(--teal);}
 .btn-secundario:hover{background:rgba(73,194,179,0.1);}
+.btn-peligro{background:transparent;color:var(--rojo);border:1.5px solid var(--rojo);}
+.btn-peligro:hover{background:rgba(225,85,84,0.12);}
 .btn-bloque{width:100%;text-align:center;margin-top:24px;}
 .btn:disabled{opacity:0.4;cursor:not-allowed;}
 .fila-botones{display:flex;gap:10px;margin-top:24px;}
@@ -126,6 +128,28 @@ input[readonly]{color:var(--texto-tenue);background:#20242a;}
 .spinner{width:34px;height:34px;border:3px solid var(--bg-card-2);border-top-color:var(--naranja);border-radius:50%;animation:girar 0.8s linear infinite;margin:20px auto;}
 @keyframes girar{to{transform:rotate(360deg);}}
 .mensaje-error{background:rgba(225,85,84,0.12);border:1px solid var(--rojo);color:var(--rojo);border-radius:10px;padding:14px 16px;font-size:0.88rem;margin:16px 0;}
+.mensaje-ok{background:rgba(63,181,111,0.12);border:1px solid var(--verde);color:var(--verde);border-radius:10px;padding:14px 16px;font-size:0.88rem;margin:16px 0;}
+.aviso-seleccion{
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+  background:var(--bg-card);
+  border:2px solid var(--naranja);
+  border-radius:var(--radio);
+  padding:16px 24px;
+  color:var(--texto);
+  font-size:0.95rem;
+  z-index:10000;
+  box-shadow:0 4px 24px rgba(0,0,0,0.6);
+  max-width:90%;
+  text-align:center;
+  display:flex;
+  align-items:center;
+  gap:16px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
 .aviso-cambio-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.65);display:flex;align-items:center;justify-content:center;z-index:9999;padding:20px;}
 .aviso-cambio-caja{background:var(--bg-card);border:2px solid var(--rojo);border-radius:14px;padding:26px 22px;max-width:360px;width:100%;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,0.45);}
 .aviso-cambio-titulo{color:var(--rojo);font-weight:800;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px;}
@@ -167,146 +191,26 @@ table.tabla-docente td{padding:9px 10px;border-bottom:1px solid var(--borde);}
 // BANCO DE 20 PREGUNTAS
 // ================================================================
 const PREGUNTAS = [
-  {
-    topic: "Fracciones - Simplificación",
-    q: "Simplifica la fracción [[18|24]] a su mínima expresión",
-    opts: ["[[3|4]]", "[[2|3]]", "[[4|5]]", "[[5|6]]"],
-    correct: 0,
-    variantes: [{e: "Simplifica la fracción [[20|30]] a su mínima expresión", r: "[[2|3]]"}]
-  },
-  {
-    topic: "Fracciones - Suma",
-    q: "Calcula: [[2|3]] + [[1|6]]",
-    opts: ["[[5|6]]", "[[3|9]]", "[[1|2]]", "[[5|9]]"],
-    correct: 0,
-    variantes: [{e: "Calcula: [[1|4]] + [[1|2]]", r: "[[3|4]]"}]
-  },
-  {
-    topic: "Fracciones - Multiplicación",
-    q: "Calcula: [[3|4]] · [[2|5]]",
-    opts: ["[[3|10]]", "[[5|9]]", "[[2|3]]", "[[6|5]]"],
-    correct: 0,
-    variantes: [{e: "Calcula: [[2|3]] · [[3|4]]", r: "[[1|2]]"}]
-  },
-  {
-    topic: "Números negativos - Suma",
-    q: "Calcula: 8 + (−3) + (−7)",
-    opts: ["−2", "18", "−12", "2"],
-    correct: 0,
-    variantes: [{e: "Calcula: 9 + (−4) + (−8)", r: "−3"}]
-  },
-  {
-    topic: "Números negativos - Multiplicación",
-    q: "Calcula: (−4)(−2)",
-    opts: ["8", "−8", "6", "−6"],
-    correct: 0,
-    variantes: [{e: "Calcula: (−5)(−3)", r: "15"}]
-  },
-  {
-    topic: "Porcentaje",
-    q: "Calcula el 10% de 240",
-    opts: ["24", "36", "15", "30"],
-    correct: 0,
-    variantes: [{e: "Calcula el 10% de 150", r: "15"}]
-  },
-  {
-    topic: "Jerarquía de operaciones",
-    q: "Calcula: 3 + (4)(2) − [[6|3]]",
-    opts: ["9", "11", "5", "7"],
-    correct: 0,
-    variantes: [{e: "Calcula: 4 + (5)(2) − [[8|4]]", r: "12"}]
-  },
-  {
-    topic: "Jerarquía de operaciones",
-    q: "Calcula: (5 − 2)² + (4)(3)",
-    opts: ["21", "33", "15", "27"],
-    correct: 0,
-    variantes: [{e: "Calcula: (4 − 1)² + (5)(2)", r: "19"}]
-  },
-  {
-    topic: "Mínimo común múltiplo",
-    q: "Calcula el mínimo común múltiplo (m.c.m.) de 6 y 8",
-    opts: ["24", "12", "48", "2"],
-    correct: 0,
-    variantes: [{e: "Calcula el m.c.m. de 4 y 6", r: "12"}]
-  },
-  {
-    topic: "Ley de signos",
-    q: "Calcula: (−5) − (−3)",
-    opts: ["−2", "2", "−8", "8"],
-    correct: 0,
-    variantes: [{e: "Calcula: (−7) − (−2)", r: "−5"}]
-  },
-  {
-    topic: "Lenguaje algebraico - Traducción",
-    q: "¿Qué expresión representa 'el doble de un número aumentado en 5'?",
-    opts: ["2x + 5", "2(x + 5)", "x + 5", "2x − 5"],
-    correct: 0,
-    variantes: [{e: "¿Qué expresión representa 'el triple de un número aumentado en 4'?", r: "3x + 4"}]
-  },
-  {
-    topic: "Lenguaje algebraico - Traducción",
-    q: "¿Qué expresión representa 'el triple de la diferencia de un número y 2'?",
-    opts: ["3(x − 2)", "3x − 2", "x − 6", "3(2 − x)"],
-    correct: 0,
-    variantes: [{e: "¿Qué expresión representa 'el doble de la diferencia de un número y 3'?", r: "2(x − 3)"}]
-  },
-  {
-    topic: "Lenguaje algebraico - Simplificación",
-    q: "Simplifica: 5x + 3x − 2x",
-    opts: ["6x", "8x", "4x", "6x²"],
-    correct: 0,
-    variantes: [{e: "Simplifica: 4x + 6x − 3x", r: "7x"}]
-  },
-  {
-    topic: "Lenguaje algebraico - Simplificación",
-    q: "Simplifica: 3(2x + 4) − 2x",
-    opts: ["4x + 12", "6x + 12", "4x + 4", "2x + 12"],
-    correct: 0,
-    variantes: [{e: "Simplifica: 2(3x + 5) − 4x", r: "2x + 10"}]
-  },
-  {
-    topic: "Lenguaje algebraico - Evaluación",
-    q: "Evalúa: 2x² − 3x + 1 para x = 2",
-    opts: ["3", "7", "11", "5"],
-    correct: 0,
-    variantes: [{e: "Evalúa: 3x² − 2x + 1 para x = 2", r: "9"}]
-  },
-  {
-    topic: "Ecuaciones lineales",
-    q: "Resuelve: 3x + 5 = 20",
-    opts: ["x = 5", "x = 15", "x = [[25|3]]", "x = 6"],
-    correct: 0,
-    variantes: [{e: "Resuelve: 4x + 3 = 19", r: "x = 4"}]
-  },
-  {
-    topic: "Ecuaciones lineales",
-    q: "Resuelve: 2(x − 3) = 10",
-    opts: ["x = 8", "x = 5", "x = 13", "x = 3.5"],
-    correct: 0,
-    variantes: [{e: "Resuelve: 3(x − 2) = 12", r: "x = 6"}]
-  },
-  {
-    topic: "Ecuaciones lineales",
-    q: "Resuelve: [[x|4]] − 2 = 3",
-    opts: ["x = 20", "x = 4", "x = 12", "x = 5"],
-    correct: 0,
-    variantes: [{e: "Resuelve: [[x|3]] − 1 = 4", r: "x = 15"}]
-  },
-  {
-    topic: "Razón y proporción",
-    q: "Si 3 cuadernos cuestan $45, ¿cuánto cuestan 5 cuadernos al mismo precio?",
-    opts: ["$75", "$60", "$90", "$67.50"],
-    correct: 0,
-    variantes: [{e: "Si 2 lápices cuestan $18, ¿cuánto cuestan 5 lápices?", r: "$45"}]
-  },
-  {
-    topic: "Razón y proporción",
-    q: "Si 4 obreros terminan un muro en 6 días, ¿en cuántos días lo terminarán 8 obreros?",
-    opts: ["3 días", "12 días", "6 días", "4 días"],
-    correct: 0,
-    variantes: [{e: "Si 3 pintores pintan una casa en 8 días, ¿en cuántos días la pintarán 6 pintores?", r: "4 días"}]
-  }
+  {topic:"Fracciones - Simplificación",q:"Simplifica la fracción [[18|24]] a su mínima expresión",opts:["[[3|4]]","[[2|3]]","[[4|5]]","[[5|6]]"],correct:0,variantes:[{e:"Simplifica la fracción [[20|30]] a su mínima expresión",r:"[[2|3]]"}]},
+  {topic:"Fracciones - Suma",q:"Calcula: [[2|3]] + [[1|6]]",opts:["[[5|6]]","[[3|9]]","[[1|2]]","[[5|9]]"],correct:0,variantes:[{e:"Calcula: [[1|4]] + [[1|2]]",r:"[[3|4]]"}]},
+  {topic:"Fracciones - Multiplicación",q:"Calcula: [[3|4]] · [[2|5]]",opts:["[[3|10]]","[[5|9]]","[[2|3]]","[[6|5]]"],correct:0,variantes:[{e:"Calcula: [[2|3]] · [[3|4]]",r:"[[1|2]]"}]},
+  {topic:"Números negativos - Suma",q:"Calcula: 8 + (−3) + (−7)",opts:["−2","18","−12","2"],correct:0,variantes:[{e:"Calcula: 9 + (−4) + (−8)",r:"−3"}]},
+  {topic:"Números negativos - Multiplicación",q:"Calcula: (−4)(−2)",opts:["8","−8","6","−6"],correct:0,variantes:[{e:"Calcula: (−5)(−3)",r:"15"}]},
+  {topic:"Porcentaje",q:"Calcula el 10% de 240",opts:["24","36","15","30"],correct:0,variantes:[{e:"Calcula el 10% de 150",r:"15"}]},
+  {topic:"Jerarquía de operaciones",q:"Calcula: 3 + (4)(2) − [[6|3]]",opts:["9","11","5","7"],correct:0,variantes:[{e:"Calcula: 4 + (5)(2) − [[8|4]]",r:"12"}]},
+  {topic:"Jerarquía de operaciones",q:"Calcula: (5 − 2)² + (4)(3)",opts:["21","33","15","27"],correct:0,variantes:[{e:"Calcula: (4 − 1)² + (5)(2)",r:"19"}]},
+  {topic:"Mínimo común múltiplo",q:"Calcula el mínimo común múltiplo (m.c.m.) de 6 y 8",opts:["24","12","48","2"],correct:0,variantes:[{e:"Calcula el m.c.m. de 4 y 6",r:"12"}]},
+  {topic:"Ley de signos",q:"Calcula: (−5) − (−3)",opts:["−2","2","−8","8"],correct:0,variantes:[{e:"Calcula: (−7) − (−2)",r:"−5"}]},
+  {topic:"Lenguaje algebraico - Traducción",q:"¿Qué expresión representa 'el doble de un número aumentado en 5'?",opts:["2x + 5","2(x + 5)","x + 5","2x − 5"],correct:0,variantes:[{e:"¿Qué expresión representa 'el triple de un número aumentado en 4'?",r:"3x + 4"}]},
+  {topic:"Lenguaje algebraico - Traducción",q:"¿Qué expresión representa 'el triple de la diferencia de un número y 2'?",opts:["3(x − 2)","3x − 2","x − 6","3(2 − x)"],correct:0,variantes:[{e:"¿Qué expresión representa 'el doble de la diferencia de un número y 3'?",r:"2(x − 3)"}]},
+  {topic:"Lenguaje algebraico - Simplificación",q:"Simplifica: 5x + 3x − 2x",opts:["6x","8x","4x","6x²"],correct:0,variantes:[{e:"Simplifica: 4x + 6x − 3x",r:"7x"}]},
+  {topic:"Lenguaje algebraico - Simplificación",q:"Simplifica: 3(2x + 4) − 2x",opts:["4x + 12","6x + 12","4x + 4","2x + 12"],correct:0,variantes:[{e:"Simplifica: 2(3x + 5) − 4x",r:"2x + 10"}]},
+  {topic:"Lenguaje algebraico - Evaluación",q:"Evalúa: 2x² − 3x + 1 para x = 2",opts:["3","7","11","5"],correct:0,variantes:[{e:"Evalúa: 3x² − 2x + 1 para x = 2",r:"9"}]},
+  {topic:"Ecuaciones lineales",q:"Resuelve: 3x + 5 = 20",opts:["x = 5","x = 15","x = [[25|3]]","x = 6"],correct:0,variantes:[{e:"Resuelve: 4x + 3 = 19",r:"x = 4"}]},
+  {topic:"Ecuaciones lineales",q:"Resuelve: 2(x − 3) = 10",opts:["x = 8","x = 5","x = 13","x = 3.5"],correct:0,variantes:[{e:"Resuelve: 3(x − 2) = 12",r:"x = 6"}]},
+  {topic:"Ecuaciones lineales",q:"Resuelve: [[x|4]] − 2 = 3",opts:["x = 20","x = 4","x = 12","x = 5"],correct:0,variantes:[{e:"Resuelve: [[x|3]] − 1 = 4",r:"x = 15"}]},
+  {topic:"Razón y proporción",q:"Si 3 cuadernos cuestan $45, ¿cuánto cuestan 5 cuadernos al mismo precio?",opts:["$75","$60","$90","$67.50"],correct:0,variantes:[{e:"Si 2 lápices cuestan $18, ¿cuánto cuestan 5 lápices?",r:"$45"}]},
+  {topic:"Razón y proporción",q:"Si 4 obreros terminan un muro en 6 días, ¿en cuántos días lo terminarán 8 obreros?",opts:["3 días","12 días","6 días","4 días"],correct:0,variantes:[{e:"Si 3 pintores pintan una casa en 8 días, ¿en cuántos días la pintarán 6 pintores?",r:"4 días"}]}
 ];
 
 const TOTAL = PREGUNTAS.length;
@@ -327,6 +231,7 @@ let E = {
   resultado:null,
   promedioGrupo:null,
   totalGrupo:0,
+  totalRespuestasGrupo:0,
   consultaNombre:'',
   consultado:null,
   consultaError:false,
@@ -339,7 +244,8 @@ let E = {
   guardando:false,
   errorGuardado:false,
   repasoPendientes:[],
-  repasoOrigen:'resultado'
+  repasoOrigen:'resultado',
+  _ignorarCambioPantalla: false
 };
 
 // ================================================================
@@ -347,29 +253,71 @@ let E = {
 // ================================================================
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a;}
 function fmt(s){const m=Math.floor(s/60), seg=s%60;return String(m).padStart(2,'0')+':'+String(seg).padStart(2,'0');}
+
+// CAMBIO 1: Formato hh:mm:ss para el tiempo
+function formatoTiempo(segundos){
+  const hrs = Math.floor(segundos / 3600);
+  const mins = Math.floor((segundos % 3600) / 60);
+  const segs = segundos % 60;
+  return String(hrs).padStart(2,'0')+':'+String(mins).padStart(2,'0')+':'+String(segs).padStart(2,'0');
+}
+
 function esc(t){const d=document.createElement('div');d.textContent=t;return d.innerHTML;}
 function frac(html){return html.replace(/\[\[([^|\]]+)\|([^\]]+)\]\]/g,(m,n,d)=>`<span class="frac"><span class="frac-num">${n}</span><span class="frac-den">${d}</span></span>`);}
 function txt(t){return frac(esc(t));}
-function local(){return typeof window.storage==='undefined';}
+
+// CAMBIO 4: Detección correcta de GitHub Pages
+function local(){
+  if (window.location.hostname.includes('github.io')) {
+    return false;
+  }
+  return typeof window.storage === 'undefined';
+}
 
 // ================================================================
 // ALMACENAMIENTO
 // ================================================================
 async function guardar(reg){
-  if(local()){try{const h=JSON.parse(localStorage.getItem('diag_hist')||'[]');h.push(reg);localStorage.setItem('diag_hist',JSON.stringify(h));}catch(e){}return;}
-  if(typeof window.storage==='undefined')return;
-  const key='resp:'+Date.now()+'_'+Math.random().toString(36).slice(2,9);
-  for(let i=0;i<3;i++){try{await window.storage.set(key,JSON.stringify(reg),true);return;}catch(e){await new Promise(r=>setTimeout(r,500*(i+1)));}}
+  try{const h=JSON.parse(localStorage.getItem('diag_hist')||'[]');h.push(reg);localStorage.setItem('diag_hist',JSON.stringify(h));}catch(e){return false;}
+  if(!local()&&typeof window.storage!=='undefined'){
+    try{const key='resp:'+Date.now()+'_'+Math.random().toString(36).slice(2,9);await window.storage.set(key,JSON.stringify(reg),true);}catch(e){}
+  }
+  return true;
 }
 
 async function obtener(){
-  if(local()){try{return JSON.parse(localStorage.getItem('diag_hist')||'[]');}catch(e){return[];}}
-  if(typeof window.storage==='undefined')return[];
-  const listado=await window.storage.list('resp:',true);
-  const claves=listado&&listado.keys?listado.keys:[];
-  const regs=[];
-  for(const k of claves){try{const r=await window.storage.get(k,true);if(r&&r.value)regs.push({key:k,...JSON.parse(r.value)});}catch(e){}}
-  return regs;
+  try{const localData=JSON.parse(localStorage.getItem('diag_hist')||'[]');if(localData.length>0)return localData;}catch(e){}
+  if(!local()&&typeof window.storage!=='undefined'){
+    try{const listado=await window.storage.list('resp:',true);const claves=listado&&listado.keys?listado.keys:[];const regs=[];for(const k of claves){try{const r=await window.storage.get(k,true);if(r&&r.value)regs.push({key:k,...JSON.parse(r.value)});}catch(e){}}if(regs.length>0)return regs;}catch(e){}
+  }
+  return [];
+}
+
+// CAMBIO 5: Función para limpiar datos
+function limpiarAlmacenamientoLocal(){
+  if(confirm('⚠️ ¿Estás seguro de que quieres borrar TODOS los datos guardados? Esto no se puede deshacer.')){
+    try{
+      localStorage.removeItem('diag_hist');
+      localStorage.removeItem('puntoCorte');
+      if(!local()&&typeof window.storage!=='undefined'){
+        try{
+          const listado=window.storage.list('resp:',true);
+          const claves=listado&&listado.keys?listado.keys:[];
+          for(const k of claves){try{window.storage.delete(k,true);}catch(e){}}
+          try{window.storage.delete('config:puntoCorte',true);}catch(e){}
+        }catch(e){}
+      }
+      alert('✅ Todos los datos han sido eliminados correctamente.');
+      E.registros=[];
+      E.totalGrupo=0;
+      E.totalRespuestasGrupo=0;
+      E.promedioGrupo=null;
+      E.puntoCorte=null;
+      cargarPanel();
+    }catch(e){
+      alert('❌ Error al limpiar datos: '+e.message);
+    }
+  }
 }
 
 // ================================================================
@@ -429,15 +377,28 @@ function comenzar(){
   E.respuestas={};
   E.cambios=0;
   E.inicio=Date.now();
+  E._ignorarCambioPantalla=false;
   if(document.documentElement.requestFullscreen)document.documentElement.requestFullscreen().catch(()=>{});
   irA('cuestionario');
 }
 
 function seleccionar(bi,val){E.respuestas[bi]=val;render();}
 
+// CAMBIO 2: Alerta personalizada (no usa alert())
+function mostrarAvisoSeleccion(){
+  E._ignorarCambioPantalla=true;
+  const avisoExistente=document.querySelector('.aviso-seleccion');
+  if(avisoExistente)avisoExistente.remove();
+  const aviso=document.createElement('div');
+  aviso.className='aviso-seleccion';
+  aviso.innerHTML='<span>⚠️ Selecciona una opción antes de continuar.</span><button class="btn btn-primario" style="padding:8px 20px;font-size:0.85rem;" onclick="this.closest(\'.aviso-seleccion\').remove(); E._ignorarCambioPantalla=false;">Entendido</button>';
+  document.body.appendChild(aviso);
+  setTimeout(()=>{if(aviso.parentNode)aviso.remove();E._ignorarCambioPantalla=false;},5000);
+}
+
 function siguiente(){
   const actual=E.sesion[E.idx];
-  if(E.respuestas[actual.baseIndex]===undefined){alert('Selecciona una opción');return;}
+  if(E.respuestas[actual.baseIndex]===undefined){mostrarAvisoSeleccion();return;}
   if(E.idx<E.sesion.length-1){E.idx++;render();window.scrollTo(0,0);}
   else finalizar();
 }
@@ -453,8 +414,39 @@ async function finalizar(){
   try{await guardar(reg);E.guardando=false;await calcularPromedio();irA('resultado');}catch(e){E.guardando=false;E.errorGuardado=true;irA('error');}
 }
 
+// CAMBIO 3: Conteo correcto de participantes (filtra duplicados)
 async function calcularPromedio(){
-  try{const todas=await obtener();if(todas.length){const sum=todas.reduce((a,r)=>a+(r.puntaje||0),0);E.promedioGrupo=sum/todas.length;E.totalGrupo=todas.length;}else{E.promedioGrupo=null;E.totalGrupo=0;}}catch(e){E.promedioGrupo=null;E.totalGrupo=0;}
+  try{
+    const todas=await obtener();
+    let filtrados=todas;
+    if(E.puntoCorte){
+      const corte=new Date(E.puntoCorte);
+      filtrados=todas.filter(r=>r.fecha && new Date(r.fecha)>corte);
+    }
+    const vistos=new Set();
+    const unicos=filtrados.filter(r=>{
+      if(!r.nombre||r.nombre.trim()==='')return false;
+      const clave=(r.nombre||'').trim().toLowerCase()+'_'+(r.fecha||'').slice(0,10);
+      if(vistos.has(clave))return false;
+      vistos.add(clave);
+      return true;
+    });
+    const validos=unicos.filter(r=>typeof r.puntaje==='number');
+    if(validos.length>0){
+      const sum=validos.reduce((a,r)=>a+(r.puntaje||0),0);
+      E.promedioGrupo=sum/validos.length;
+      E.totalGrupo=validos.length;
+      E.totalRespuestasGrupo=validos.length;
+    }else{
+      E.promedioGrupo=null;
+      E.totalGrupo=0;
+      E.totalRespuestasGrupo=0;
+    }
+  }catch(e){
+    E.promedioGrupo=null;
+    E.totalGrupo=0;
+    E.totalRespuestasGrupo=0;
+  }
 }
 
 async function buscarResultado(){
@@ -481,83 +473,50 @@ function intentarAcceso(){
 
 async function cargarPanel(){
   irA('guardando');
-  try{E.registros=await obtener();try{const corte=await window.storage.get('config:puntoCorte',true);E.puntoCorte=corte&&corte.value?corte.value:null;}catch(e){E.puntoCorte=null;}aplicarCorte();irA('panel');}catch(e){E.registros=[];irA('panel');}
+  try{
+    E.registros=await obtener();
+    try{const corte=await window.storage.get('config:puntoCorte',true);E.puntoCorte=corte&&corte.value?corte.value:null;}catch(e){E.puntoCorte=null;}
+    aplicarCorte();
+    await calcularPromedio();
+    irA('panel');
+  }catch(e){
+    E.registros=[];
+    irA('panel');
+  }
 }
 
 function aplicarCorte(){
-  let puntoCorte = E.puntoCorte;
-  
-  if (!puntoCorte) {
-    if (typeof window.storage !== 'undefined' && window.storage.get) {
-      try {
-        const corte = window.storage.get('config:puntoCorte', true);
-        if (corte && corte.value) {
-          puntoCorte = corte.value;
-          E.puntoCorte = puntoCorte;
-        }
-      } catch (e) {}
+  let puntoCorte=E.puntoCorte;
+  if(!puntoCorte){
+    if(typeof window.storage!=='undefined'&&window.storage.get){
+      try{const corte=window.storage.get('config:puntoCorte',true);if(corte&&corte.value){puntoCorte=corte.value;E.puntoCorte=puntoCorte;}}catch(e){}
     }
-    
-    if (!puntoCorte) {
-      try {
-        const localCorte = localStorage.getItem('puntoCorte');
-        if (localCorte) {
-          puntoCorte = localCorte;
-          E.puntoCorte = puntoCorte;
-        }
-      } catch (e) {}
+    if(!puntoCorte){
+      try{const localCorte=localStorage.getItem('puntoCorte');if(localCorte){puntoCorte=localCorte;E.puntoCorte=puntoCorte;}}catch(e){}
     }
   }
-  
-  if (puntoCorte && !E.mostrandoHistorico) {
-    E.registros = E.registros.filter(r => new Date(r.fecha) > new Date(puntoCorte));
+  if(puntoCorte&&!E.mostrandoHistorico){
+    E.registros=E.registros.filter(r=>new Date(r.fecha)>new Date(puntoCorte));
   }
 }
 
 function alternarHistorico(){E.mostrandoHistorico=!E.mostrandoHistorico;aplicarCorte();render();}
 
-// ================================================================
-// EXPORTAR CSV - CORREGIDO CON COMA
-// ================================================================
+// CAMBIO 6: CSV con nombres cortos y tiempo hh:mm:ss
 function exportarCSV(){
   const registros = E.registros || [];
-  
-  // Cabeceras en el orden correcto
-  const headers = [
-    'Nombre',
-    'Carrera',
-    'Grupo',
-    'Puntaje',
-    'Total',
-    'Hora inicio',
-    'Tiempo (segundos)',
-    'Cambios de pantalla',
-    'Fecha'
-  ];
-  
-  // Crear filas en el MISMO orden que las cabeceras
+  const headers = ['Nombre','Carrera','Grupo','Puntaje','Total','Hora','Tiempo','Cambios','Fecha'];
   const filas = registros.map(r => {
     let fechaLegible = '';
     let horaInicioLegible = '';
-    
     if (r.fecha) {
       const fecha = new Date(r.fecha);
-      fechaLegible = fecha.toLocaleDateString('es-MX', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric'
-      });
+      fechaLegible = fecha.toLocaleDateString('es-MX', {day:'2-digit', month:'2-digit', year:'numeric'});
     }
-    
     if (r.horaInicio) {
       const hora = new Date(r.horaInicio);
-      horaInicioLegible = hora.toLocaleTimeString('es-MX', {
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit'
-      });
+      horaInicioLegible = hora.toLocaleTimeString('es-MX', {hour:'2-digit', minute:'2-digit', second:'2-digit'});
     }
-    
     return [
       r.nombre || '',
       r.carrera || CONFIG.carrera,
@@ -565,22 +524,16 @@ function exportarCSV(){
       r.puntaje || 0,
       r.total || TOTAL,
       horaInicioLegible,
-      r.tiempoSegundos || 0,
+      formatoTiempo(r.tiempoSegundos || 0),
       r.cambiosPantalla || 0,
       fechaLegible
     ];
   });
-  
-  // USAR COMA (,) como separador - Excel lo abre correctamente
   const cabecera = headers.join(',');
   const cuerpo = filas.map(f => f.join(',')).join('\n');
   const csv = cabecera + '\n' + cuerpo;
-  
-  // Añadir BOM para UTF-8
   const bom = '\uFEFF';
   const csvConBOM = bom + csv;
-  
-  // Descargar el archivo
   const blob = new Blob([csvConBOM], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -597,57 +550,44 @@ function cancelarBorrado(){E.confirmandoBorrado=false;render();}
 
 async function confirmarBorrado(){
   irA('guardando');
-  
-  try {
+  try{
     const ahoraISO = new Date().toISOString();
-    
-    if (typeof window.storage !== 'undefined' && window.storage.set) {
+    if(typeof window.storage !== 'undefined' && window.storage.set){
       await window.storage.set('config:puntoCorte', ahoraISO, true);
-    } else {
-      localStorage.setItem('puntoCorte', ahoraISO);
-      console.log('Punto de corte guardado en localStorage');
     }
-    
+    localStorage.setItem('puntoCorte', ahoraISO);
     E.puntoCorte = ahoraISO;
     E.mostrandoHistorico = false;
-    
+    E.registros = [];
+    E.totalGrupo = 0;
+    E.totalRespuestasGrupo = 0;
+    E.promedioGrupo = null;
     const todas = await obtener();
     E.registros = todas;
     aplicarCorte();
-    
+    await calcularPromedio();
     E.confirmandoBorrado = false;
-    E.mensajeBorrado = {
-      tipo: 'ok',
-      texto: '✅ Las respuestas anteriores dejaron de contarse. Cualquier respuesta nueva volverá a contar con normalidad.'
-    };
-    
+    E.mensajeBorrado = {tipo:'ok', texto:'✅ Las respuestas anteriores dejaron de contarse. Cualquier respuesta nueva volverá a contar con normalidad.'};
     irA('panel');
-    
-  } catch (error) {
-    console.error('Error al aplicar punto de corte:', error);
-    
+  } catch(error){
     E.confirmandoBorrado = false;
-    E.mensajeBorrado = {
-      tipo: 'error',
-      texto: '❌ No se pudo aplicar el punto de corte. Si el problema persiste, intenta exportar el CSV y luego refresca la página.'
-    };
-    
+    E.mensajeBorrado = {tipo:'error', texto:'❌ No se pudo aplicar el punto de corte. Intenta usar "🧹 Limpiar datos de prueba" en su lugar.'};
     irA('panel');
   }
 }
 
 function prepararRepaso(origen){
   const pendientes=[];
-  for(let bi=0;bi<TOTAL;bi++){
-    const r=E.respuestas[bi];
-    if(r!==PREGUNTAS[bi].correct)pendientes.push(bi);
-  }
+  for(let bi=0;bi<TOTAL;bi++){const r=E.respuestas[bi];if(r!==PREGUNTAS[bi].correct)pendientes.push(bi);}
   E.repasoPendientes=pendientes;
   E.repasoOrigen=origen;
   irA('repaso');
 }
 
-function volverInicio(){E={pantalla:'inicio',nombre:'',sesion:[],idx:0,respuestas:{},inicio:null,tiempo:0,cambios:0,resultado:null,promedioGrupo:null,totalGrupo:0,consultaNombre:'',consultado:null,consultaError:false,autenticado:false,registros:[],mostrandoHistorico:false,puntoCorte:null,confirmandoBorrado:false,mensajeBorrado:null,guardando:false,errorGuardado:false,repasoPendientes:[],repasoOrigen:'resultado'};render();}
+function volverInicio(){
+  E={pantalla:'inicio',nombre:'',sesion:[],idx:0,respuestas:{},inicio:null,tiempo:0,cambios:0,resultado:null,promedioGrupo:null,totalGrupo:0,totalRespuestasGrupo:0,consultaNombre:'',consultado:null,consultaError:false,autenticado:false,registros:[],mostrandoHistorico:false,puntoCorte:null,confirmandoBorrado:false,mensajeBorrado:null,guardando:false,errorGuardado:false,repasoPendientes:[],repasoOrigen:'resultado',_ignorarCambioPantalla:false};
+  render();
+}
 
 // ================================================================
 // VISTAS
@@ -711,13 +651,13 @@ function vistaResultado(){
   const nivel={alto:'Nivel alto',medio:'Nivel medio',bajo:'Nivel bajo – requiere refuerzo'}[r.nivel];
   const clase={alto:'nivel-alto',medio:'nivel-medio',bajo:'nivel-bajo'}[r.nivel];
   let comp='';
-  if(E.promedioGrupo!==null){
+  if(E.promedioGrupo!==null && E.totalRespuestasGrupo > 0){
     const tu=Math.round((r.puntaje/r.total)*100);
     const grp=Math.round((E.promedioGrupo/r.total)*100);
     comp=`<div class="comparacion-barra-wrap">
       <div class="comparacion-fila"><div class="nombre">Tú</div><div class="comparacion-track"><div class="comparacion-fill tu" style="width:${tu}%;"></div></div><div class="comparacion-valor">${tu}%</div></div>
       <div class="comparacion-fila"><div class="nombre">Grupo</div><div class="comparacion-track"><div class="comparacion-fill grupo" style="width:${grp}%;"></div></div><div class="comparacion-valor">${grp}%</div></div>
-    </div><p style="text-align:center;color:var(--texto-tenue);font-size:0.78rem;margin-top:6px;">Comparación contra ${E.totalGrupo} participante(s).</p>`;
+    </div><p style="text-align:center;color:var(--texto-tenue);font-size:0.78rem;margin-top:6px;">Comparación contra ${E.totalRespuestasGrupo} participante${E.totalRespuestasGrupo !== 1 ? 's' : ''}.</p>`;
   } else comp='<p style="text-align:center;color:var(--texto-tenue);font-size:0.82rem;margin-top:16px;">No hay datos del grupo para comparar.</p>';
   let revHtml=r.detalle.map((d,i)=>{
     let cl, pill, det;
@@ -750,7 +690,6 @@ function vistaRepaso(){
       <button class="btn btn-primario btn-bloque" onclick="irA('${E.repasoOrigen}')">Volver</button>
     </div>`;
   }
-  
   let ej = '', resp = '', c = 1;
   pendientes.forEach(bi => {
     const q = PREGUNTAS[bi];
@@ -765,9 +704,7 @@ function vistaRepaso(){
       });
     }
   });
-  
   const fecha = new Date().toLocaleDateString('es-MX');
-  
   return `<div id="repaso-content">
     <div class="tarjeta">
       <div class="logo">UTSC</div>
@@ -792,123 +729,20 @@ function vistaRepaso(){
 
 function imprimirRepaso(){
   const contenido = document.getElementById('repaso-content');
-  if(!contenido) {
-    window.print();
-    return;
-  }
-  
+  if(!contenido) { window.print(); return; }
   const ventana = window.open('', '_blank', 'width=800,height=600');
-  if(!ventana) {
-    window.print();
-    return;
-  }
-  
+  if(!ventana) { window.print(); return; }
   const tarjetas = contenido.querySelectorAll('.tarjeta');
-  let ejerciciosHtml = '';
-  let respuestasHtml = '';
+  let ejerciciosHtml = '', respuestasHtml = '';
   if(tarjetas.length >= 3) {
     ejerciciosHtml = tarjetas[1].outerHTML;
     respuestasHtml = tarjetas[2].outerHTML;
   } else {
     ejerciciosHtml = contenido.innerHTML;
   }
-  
   const fecha = new Date().toLocaleDateString('es-MX');
   const nombre = esc(E.nombre);
-  
-  ventana.document.write(`
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <meta charset="UTF-8">
-      <title>Hoja de repaso - Fundamentos Matemáticos</title>
-      <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { 
-          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; 
-          padding: 40px; 
-          max-width: 800px; 
-          margin: 0 auto; 
-          color: #222;
-          background: #fff;
-          line-height: 1.6;
-        }
-        .logo { text-align: center; font-size: 2.5rem; font-weight: 900; color: #FF8201; letter-spacing: 2px; }
-        .materia-titulo { text-align: center; font-size: 1.5rem; color: #FF8201; margin-top: -4px; margin-bottom: 4px; font-weight: 700; }
-        .subtitulo { text-align: center; font-size: 1rem; color: #49C2B3; font-weight: 500; margin-bottom: 16px; }
-        .datos { text-align: center; color: #555; font-size: 0.9rem; margin-bottom: 20px; }
-        h2 { color: #49C2B3; border-bottom: 2px solid #49C2B3; padding-bottom: 6px; margin-top: 20px; margin-bottom: 16px; page-break-after: avoid; }
-        .etiqueta-tema { 
-          display: inline-block; 
-          background: rgba(73,194,179,0.15); 
-          color: #49C2B3; 
-          font-size: 0.72rem; 
-          font-weight: 700; 
-          letter-spacing: 0.03em; 
-          text-transform: uppercase; 
-          padding: 4px 10px; 
-          border-radius: 20px; 
-          margin-bottom: 6px;
-          page-break-after: avoid;
-        }
-        .revision-item { 
-          margin-bottom: 16px; 
-          padding: 12px 16px; 
-          border-left: 4px solid #49C2B3; 
-          background: #f5f5f5; 
-          border-radius: 4px;
-          page-break-inside: avoid;
-        }
-        .revision-pregunta { font-weight: 600; font-size: 1rem; margin-top: 4px; }
-        .frac {
-          display: inline-flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          vertical-align: middle;
-          margin: 0 3px;
-          line-height: 1.05;
-          font-size: 0.94em;
-          position: relative;
-          top: 0.05em;
-        }
-        .frac-num { padding: 0 3px 1px; border-bottom: 1.4px solid currentColor; }
-        .frac-den { padding: 1px 3px 0; }
-        .footer { 
-          text-align: center; 
-          color: #999; 
-          font-size: 0.7rem; 
-          margin-top: 30px; 
-          border-top: 1px solid #ddd; 
-          padding-top: 16px; 
-        }
-        .btn, .fila-botones { display: none; }
-        @media print { 
-          body { padding: 20px; } 
-          .btn, .fila-botones { display: none !important; }
-        }
-      </style>
-    </head>
-    <body>
-      <div class="logo">UTSC</div>
-      <div class="materia-titulo">Fundamentos Matemáticos</div>
-      <div class="subtitulo">Hoja de repaso</div>
-      <div class="datos">${nombre} · ${CONFIG.carrera} · ${CONFIG.grupo} · ${fecha}</div>
-      
-      ${ejerciciosHtml}
-      ${respuestasHtml}
-      
-      <div class="footer">${CONFIG.institucion} · ${CONFIG.materia} · Hoja de repaso generada el ${fecha}</div>
-      <script>
-        window.onload = function() { 
-          var botones = document.querySelectorAll('.btn, .fila-botones');
-          botones.forEach(function(b) { b.style.display = 'none'; });
-          window.print(); 
-        };
-      <\/script>
-    </body>
-    </html>
-  `);
+  ventana.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Hoja de repaso - Fundamentos Matemáticos</title><style>*{box-sizing:border-box;margin:0;padding:0;}body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;padding:40px;max-width:800px;margin:0 auto;color:#222;background:#fff;line-height:1.6;}.logo{text-align:center;font-size:2.5rem;font-weight:900;color:#FF8201;letter-spacing:2px;}.materia-titulo{text-align:center;font-size:1.5rem;color:#FF8201;margin-top:-4px;margin-bottom:4px;font-weight:700;}.subtitulo{text-align:center;font-size:1rem;color:#49C2B3;font-weight:500;margin-bottom:16px;}.datos{text-align:center;color:#555;font-size:0.9rem;margin-bottom:20px;}h2{color:#49C2B3;border-bottom:2px solid #49C2B3;padding-bottom:6px;margin-top:20px;margin-bottom:16px;page-break-after:avoid;}.etiqueta-tema{display:inline-block;background:rgba(73,194,179,0.15);color:#49C2B3;font-size:0.72rem;font-weight:700;letter-spacing:0.03em;text-transform:uppercase;padding:4px 10px;border-radius:20px;margin-bottom:6px;page-break-after:avoid;}.revision-item{margin-bottom:16px;padding:12px 16px;border-left:4px solid #49C2B3;background:#f5f5f5;border-radius:4px;page-break-inside:avoid;}.revision-pregunta{font-weight:600;font-size:1rem;margin-top:4px;}.frac{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;vertical-align:middle;margin:0 3px;line-height:1.05;font-size:0.94em;position:relative;top:0.05em;}.frac-num{padding:0 3px 1px;border-bottom:1.4px solid currentColor;}.frac-den{padding:1px 3px 0;}.footer{text-align:center;color:#999;font-size:0.7rem;margin-top:30px;border-top:1px solid #ddd;padding-top:16px;}.btn,.fila-botones{display:none;}@media print{body{padding:20px;}.btn,.fila-botones{display:none!important;}}</style></head><body><div class="logo">UTSC</div><div class="materia-titulo">Fundamentos Matemáticos</div><div class="subtitulo">Hoja de repaso</div><div class="datos">${nombre} · ${CONFIG.carrera} · ${CONFIG.grupo} · ${fecha}</div>${ejerciciosHtml}${respuestasHtml}<div class="footer">${CONFIG.institucion} · ${CONFIG.materia} · Hoja de repaso generada el ${fecha}</div><script>window.onload=function(){var botones=document.querySelectorAll('.btn, .fila-botones');botones.forEach(function(b){b.style.display='none';});window.print();};<\/script></body></html>`);
   ventana.document.close();
 }
 
@@ -968,21 +802,22 @@ function vistaPanel(){
     const fecha=new Date(r.fecha);
     const camb=r.cambiosPantalla||0;
     const hi=r.horaInicio?new Date(r.horaInicio).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'}):'—';
-    return `<tr><td>${esc(r.nombre)}</td><td>${esc(r.carrera||CONFIG.carrera)}</td><td>${esc(r.grupo||CONFIG.grupo)}</td><td>${r.puntaje}/${r.total}</td><td>${hi}</td><td>${fmt(r.tiempoSegundos||0)}</td><td style="${camb>0?'color:var(--amarillo);font-weight:700;':''}">${camb}</td><td>${fecha.toLocaleDateString('es-MX')}</td></tr>`;
+    return `<tr><td>${esc(r.nombre)}</td><td>${esc(r.carrera||CONFIG.carrera)}</td><td>${esc(r.grupo||CONFIG.grupo)}</td><td>${r.puntaje}/${r.total}</td><td>${hi}</td><td>${formatoTiempo(r.tiempoSegundos||0)}</td><td style="${camb>0?'color:var(--amarillo);font-weight:700;':''}">${camb}</td><td>${fecha.toLocaleDateString('es-MX')}</td></tr>`;
   }).join('');
   let zona='';
   if(E.confirmandoBorrado){
     zona=`<div class="mensaje-error">⚠️ Esto dejará de contar las ${n} respuestas guardadas. ¿Confirmas?</div>
       <div class="fila-botones"><button class="btn btn-secundario" onclick="cancelarBorrado()">Cancelar</button><button class="btn btn-peligro" onclick="confirmarBorrado()">Sí, continuar</button></div>`;
   }else{
-    zona=`<button class="btn btn-peligro" onclick="pedirBorrado()">Borrar todas las respuestas guardadas</button>`;
+    zona=`<button class="btn btn-peligro" onclick="pedirBorrado()">Borrar todas las respuestas guardadas</button>
+    <button class="btn btn-peligro" onclick="limpiarAlmacenamientoLocal()" style="margin-top:10px;">🧹 Limpiar datos de prueba</button>`;
   }
   return `<div class="tarjeta"><div class="logo">UTSC</div><h2 class="subtitulo">📊 Panel docente</h2><p class="institucion">${CONFIG.institucion}</p>
     ${E.mensajeBorrado?`<div class="mensaje-${E.mensajeBorrado.tipo}">${esc(E.mensajeBorrado.texto)}</div>`:''}
     <div class="stats-grid"><div class="stat-box"><div class="valor">${n}</div><div class="etiqueta">Respuestas</div></div>
     <div class="stat-box"><div class="valor">${prom.toFixed(1)}/${regs[0]?.total||TOTAL}</div><div class="etiqueta">Promedio</div></div>
     <div class="stat-box"><div class="valor">${dom}%</div><div class="etiqueta">Dominio general</div></div>
-    <div class="stat-box"><div class="valor">${fmt(Math.round(tProm))}</div><div class="etiqueta">Tiempo promedio</div></div></div>
+    <div class="stat-box"><div class="valor">${formatoTiempo(Math.round(tProm))}</div><div class="etiqueta">Tiempo promedio</div></div></div>
   </div>
   <div class="tarjeta"><h2 class="subtitulo" style="text-align:left;">Desempeño por pregunta</h2><div class="tabla-scroll"><table class="tabla-docente"><thead><tr><th>#</th><th>Tema</th><th>% Acierto</th><th>% Sin identificar</th></tr></thead><tbody>${filasPreg||'<tr><td colspan="4" style="color:var(--texto-tenue);">Sin datos</td></tr>'}</tbody></table></div></div>
   <div class="tarjeta"><h2 class="subtitulo" style="text-align:left;">Respuestas individuales</h2><div class="tabla-scroll"><table class="tabla-docente"><thead><tr><th>Nombre</th><th>Carrera</th><th>Grupo</th><th>Puntaje</th><th>Hora inicio</th><th>Tiempo</th><th>Cambios</th><th>Fecha</th></tr></thead><tbody>${filasAlumnos||'<tr><td colspan="8" style="color:var(--texto-tenue);">Sin respuestas</td></tr>'}</tbody></table></div>
@@ -1014,16 +849,12 @@ function render(){
     default:html=vistaInicio();
   }
   app.innerHTML=html;
-  
   vincularEventos();
 }
 
 function vincularEventos(){
   const btnEntrar = document.getElementById('btn-entrar-docente');
-  if(btnEntrar) {
-    btnEntrar.addEventListener('click', intentarAcceso);
-  }
-  
+  if(btnEntrar) { btnEntrar.addEventListener('click', intentarAcceso); }
   const campoPin = document.getElementById('campo-pin');
   if(campoPin) {
     campoPin.removeEventListener('keydown', handlePinEnter);
@@ -1031,32 +862,35 @@ function vincularEventos(){
   }
 }
 
-function handlePinEnter(e) {
-  if(e.key === 'Enter') {
-    e.preventDefault();
-    intentarAcceso();
-  }
-}
+function handlePinEnter(e) { if(e.key === 'Enter') { e.preventDefault(); intentarAcceso(); } }
 
 // ================================================================
-// DETECCIÓN DE CAMBIOS DE PANTALLA
+// DETECCIÓN DE CAMBIOS DE PANTALLA (CAMBIO 2 aplicado)
 // ================================================================
+function mostrarAvisoCambioPantalla(){
+  const overlay=document.createElement('div');overlay.className='aviso-cambio-overlay';
+  overlay.innerHTML=`<div class="aviso-cambio-caja"><div class="aviso-cambio-titulo">AVISO</div><div class="aviso-cambio-mensaje">Se detectó que saliste de esta pantalla ${E.cambios} ${E.cambios===1?'vez':'veces'} durante el diagnóstico.</div><button class="btn btn-primario" onclick="this.closest('.aviso-cambio-overlay').remove()">Entendido</button></div>`;
+  document.body.appendChild(overlay);
+}
+
 document.addEventListener('visibilitychange',()=>{
-  if(document.hidden&&E.pantalla==='cuestionario'){
+  if (E._ignorarCambioPantalla) return;
+  const avisoSeleccion = document.querySelector('.aviso-seleccion');
+  if(document.hidden && E.pantalla === 'cuestionario' && !avisoSeleccion){
     E.cambios++;
-    const overlay=document.createElement('div');overlay.className='aviso-cambio-overlay';
-    overlay.innerHTML=`<div class="aviso-cambio-caja"><div class="aviso-cambio-titulo">AVISO</div><div class="aviso-cambio-mensaje">Se detectó que saliste de esta pantalla ${E.cambios} ${E.cambios===1?'vez':'veces'} durante el diagnóstico.</div><button class="btn btn-primario" onclick="this.closest('.aviso-cambio-overlay').remove()">Entendido</button></div>`;
-    document.body.appendChild(overlay);
+    mostrarAvisoCambioPantalla();
   }
 });
+
 document.addEventListener('fullscreenchange',()=>{
-  if(!document.fullscreenElement&&E.pantalla==='cuestionario'){
+  if (E._ignorarCambioPantalla) return;
+  const avisoSeleccion = document.querySelector('.aviso-seleccion');
+  if(!document.fullscreenElement && E.pantalla === 'cuestionario' && !avisoSeleccion){
     E.cambios++;
-    const overlay=document.createElement('div');overlay.className='aviso-cambio-overlay';
-    overlay.innerHTML=`<div class="aviso-cambio-caja"><div class="aviso-cambio-titulo">AVISO</div><div class="aviso-cambio-mensaje">Se detectó que saliste de esta pantalla ${E.cambios} ${E.cambios===1?'vez':'veces'} durante el diagnóstico.</div><button class="btn btn-primario" onclick="this.closest('.aviso-cambio-overlay').remove()">Entendido</button></div>`;
-    document.body.appendChild(overlay);
+    mostrarAvisoCambioPantalla();
   }
 });
+
 window.addEventListener('beforeunload',e=>{if(E.pantalla==='cuestionario'){e.preventDefault();e.returnValue='';}});
 
 // ================================================================
