@@ -3,13 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Diagnóstico - Fundamentos Matemáticos</title>
+<title>Diagnóstico de conocimientos previos – Fundamentos Matemáticos</title>
 <style>
 :root {
   --naranja: #FF8201;
-  --naranja-oscuro: #D96D00;
   --teal: #49C2B3;
-  --teal-oscuro: #38988D;
   --bg: #1B1E22;
   --bg-card: #24282E;
   --bg-card-2: #2D3239;
@@ -20,186 +18,319 @@
   --rojo: #E15554;
   --amarillo: #F0A93F;
   --radio: 14px;
-  --sombra: 0 4px 20px rgba(0,0,0,0.3);
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{
   background:var(--bg);
   color:var(--texto);
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
   min-height:100vh;
   display:flex;
   flex-direction:column;
   align-items:center;
-  padding:32px 16px 48px;
+  padding:32px 16px 64px;
 }
-.contenedor{width:100%;max-width:740px;}
+.contenedor{width:100%;max-width:720px;}
 .tarjeta{
   background:var(--bg-card);
   border:1px solid var(--borde);
   border-radius:var(--radio);
-  padding:28px 32px;
-  margin-bottom:18px;
-  box-shadow:var(--sombra);
-  transition:transform 0.15s ease;
+  padding:32px;
+  margin-bottom:20px;
+  box-shadow:0 4px 24px rgba(0,0,0,0.25);
 }
 .logo{
   text-align:center;
-  font-size:2.8rem;
+  font-size:2.5rem;
   font-weight:900;
   color:var(--naranja);
-  letter-spacing:3px;
-  margin-bottom:4px;
+  letter-spacing:2px;
+  margin-bottom:8px;
 }
-h1{text-align:center;font-size:1.5rem;color:var(--texto);font-weight:700;margin-bottom:2px;}
-h2.subtitulo{text-align:center;font-size:1rem;font-weight:500;color:var(--naranja);margin:2px 0 4px;}
-p.institucion{text-align:center;color:var(--texto-tenue);font-size:0.85rem;margin:0 0 18px;}
-.aviso-local{background:rgba(240,169,63,0.12);border:1px solid var(--amarillo);color:var(--amarillo);border-radius:10px;padding:12px 16px;font-size:0.88rem;margin-bottom:18px;line-height:1.5;}
-ol.instrucciones{padding-left:24px;color:var(--texto);font-size:0.92rem;line-height:1.7;}
-ol.instrucciones li{margin-bottom:5px;}
-label{display:block;font-size:0.82rem;color:var(--texto-tenue);margin:16px 0 5px;font-weight:600;letter-spacing:0.02em;}
+h1{text-align:center;font-size:1.5rem;color:var(--texto);font-weight:700;}
+h2.subtitulo{text-align:center;font-size:1rem;font-weight:500;color:var(--naranja);margin:4px 0;}
+p.institucion{text-align:center;color:var(--texto-tenue);font-size:0.85rem;margin:0 0 24px;}
+.aviso-local{background:rgba(240,169,63,0.12);border:1px solid var(--amarillo);color:var(--amarillo);border-radius:10px;padding:12px 16px;font-size:0.88rem;margin-bottom:20px;}
+ol.instrucciones{padding-left:22px;color:var(--texto);font-size:0.92rem;line-height:1.65;}
+ol.instrucciones li{margin-bottom:6px;}
+label{display:block;font-size:0.85rem;color:var(--texto-tenue);margin:18px 0 6px;font-weight:600;}
 input[type=text],input[type=password]{
-  width:100%;background:var(--bg-card-2);border:1.5px solid var(--borde);border-radius:10px;
-  padding:13px 16px;color:var(--texto);font-size:16px;outline:none;transition:border-color 0.2s;
+  width:100%;background:var(--bg-card-2);border:1px solid var(--borde);border-radius:10px;
+  padding:13px 14px;color:var(--texto);font-size:16px;outline:none;
 }
-input[type=text]:focus,input[type=password]:focus{border-color:var(--naranja);box-shadow:0 0 0 3px rgba(255,130,1,0.15);}
-input[readonly]{color:var(--texto-tenue);background:#20242a;cursor:default;}
+input[type=text]:focus,input[type=password]:focus{border-color:var(--naranja);}
+input[readonly]{color:var(--texto-tenue);background:#20242a;}
 .btn{
-  display:inline-block;border:none;border-radius:10px;padding:14px 24px;font-size:16px;
-  font-weight:700;cursor:pointer;transition:transform 0.1s,opacity 0.15s,background 0.2s;
-  font-family:inherit;text-align:center;
+  display:inline-block;border:none;border-radius:10px;padding:14px 22px;font-size:16px;
+  font-weight:700;cursor:pointer;transition:transform .08s,opacity .15s;font-family:inherit;
 }
-.btn:active{transform:scale(0.97);}
+.btn:active{transform:scale(0.98);}
 .btn-primario{background:var(--naranja);color:#1B1E22;}
-.btn-primario:hover{background:var(--naranja-oscuro);}
+.btn-primario:hover{background:#D96D00;}
 .btn-secundario{background:transparent;color:var(--teal);border:1.5px solid var(--teal);}
-.btn-secundario:hover{background:rgba(73,194,179,0.08);}
-.btn-peligro{background:transparent;color:var(--rojo);border:1.5px solid var(--rojo);}
-.btn-peligro:hover{background:rgba(225,85,84,0.1);}
-.btn-bloque{width:100%;text-align:center;margin-top:18px;}
-.btn:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
-.fila-botones{display:flex;gap:12px;margin-top:18px;}
+.btn-secundario:hover{background:rgba(73,194,179,0.1);}
+.btn-bloque{width:100%;text-align:center;margin-top:24px;}
+.btn:disabled{opacity:0.4;cursor:not-allowed;}
+.fila-botones{display:flex;gap:10px;margin-top:24px;}
 .fila-botones .btn{flex:1;min-width:0;}
-.barra-progreso{height:6px;background:var(--bg-card-2);border-radius:4px;overflow:hidden;margin-bottom:4px;}
-.barra-progreso-fill{height:100%;background:linear-gradient(90deg,var(--naranja),var(--teal));transition:width 0.3s ease;}
-.progreso-texto{font-size:0.78rem;color:var(--texto-tenue);text-align:right;margin-bottom:16px;}
-.etiqueta-tema{display:inline-block;background:rgba(73,194,179,0.13);color:var(--teal);font-size:0.7rem;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;padding:4px 12px;border-radius:16px;margin-bottom:12px;}
-.pregunta-texto{font-size:1.1rem;line-height:1.6;margin-bottom:18px;font-weight:600;}
-.opcion{display:block;width:100%;text-align:left;background:var(--bg-card-2);border:1.5px solid var(--borde);border-radius:10px;padding:13px 16px;color:var(--texto);font-size:0.95rem;margin-bottom:9px;cursor:pointer;font-family:inherit;transition:border-color 0.15s,background 0.15s,transform 0.1s;}
-.opcion:hover{border-color:var(--naranja);transform:translateX(3px);}
+.barra-progreso{height:8px;background:var(--bg-card-2);border-radius:6px;overflow:hidden;margin-bottom:6px;}
+.barra-progreso-fill{height:100%;background:linear-gradient(90deg,var(--naranja),var(--teal));transition:width .25s;}
+.progreso-texto{font-size:0.8rem;color:var(--texto-tenue);text-align:right;margin-bottom:22px;}
+.etiqueta-tema{display:inline-block;background:rgba(73,194,179,0.15);color:var(--teal);font-size:0.72rem;font-weight:700;letter-spacing:0.03em;text-transform:uppercase;padding:4px 10px;border-radius:20px;margin-bottom:14px;}
+.pregunta-texto{font-size:1.15rem;line-height:1.5;margin-bottom:22px;font-weight:600;}
+.opcion{display:block;width:100%;text-align:left;background:var(--bg-card-2);border:1.5px solid var(--borde);border-radius:10px;padding:14px 16px;color:var(--texto);font-size:0.98rem;margin-bottom:10px;cursor:pointer;font-family:inherit;transition:border-color .12s,background .12s;}
+.opcion:hover{border-color:var(--naranja);}
 .opcion.seleccionada{border-color:var(--naranja);background:rgba(255,130,1,0.12);}
-.opcion-noidentifico{margin-top:14px;border-color:var(--borde);color:var(--texto-tenue);font-style:italic;}
-.opcion-noidentifico:hover{border-color:var(--amarillo);}
+.opcion-noidentifico{margin-top:20px;border-color:var(--borde);color:var(--texto-tenue);font-style:italic;}
 .opcion-noidentifico.seleccionada{border-color:var(--amarillo);background:rgba(240,169,63,0.1);color:var(--amarillo);}
-.resumen-puntaje{text-align:center;margin-bottom:6px;}
-.resumen-puntaje .numero{font-size:3rem;font-weight:800;color:var(--naranja);line-height:1.1;}
-.resumen-puntaje .de-total{color:var(--texto-tenue);font-size:1rem;font-weight:400;}
-.nivel-badge{display:inline-block;padding:6px 20px;border-radius:20px;font-weight:700;font-size:0.85rem;margin:8px auto 0;text-align:center;letter-spacing:0.02em;}
-.nivel-alto{background:rgba(63,181,111,0.18);color:var(--verde);border:1px solid rgba(63,181,111,0.3);}
-.nivel-medio{background:rgba(240,169,63,0.18);color:var(--amarillo);border:1px solid rgba(240,169,63,0.3);}
-.nivel-bajo{background:rgba(225,85,84,0.18);color:var(--rojo);border:1px solid rgba(225,85,84,0.3);}
+.resumen-puntaje{text-align:center;margin-bottom:8px;}
+.resumen-puntaje .numero{font-size:3rem;font-weight:800;color:var(--naranja);line-height:1;}
+.resumen-puntaje .de-total{color:var(--texto-tenue);font-size:1rem;}
+.nivel-badge{display:inline-block;padding:6px 16px;border-radius:20px;font-weight:700;font-size:0.85rem;margin:10px auto 0;text-align:center;}
+.nivel-alto{background:rgba(63,181,111,0.18);color:var(--verde);}
+.nivel-medio{background:rgba(240,169,63,0.18);color:var(--amarillo);}
+.nivel-bajo{background:rgba(225,85,84,0.18);color:var(--rojo);}
 .centrado{text-align:center;}
-.stats-grid{display:flex;gap:12px;margin-top:18px;flex-wrap:wrap;}
-.stat-box{flex:1;min-width:110px;background:var(--bg-card-2);border-radius:10px;padding:14px;text-align:center;border:1px solid var(--borde);}
+.stats-grid{display:flex;gap:12px;margin-top:24px;flex-wrap:wrap;}
+.stat-box{flex:1;min-width:130px;background:var(--bg-card-2);border-radius:10px;padding:16px;text-align:center;}
 .stat-box .valor{font-size:1.4rem;font-weight:700;color:var(--texto);}
-.stat-box .etiqueta{font-size:0.72rem;color:var(--texto-tenue);margin-top:3px;text-transform:uppercase;letter-spacing:0.03em;}
+.stat-box .etiqueta{font-size:0.75rem;color:var(--texto-tenue);margin-top:4px;}
 .frac{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;vertical-align:middle;margin:0 3px;line-height:1.05;font-size:0.94em;position:relative;top:0.05em;}
-.frac-num{padding:0 4px 1px;border-bottom:1.5px solid currentColor;}
-.frac-den{padding:1px 4px 0;}
-.recomendacion-texto{color:var(--texto);font-size:0.88rem;line-height:1.55;margin:0 0 14px;}
-.tema-item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;border-radius:10px;background:var(--bg-card-2);margin-bottom:8px;border-left:4px solid var(--borde);}
+.frac-num{padding:0 3px 1px;border-bottom:1.4px solid currentColor;}
+.frac-den{padding:1px 3px 0;}
+.recomendacion-texto{color:var(--texto);font-size:0.88rem;line-height:1.55;margin:0 0 16px;}
+.tema-item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 16px;border-radius:10px;background:var(--bg-card-2);margin-bottom:9px;border-left:4px solid var(--borde);}
 .tema-item.tema-alto{border-left-color:var(--verde);}
 .tema-item.tema-medio{border-left-color:var(--amarillo);}
 .tema-item.tema-bajo{border-left-color:var(--rojo);}
-.tema-nombre{font-size:0.9rem;font-weight:600;color:var(--texto);}
-.tema-puntaje{font-size:0.75rem;color:var(--texto-tenue);margin-top:2px;}
-.tema-badge{font-size:0.65rem;font-weight:700;padding:4px 12px;border-radius:14px;white-space:nowrap;text-transform:uppercase;letter-spacing:0.03em;}
+.tema-nombre{font-size:0.92rem;font-weight:700;color:var(--texto);}
+.tema-puntaje{font-size:0.78rem;color:var(--texto-tenue);margin-top:2px;}
+.tema-badge{font-size:0.7rem;font-weight:700;padding:5px 12px;border-radius:20px;white-space:nowrap;text-transform:uppercase;letter-spacing:0.02em;}
 .tema-badge.nivel-alto{background:rgba(63,181,111,0.18);color:var(--verde);}
 .tema-badge.nivel-medio{background:rgba(240,169,63,0.18);color:var(--amarillo);}
 .tema-badge.nivel-bajo{background:rgba(225,85,84,0.18);color:var(--rojo);}
-.revision-item{border:1px solid var(--borde);border-radius:10px;padding:12px 16px;margin-bottom:9px;border-left:4px solid var(--borde);background:var(--bg-card-2);}
+.revision-item{border:1px solid var(--borde);border-radius:10px;padding:14px 16px;margin-bottom:10px;border-left:4px solid var(--borde);}
 .revision-correcta{border-left-color:var(--verde);}
 .revision-incorrecta{border-left-color:var(--rojo);}
 .revision-noidentifico{border-left-color:var(--amarillo);}
-.revision-pregunta{font-weight:600;font-size:0.88rem;margin-bottom:4px;}
-.revision-detalle{font-size:0.82rem;color:var(--texto-tenue);line-height:1.5;}
+.revision-pregunta{font-weight:600;font-size:0.92rem;margin-bottom:6px;}
+.revision-detalle{font-size:0.84rem;color:var(--texto-tenue);line-height:1.5;}
 .revision-detalle b.ok{color:var(--verde);}
 .revision-detalle b.mal{color:var(--rojo);}
-.pill-estado{display:inline-block;font-size:0.6rem;font-weight:700;text-transform:uppercase;padding:2px 10px;border-radius:10px;margin-left:8px;letter-spacing:0.03em;}
+.pill-estado{display:inline-block;font-size:0.68rem;font-weight:700;text-transform:uppercase;padding:2px 8px;border-radius:10px;margin-left:8px;letter-spacing:0.03em;}
 .pill-correcta{background:rgba(63,181,111,0.18);color:var(--verde);}
 .pill-incorrecta{background:rgba(225,85,84,0.18);color:var(--rojo);}
 .pill-noidentifico{background:rgba(240,169,63,0.18);color:var(--amarillo);}
-.enlace-tenue{color:var(--teal);font-size:0.85rem;text-decoration:none;cursor:pointer;transition:color 0.15s;}
-.enlace-tenue:hover{text-decoration:underline;color:var(--teal-oscuro);}
-.spinner{width:36px;height:36px;border:3px solid var(--bg-card-2);border-top-color:var(--naranja);border-radius:50%;animation:girar 0.8s linear infinite;margin:20px auto;}
+.enlace-tenue{color:var(--teal);font-size:0.85rem;text-decoration:none;cursor:pointer;}
+.enlace-tenue:hover{text-decoration:underline;}
+.spinner{width:34px;height:34px;border:3px solid var(--bg-card-2);border-top-color:var(--naranja);border-radius:50%;animation:girar 0.8s linear infinite;margin:20px auto;}
 @keyframes girar{to{transform:rotate(360deg);}}
-.mensaje-error{background:rgba(225,85,84,0.12);border:1px solid var(--rojo);color:var(--rojo);border-radius:10px;padding:14px 18px;font-size:0.88rem;margin:14px 0;line-height:1.5;}
-.mensaje-ok{background:rgba(63,181,111,0.12);border:1px solid var(--verde);color:var(--verde);border-radius:10px;padding:14px 18px;font-size:0.88rem;margin:14px 0;line-height:1.5;}
-.aviso-seleccion{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--bg-card);border:2px solid var(--naranja);border-radius:var(--radio);padding:14px 22px;color:var(--texto);font-size:0.92rem;z-index:10000;box-shadow:0 4px 30px rgba(0,0,0,0.6);max-width:92%;text-align:center;display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center;}
-.aviso-cambio-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center;z-index:9999;padding:20px;}
-.aviso-cambio-caja{background:var(--bg-card);border:2px solid var(--rojo);border-radius:14px;padding:24px 28px;max-width:360px;width:100%;text-align:center;box-shadow:var(--sombra);}
-.aviso-cambio-titulo{color:var(--rojo);font-weight:800;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:10px;}
-.aviso-cambio-mensaje{color:var(--texto);font-size:0.92rem;line-height:1.5;margin-bottom:16px;}
-.aviso-cambios-resultado{background:var(--bg-card-2);border:1.5px solid var(--rojo);border-radius:10px;padding:12px 16px;font-size:0.85rem;line-height:1.5;color:var(--texto);margin:14px 0;text-align:center;}
+.mensaje-error{background:rgba(225,85,84,0.12);border:1px solid var(--rojo);color:var(--rojo);border-radius:10px;padding:14px 16px;font-size:0.88rem;margin:16px 0;}
+.mensaje-ok{background:rgba(63,181,111,0.12);border:1px solid var(--verde);color:var(--verde);border-radius:10px;padding:14px 16px;font-size:0.88rem;margin:16px 0;}
+.aviso-seleccion{
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+  background:var(--bg-card);
+  border:2px solid var(--naranja);
+  border-radius:var(--radio);
+  padding:16px 24px;
+  color:var(--texto);
+  font-size:0.95rem;
+  z-index:10000;
+  box-shadow:0 4px 24px rgba(0,0,0,0.6);
+  max-width:90%;
+  text-align:center;
+  display:flex;
+  align-items:center;
+  gap:16px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+.aviso-cambio-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.65);display:flex;align-items:center;justify-content:center;z-index:9999;padding:20px;}
+.aviso-cambio-caja{background:var(--bg-card);border:2px solid var(--rojo);border-radius:14px;padding:26px 22px;max-width:360px;width:100%;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,0.45);}
+.aviso-cambio-titulo{color:var(--rojo);font-weight:800;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px;}
+.aviso-cambio-mensaje{color:var(--texto);font-size:0.92rem;line-height:1.55;margin-bottom:20px;}
+.aviso-cambios-resultado{background:var(--bg-card-2);border:1.5px solid var(--rojo);border-radius:10px;padding:14px 16px;font-size:0.85rem;line-height:1.5;color:var(--texto);margin:16px 0;text-align:center;}
 .comparacion-barra-wrap{margin-top:10px;}
-.comparacion-fila{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
-.comparacion-fila .nombre{width:80px;font-size:0.8rem;color:var(--texto-tenue);flex-shrink:0;font-weight:600;}
+.comparacion-fila{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.comparacion-fila .nombre{width:90px;font-size:0.8rem;color:var(--texto-tenue);flex-shrink:0;}
 .comparacion-track{flex:1;height:14px;background:var(--bg-card-2);border-radius:8px;overflow:hidden;}
 .comparacion-fill{height:100%;border-radius:8px;}
 .comparacion-fill.tu{background:var(--naranja);}
 .comparacion-fill.grupo{background:var(--teal);}
-.comparacion-valor{width:44px;font-size:0.8rem;text-align:right;color:var(--texto-tenue);font-weight:600;}
-table.tabla-docente{width:100%;border-collapse:collapse;font-size:0.8rem;margin-top:14px;}
-table.tabla-docente th{text-align:left;color:var(--texto-tenue);font-size:0.7rem;text-transform:uppercase;padding:8px 10px;border-bottom:2px solid var(--borde);letter-spacing:0.04em;}
-table.tabla-docente td{padding:8px 10px;border-bottom:1px solid var(--borde);}
+.comparacion-valor{width:44px;font-size:0.8rem;text-align:right;color:var(--texto-tenue);}
+table.tabla-docente{width:100%;border-collapse:collapse;font-size:0.82rem;margin-top:16px;}
+table.tabla-docente th{text-align:left;color:var(--texto-tenue);font-size:0.72rem;text-transform:uppercase;padding:8px 10px;border-bottom:1px solid var(--borde);letter-spacing:0.03em;}
+table.tabla-docente td{padding:9px 10px;border-bottom:1px solid var(--borde);}
 .tabla-scroll{overflow-x:auto;}
-.zona-riesgo{border:1.5px dashed var(--rojo);border-radius:10px;padding:18px;margin-top:24px;background:rgba(225,85,84,0.04);}
-.zona-riesgo h3{color:var(--rojo);margin:0 0 6px;font-size:0.92rem;}
-.zona-riesgo p{color:var(--texto-tenue);font-size:0.82rem;margin:0 0 12px;line-height:1.5;}
+.zona-riesgo{border:1.5px dashed var(--rojo);border-radius:10px;padding:18px;margin-top:28px;}
+.zona-riesgo h3{color:var(--rojo);margin:0 0 8px;font-size:0.95rem;}
+.zona-riesgo p{color:var(--texto-tenue);font-size:0.82rem;margin:0 0 14px;line-height:1.5;}
 @media (max-width:480px){
-  body{padding:16px 10px 32px;}
-  .tarjeta{padding:18px 16px;}
-  .logo{font-size:2.2rem;}
-  h1{font-size:1.2rem;}
-  .pregunta-texto{font-size:1rem;}
-  .resumen-puntaje .numero{font-size:2.2rem;}
+  body{padding:16px 10px 48px;}
+  .tarjeta{padding:20px;border-radius:12px;}
+  h1{font-size:1.25rem;}
+  .pregunta-texto{font-size:1.05rem;}
+  .resumen-puntaje .numero{font-size:2.4rem;}
   .stats-grid{gap:8px;}
-  .stat-box{min-width:80px;padding:10px;}
-  .stat-box .valor{font-size:1.1rem;}
+  .stat-box{min-width:100px;padding:12px;}
   input[type=text],input[type=password]{font-size:16px;}
-  .btn{padding:12px 16px;font-size:14px;}
-  .fila-botones .btn{padding:12px 10px;font-size:13px;}
+  .fila-botones .btn{padding:14px 10px;font-size:14.5px;}
 }
 </style>
 </head>
 <body>
 <div class="contenedor" id="app"></div>
+
 <script>
 // ================================================================
 // BANCO DE 20 PREGUNTAS
 // ================================================================
 const PREGUNTAS = [
-  {topic:"Fracciones - Simplificación",q:"Simplifica la fracción [[18|24]] a su mínima expresión",opts:["[[3|4]]","[[2|3]]","[[4|5]]","[[5|6]]"],correct:0,variantes:[{e:"Simplifica la fracción [[20|30]] a su mínima expresión",r:"[[2|3]]"}]},
-  {topic:"Fracciones - Suma",q:"Calcula: [[2|3]] + [[1|6]]",opts:["[[5|6]]","[[3|9]]","[[1|2]]","[[5|9]]"],correct:0,variantes:[{e:"Calcula: [[1|4]] + [[1|2]]",r:"[[3|4]]"}]},
-  {topic:"Fracciones - Multiplicación",q:"Calcula: [[3|4]] · [[2|5]]",opts:["[[3|10]]","[[5|9]]","[[2|3]]","[[6|5]]"],correct:0,variantes:[{e:"Calcula: [[2|3]] · [[3|4]]",r:"[[1|2]]"}]},
-  {topic:"Números negativos - Suma",q:"Calcula: 8 + (−3) + (−7)",opts:["−2","18","−12","2"],correct:0,variantes:[{e:"Calcula: 9 + (−4) + (−8)",r:"−3"}]},
-  {topic:"Números negativos - Multiplicación",q:"Calcula: (−4)(−2)",opts:["8","−8","6","−6"],correct:0,variantes:[{e:"Calcula: (−5)(−3)",r:"15"}]},
-  {topic:"Porcentaje",q:"Calcula el 10% de 240",opts:["24","36","15","30"],correct:0,variantes:[{e:"Calcula el 10% de 150",r:"15"}]},
-  {topic:"Jerarquía de operaciones",q:"Calcula: 3 + (4)(2) − [[6|3]]",opts:["9","11","5","7"],correct:0,variantes:[{e:"Calcula: 4 + (5)(2) − [[8|4]]",r:"12"}]},
-  {topic:"Jerarquía de operaciones",q:"Calcula: (5 − 2)² + (4)(3)",opts:["21","33","15","27"],correct:0,variantes:[{e:"Calcula: (4 − 1)² + (5)(2)",r:"19"}]},
-  {topic:"Mínimo común múltiplo",q:"Calcula el mínimo común múltiplo (m.c.m.) de 6 y 8",opts:["24","12","48","2"],correct:0,variantes:[{e:"Calcula el m.c.m. de 4 y 6",r:"12"}]},
-  {topic:"Ley de signos",q:"Calcula: (−5) − (−3)",opts:["−2","2","−8","8"],correct:0,variantes:[{e:"Calcula: (−7) − (−2)",r:"−5"}]},
-  {topic:"Lenguaje algebraico - Traducción",q:"¿Qué expresión representa 'el doble de un número aumentado en 5'?",opts:["2x + 5","2(x + 5)","x + 5","2x − 5"],correct:0,variantes:[{e:"¿Qué expresión representa 'el triple de un número aumentado en 4'?",r:"3x + 4"}]},
-  {topic:"Lenguaje algebraico - Traducción",q:"¿Qué expresión representa 'el triple de la diferencia de un número y 2'?",opts:["3(x − 2)","3x − 2","x − 6","3(2 − x)"],correct:0,variantes:[{e:"¿Qué expresión representa 'el doble de la diferencia de un número y 3'?",r:"2(x − 3)"}]},
-  {topic:"Lenguaje algebraico - Simplificación",q:"Simplifica: 5x + 3x − 2x",opts:["6x","8x","4x","6x²"],correct:0,variantes:[{e:"Simplifica: 4x + 6x − 3x",r:"7x"}]},
-  {topic:"Lenguaje algebraico - Simplificación",q:"Simplifica: 3(2x + 4) − 2x",opts:["4x + 12","6x + 12","4x + 4","2x + 12"],correct:0,variantes:[{e:"Simplifica: 2(3x + 5) − 4x",r:"2x + 10"}]},
-  {topic:"Lenguaje algebraico - Evaluación",q:"Evalúa: 2x² − 3x + 1 para x = 2",opts:["3","7","11","5"],correct:0,variantes:[{e:"Evalúa: 3x² − 2x + 1 para x = 2",r:"9"}]},
-  {topic:"Ecuaciones lineales",q:"Resuelve: 3x + 5 = 20",opts:["x = 5","x = 15","x = [[25|3]]","x = 6"],correct:0,variantes:[{e:"Resuelve: 4x + 3 = 19",r:"x = 4"}]},
-  {topic:"Ecuaciones lineales",q:"Resuelve: 2(x − 3) = 10",opts:["x = 8","x = 5","x = 13","x = 3.5"],correct:0,variantes:[{e:"Resuelve: 3(x − 2) = 12",r:"x = 6"}]},
-  {topic:"Ecuaciones lineales",q:"Resuelve: [[x|4]] − 2 = 3",opts:["x = 20","x = 4","x = 12","x = 5"],correct:0,variantes:[{e:"Resuelve: [[x|3]] − 1 = 4",r:"x = 15"}]},
-  {topic:"Razón y proporción",q:"Si 3 cuadernos cuestan $45, ¿cuánto cuestan 5 cuadernos al mismo precio?",opts:["$75","$60","$90","$67.50"],correct:0,variantes:[{e:"Si 2 lápices cuestan $18, ¿cuánto cuestan 5 lápices?",r:"$45"}]},
-  {topic:"Razón y proporción",q:"Si 4 obreros terminan un muro en 6 días, ¿en cuántos días lo terminarán 8 obreros?",opts:["3 días","12 días","6 días","4 días"],correct:0,variantes:[{e:"Si 3 pintores pintan una casa en 8 días, ¿en cuántos días la pintarán 6 pintores?",r:"4 días"}]}
+  {
+    topic: "Fracciones - Simplificación",
+    q: "Simplifica la fracción [[18|24]] a su mínima expresión",
+    opts: ["[[3|4]]", "[[2|3]]", "[[4|5]]", "[[5|6]]"],
+    correct: 0,
+    variantes: [{e: "Simplifica la fracción [[20|30]] a su mínima expresión", r: "[[2|3]]"}]
+  },
+  {
+    topic: "Fracciones - Suma",
+    q: "Calcula: [[2|3]] + [[1|6]]",
+    opts: ["[[5|6]]", "[[3|9]]", "[[1|2]]", "[[5|9]]"],
+    correct: 0,
+    variantes: [{e: "Calcula: [[1|4]] + [[1|2]]", r: "[[3|4]]"}]
+  },
+  {
+    topic: "Fracciones - Multiplicación",
+    q: "Calcula: [[3|4]] · [[2|5]]",
+    opts: ["[[3|10]]", "[[5|9]]", "[[2|3]]", "[[6|5]]"],
+    correct: 0,
+    variantes: [{e: "Calcula: [[2|3]] · [[3|4]]", r: "[[1|2]]"}]
+  },
+  {
+    topic: "Números negativos - Suma",
+    q: "Calcula: 8 + (−3) + (−7)",
+    opts: ["−2", "18", "−12", "2"],
+    correct: 0,
+    variantes: [{e: "Calcula: 9 + (−4) + (−8)", r: "−3"}]
+  },
+  {
+    topic: "Números negativos - Multiplicación",
+    q: "Calcula: (−4)(−2)",
+    opts: ["8", "−8", "6", "−6"],
+    correct: 0,
+    variantes: [{e: "Calcula: (−5)(−3)", r: "15"}]
+  },
+  {
+    topic: "Porcentaje",
+    q: "Calcula el 10% de 240",
+    opts: ["24", "36", "15", "30"],
+    correct: 0,
+    variantes: [{e: "Calcula el 10% de 150", r: "15"}]
+  },
+  {
+    topic: "Jerarquía de operaciones",
+    q: "Calcula: 3 + (4)(2) − [[6|3]]",
+    opts: ["9", "11", "5", "7"],
+    correct: 0,
+    variantes: [{e: "Calcula: 4 + (5)(2) − [[8|4]]", r: "12"}]
+  },
+  {
+    topic: "Jerarquía de operaciones",
+    q: "Calcula: (5 − 2)² + (4)(3)",
+    opts: ["21", "33", "15", "27"],
+    correct: 0,
+    variantes: [{e: "Calcula: (4 − 1)² + (5)(2)", r: "19"}]
+  },
+  {
+    topic: "Mínimo común múltiplo",
+    q: "Calcula el mínimo común múltiplo (m.c.m.) de 6 y 8",
+    opts: ["24", "12", "48", "2"],
+    correct: 0,
+    variantes: [{e: "Calcula el m.c.m. de 4 y 6", r: "12"}]
+  },
+  {
+    topic: "Ley de signos",
+    q: "Calcula: (−5) − (−3)",
+    opts: ["−2", "2", "−8", "8"],
+    correct: 0,
+    variantes: [{e: "Calcula: (−7) − (−2)", r: "−5"}]
+  },
+  {
+    topic: "Lenguaje algebraico - Traducción",
+    q: "¿Qué expresión representa 'el doble de un número aumentado en 5'?",
+    opts: ["2x + 5", "2(x + 5)", "x + 5", "2x − 5"],
+    correct: 0,
+    variantes: [{e: "¿Qué expresión representa 'el triple de un número aumentado en 4'?", r: "3x + 4"}]
+  },
+  {
+    topic: "Lenguaje algebraico - Traducción",
+    q: "¿Qué expresión representa 'el triple de la diferencia de un número y 2'?",
+    opts: ["3(x − 2)", "3x − 2", "x − 6", "3(2 − x)"],
+    correct: 0,
+    variantes: [{e: "¿Qué expresión representa 'el doble de la diferencia de un número y 3'?", r: "2(x − 3)"}]
+  },
+  {
+    topic: "Lenguaje algebraico - Simplificación",
+    q: "Simplifica: 5x + 3x − 2x",
+    opts: ["6x", "8x", "4x", "6x²"],
+    correct: 0,
+    variantes: [{e: "Simplifica: 4x + 6x − 3x", r: "7x"}]
+  },
+  {
+    topic: "Lenguaje algebraico - Simplificación",
+    q: "Simplifica: 3(2x + 4) − 2x",
+    opts: ["4x + 12", "6x + 12", "4x + 4", "2x + 12"],
+    correct: 0,
+    variantes: [{e: "Simplifica: 2(3x + 5) − 4x", r: "2x + 10"}]
+  },
+  {
+    topic: "Lenguaje algebraico - Evaluación",
+    q: "Evalúa: 2x² − 3x + 1 para x = 2",
+    opts: ["3", "7", "11", "5"],
+    correct: 0,
+    variantes: [{e: "Evalúa: 3x² − 2x + 1 para x = 2", r: "9"}]
+  },
+  {
+    topic: "Ecuaciones lineales",
+    q: "Resuelve: 3x + 5 = 20",
+    opts: ["x = 5", "x = 15", "x = [[25|3]]", "x = 6"],
+    correct: 0,
+    variantes: [{e: "Resuelve: 4x + 3 = 19", r: "x = 4"}]
+  },
+  {
+    topic: "Ecuaciones lineales",
+    q: "Resuelve: 2(x − 3) = 10",
+    opts: ["x = 8", "x = 5", "x = 13", "x = 3.5"],
+    correct: 0,
+    variantes: [{e: "Resuelve: 3(x − 2) = 12", r: "x = 6"}]
+  },
+  {
+    topic: "Ecuaciones lineales",
+    q: "Resuelve: [[x|4]] − 2 = 3",
+    opts: ["x = 20", "x = 4", "x = 12", "x = 5"],
+    correct: 0,
+    variantes: [{e: "Resuelve: [[x|3]] − 1 = 4", r: "x = 15"}]
+  },
+  {
+    topic: "Razón y proporción",
+    q: "Si 3 cuadernos cuestan $45, ¿cuánto cuestan 5 cuadernos al mismo precio?",
+    opts: ["$75", "$60", "$90", "$67.50"],
+    correct: 0,
+    variantes: [{e: "Si 2 lápices cuestan $18, ¿cuánto cuestan 5 lápices?", r: "$45"}]
+  },
+  {
+    topic: "Razón y proporción",
+    q: "Si 4 obreros terminan un muro en 6 días, ¿en cuántos días lo terminarán 8 obreros?",
+    opts: ["3 días", "12 días", "6 días", "4 días"],
+    correct: 0,
+    variantes: [{e: "Si 3 pintores pintan una casa en 8 días, ¿en cuántos días la pintarán 6 pintores?", r: "4 días"}]
+  }
 ];
+
 const TOTAL = PREGUNTAS.length;
 const CONFIG = {pin:"UTP2025",grupo:"1° E",carrera:"Procesos Productivos",institucion:"Universidad Tecnológica Santa Catarina",materia:"Fundamentos Matemáticos"};
 
@@ -248,33 +379,58 @@ function formatoTiempo(segundos){
 function esc(t){const d=document.createElement('div');d.textContent=t;return d.innerHTML;}
 function frac(html){return html.replace(/\[\[([^|\]]+)\|([^\]]+)\]\]/g,(m,n,d)=>`<span class="frac"><span class="frac-num">${n}</span><span class="frac-den">${d}</span></span>`);}
 function txt(t){return frac(esc(t));}
+
 function local(){
-  if (window.location.hostname.includes('github.io')) return false;
+  if (window.location.hostname.includes('github.io')) {
+    return false;
+  }
   return typeof window.storage === 'undefined';
 }
 
 // ================================================================
-// ALMACENAMIENTO
+// ALMACENAMIENTO - SIMPLIFICADO Y FUNCIONAL
 // ================================================================
+
 async function guardar(reg){
+  // 1. SIEMPRE guardar en localStorage (funciona en cualquier navegador)
   try {
     const historial = JSON.parse(localStorage.getItem('diag_hist') || '[]');
     historial.push(reg);
     localStorage.setItem('diag_hist', JSON.stringify(historial));
-  } catch (e) { return false; }
+    console.log('✅ Resultado guardado en localStorage');
+  } catch (e) {
+    console.error('❌ Error guardando en localStorage:', e);
+    return false;
+  }
+  
+  // 2. Si window.storage está disponible, guardar también allí
   if (!local() && typeof window.storage !== 'undefined') {
     try {
       const key = 'resp:' + Date.now() + '_' + Math.random().toString(36).slice(2, 9);
       await window.storage.set(key, JSON.stringify(reg), true);
-    } catch (e) {}
+      console.log('✅ Resultado guardado en window.storage');
+    } catch (e) {
+      console.warn('⚠️ No se pudo guardar en window.storage (se mantiene en localStorage):', e);
+      // No fallamos, porque ya tenemos localStorage
+    }
   }
+  
   return true;
 }
+
 async function obtener(){
+  // 1. Primero intentar obtener de localStorage (siempre disponible)
   try {
     const localData = JSON.parse(localStorage.getItem('diag_hist') || '[]');
-    if (localData.length > 0) return localData;
-  } catch (e) {}
+    if (localData.length > 0) {
+      console.log('📊 Datos obtenidos de localStorage:', localData.length);
+      return localData;
+    }
+  } catch (e) {
+    console.warn('⚠️ Error leyendo localStorage:', e);
+  }
+  
+  // 2. Si no hay datos en localStorage, intentar window.storage
   if (!local() && typeof window.storage !== 'undefined') {
     try {
       const listado = await window.storage.list('resp:', true);
@@ -286,42 +442,23 @@ async function obtener(){
           if (r && r.value) regs.push({key: k, ...JSON.parse(r.value)});
         } catch (e) {}
       }
-      if (regs.length > 0) return regs;
-    } catch (e) {}
-  }
-  return [];
-}
-function limpiarAlmacenamientoLocal(){
-  if(confirm('⚠️ ¿Estás seguro de que quieres borrar TODOS los datos guardados? Esto no se puede deshacer.')){
-    try{
-      localStorage.removeItem('diag_hist');
-      localStorage.removeItem('puntoCorte');
-      if (!local() && typeof window.storage !== 'undefined') {
-        try {
-          const listado = await window.storage.list('resp:', true);
-          const claves = listado && listado.keys ? listado.keys : [];
-          for (const k of claves) {
-            try { await window.storage.delete(k, true); } catch(e) {}
-          }
-          try { await window.storage.delete('config:puntoCorte', true); } catch(e) {}
-        } catch(e) {}
+      if (regs.length > 0) {
+        console.log('📊 Datos obtenidos de window.storage:', regs.length);
+        return regs;
       }
-      alert('✅ Todos los datos han sido eliminados correctamente.');
-      E.registros = [];
-      E.totalRespuestasGrupo = 0;
-      E.promedioGrupo = null;
-      E.puntoCorte = null;
-      cargarPanel();
-    } catch(e){
-      alert('❌ Error al limpiar datos: ' + e.message);
+    } catch (e) {
+      console.warn('⚠️ Error leyendo window.storage:', e);
     }
   }
+  
+  return [];
 }
 
 // ================================================================
 // LÓGICA
 // ================================================================
 function crearSesion(){return shuffle([...Array(TOTAL).keys()]).map(bi=>({baseIndex:bi,optOrder:shuffle([0,1,2,3])}));}
+
 function calificar(){
   let c=0,inc=0,no=0;
   for(let bi=0;bi<TOTAL;bi++){
@@ -349,6 +486,7 @@ function calificar(){
   });
   return {puntaje:c,total:TOTAL,correctas:c,incorrectas:inc,noIdentifico:no,porcentaje:pct,nivel,detalle,temas:arr};
 }
+
 function recomendar(temas){
   const bajo=temas.filter(t=>t.nivel==='bajo').map(t=>t.topic);
   const medio=temas.filter(t=>t.nivel==='medio').map(t=>t.topic);
@@ -361,7 +499,9 @@ function recomendar(temas){
   rec+=" antes de iniciar el curso.";
   return rec;
 }
+
 function irA(p){E.pantalla=p;render();window.scrollTo(0,0);}
+
 function comenzar(){
   const nom=document.getElementById('campo-nombre');
   if(!nom||!nom.value.trim()){alert('Escribe tu nombre completo');return;}
@@ -371,63 +511,112 @@ function comenzar(){
   E.respuestas={};
   E.cambios=0;
   E.inicio=Date.now();
-  E._ignorarCambioPantalla=false;
+  E._ignorarCambioPantalla = false;
   if(document.documentElement.requestFullscreen)document.documentElement.requestFullscreen().catch(()=>{});
   irA('cuestionario');
 }
+
 function seleccionar(bi,val){E.respuestas[bi]=val;render();}
+
 function mostrarAvisoSeleccion(){
-  E._ignorarCambioPantalla=true;
-  const avisoExistente=document.querySelector('.aviso-seleccion');
-  if(avisoExistente)avisoExistente.remove();
-  const aviso=document.createElement('div');
-  aviso.className='aviso-seleccion';
-  aviso.innerHTML=`<span>⚠️ Selecciona una opción antes de continuar.</span><button class="btn btn-primario" style="padding:6px 16px;font-size:0.8rem;" onclick="this.closest('.aviso-seleccion').remove(); E._ignorarCambioPantalla=false;">Entendido</button>`;
+  E._ignorarCambioPantalla = true;
+  
+  const avisoExistente = document.querySelector('.aviso-seleccion');
+  if(avisoExistente) avisoExistente.remove();
+  
+  const aviso = document.createElement('div');
+  aviso.className = 'aviso-seleccion';
+  aviso.innerHTML = `
+    <span>⚠️ Selecciona una opción antes de continuar.</span>
+    <button class="btn btn-primario" style="padding:8px 20px;font-size:0.85rem;" onclick="this.closest('.aviso-seleccion').remove(); E._ignorarCambioPantalla = false;">Entendido</button>
+  `;
   document.body.appendChild(aviso);
-  setTimeout(()=>{if(aviso.parentNode)aviso.remove();E._ignorarCambioPantalla=false;},5000);
+  
+  setTimeout(() => {
+    if(aviso.parentNode) aviso.remove();
+    E._ignorarCambioPantalla = false;
+  }, 5000);
 }
+
 function siguiente(){
-  const actual=E.sesion[E.idx];
-  if(E.respuestas[actual.baseIndex]===undefined){mostrarAvisoSeleccion();return;}
-  if(E.idx<E.sesion.length-1){E.idx++;render();window.scrollTo(0,0);}
-  else finalizar();
+  const actual = E.sesion[E.idx];
+  if(E.respuestas[actual.baseIndex] === undefined){
+    mostrarAvisoSeleccion();
+    return;
+  }
+  if(E.idx < E.sesion.length - 1){
+    E.idx++;
+    render();
+    window.scrollTo(0, 0);
+  } else {
+    finalizar();
+  }
 }
+
 function anterior(){if(E.idx>0){E.idx--;render();window.scrollTo(0,0);}}
+
 async function finalizar(){
-  E.tiempo=Math.round((Date.now()-E.inicio)/1000);
-  E.resultado=calificar();
-  E.guardando=true;
+  E.tiempo = Math.round((Date.now() - E.inicio) / 1000);
+  E.resultado = calificar();
+  E.guardando = true;
   irA('guardando');
-  const reg={nombre:E.nombre,carrera:CONFIG.carrera,grupo:CONFIG.grupo,puntaje:E.resultado.puntaje,total:E.resultado.total,incorrectas:E.resultado.incorrectas,noIdentifico:E.resultado.noIdentifico,tiempoSegundos:E.tiempo,horaInicio:new Date().toISOString(),fecha:new Date().toISOString(),respuestas:E.respuestas,cambiosPantalla:E.cambios};
-  try{await guardar(reg);E.guardando=false;await calcularPromedio();irA('resultado');}
-  catch(e){E.guardando=false;E.errorGuardado=true;irA('error');}
+  
+  const reg = {
+    nombre: E.nombre,
+    carrera: CONFIG.carrera,
+    grupo: CONFIG.grupo,
+    puntaje: E.resultado.puntaje,
+    total: E.resultado.total,
+    incorrectas: E.resultado.incorrectas,
+    noIdentifico: E.resultado.noIdentifico,
+    tiempoSegundos: E.tiempo,
+    horaInicio: new Date().toISOString(),
+    fecha: new Date().toISOString(),
+    respuestas: E.respuestas,
+    cambiosPantalla: E.cambios
+  };
+  
+  try {
+    const guardado = await guardar(reg);
+    E.guardando = false;
+    if (guardado) {
+      await calcularPromedio();
+      irA('resultado');
+    } else {
+      E.errorGuardado = true;
+      irA('error');
+    }
+  } catch(e) {
+    console.error('Error al finalizar:', e);
+    E.guardando = false;
+    E.errorGuardado = true;
+    irA('error');
+  }
 }
+
 async function calcularPromedio(){
   try {
     const todas = await obtener();
-    let filtrados = todas;
-    if (E.puntoCorte) {
-      const corte = new Date(E.puntoCorte);
-      filtrados = todas.filter(r => {
-        if (!r.fecha) return false;
-        return new Date(r.fecha) > corte;
-      });
-    }
-    // Filtrar duplicados por nombre + fecha (mismo día)
+    
     const vistos = new Set();
-    const unicos = filtrados.filter(r => {
-      if (!r.nombre || r.nombre.trim() === '') return false;
-      const fechaStr = r.fecha ? r.fecha.slice(0, 10) : '';
-      const clave = (r.nombre || '').trim().toLowerCase() + '_' + fechaStr;
+    const unicos = todas.filter(r => {
+      const clave = (r.nombre || '').trim().toLowerCase() + '_' + (r.fecha || '').slice(0, 10);
       if (vistos.has(clave)) return false;
       vistos.add(clave);
       return true;
     });
-    const validos = unicos.filter(r => typeof r.puntaje === 'number');
-    if (validos.length > 0) {
-      const sumaPuntajes = validos.reduce((a, r) => a + (r.puntaje || 0), 0);
-      E.promedioGrupo = sumaPuntajes / validos.length;
-      E.totalRespuestasGrupo = validos.length;
+    
+    let filtrados = unicos;
+    if (E.puntoCorte) {
+      filtrados = unicos.filter(r => new Date(r.fecha) > new Date(E.puntoCorte));
+    }
+    
+    filtrados = filtrados.filter(r => r.nombre && r.nombre.trim() !== '');
+    
+    if (filtrados.length > 0) {
+      const sumaPuntajes = filtrados.reduce((a, r) => a + (r.puntaje || 0), 0);
+      E.promedioGrupo = sumaPuntajes / filtrados.length;
+      E.totalRespuestasGrupo = filtrados.length;
     } else {
       E.promedioGrupo = null;
       E.totalRespuestasGrupo = 0;
@@ -437,6 +626,7 @@ async function calcularPromedio(){
     E.totalRespuestasGrupo = 0;
   }
 }
+
 async function buscarResultado(){
   const val=document.getElementById('campo-consulta');
   if(!val||!val.value.trim())return;
@@ -447,6 +637,7 @@ async function buscarResultado(){
   try{const todas=await obtener();const match=todas.filter(r=>(r.nombre||'').trim().toLowerCase()===E.consultaNombre.toLowerCase());if(!match.length){E.consultaError=true;}else{match.sort((a,b)=>new Date(b.fecha)-new Date(a.fecha));E.consultado=match[0];}}catch(e){E.consultaError=true;}
   irA('consultado');
 }
+
 function intentarAcceso(){
   const pin=document.getElementById('campo-pin');
   if(!pin)return;
@@ -457,27 +648,21 @@ function intentarAcceso(){
     alert('PIN incorrecto');
   }
 }
+
 async function cargarPanel(){
   irA('guardando');
   try {
-    let puntoCorte = null;
-    try {
-      const corte = await window.storage.get('config:puntoCorte', true);
-      if (corte && corte.value) puntoCorte = corte.value;
-    } catch(e) {}
-    if (!puntoCorte) puntoCorte = localStorage.getItem('puntoCorte');
-    E.puntoCorte = puntoCorte;
     E.registros = await obtener();
+    try{const corte=await window.storage.get('config:puntoCorte',true);E.puntoCorte=corte&&corte.value?corte.value:null;}catch(e){E.puntoCorte=null;}
     aplicarCorte();
     await calcularPromedio();
     irA('panel');
   } catch(e){
     E.registros = [];
-    E.totalRespuestasGrupo = 0;
-    E.promedioGrupo = null;
     irA('panel');
   }
 }
+
 function aplicarCorte(){
   let puntoCorte=E.puntoCorte;
   if(!puntoCorte){
@@ -492,7 +677,9 @@ function aplicarCorte(){
     E.registros=E.registros.filter(r=>new Date(r.fecha)>new Date(puntoCorte));
   }
 }
+
 function alternarHistorico(){E.mostrandoHistorico=!E.mostrandoHistorico;aplicarCorte();render();}
+
 function exportarCSV(){
   const registros=E.registros||[];
   const headers=['Nombre','Carrera','Grupo','Puntaje','Total','Hora inicio','Tiempo','Cambios de pantalla','Fecha'];
@@ -505,38 +692,30 @@ function exportarCSV(){
   const cabecera=headers.join(',');const cuerpo=filas.map(f=>f.join(',')).join('\n');const csv=cabecera+'\n'+cuerpo;const bom='\uFEFF';const csvConBOM=bom+csv;
   const blob=new Blob([csvConBOM],{type:'text/csv;charset=utf-8;'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='diagnostico_resultados.csv';document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
 }
+
 function pedirBorrado(){E.confirmandoBorrado=true;render();}
 function cancelarBorrado(){E.confirmandoBorrado=false;render();}
+
 async function confirmarBorrado(){
   irA('guardando');
   try{
-    const ahoraISO = new Date().toISOString();
-    if(typeof window.storage !== 'undefined' && window.storage.set){
-      await window.storage.set('config:puntoCorte', ahoraISO, true);
-    }
-    localStorage.setItem('puntoCorte', ahoraISO);
-    E.puntoCorte = ahoraISO;
-    E.mostrandoHistorico = false;
-    E.registros = [];
-    E.totalRespuestasGrupo = 0;
-    E.promedioGrupo = null;
-    const todas = await obtener();
-    E.registros = todas;
-    aplicarCorte();
-    await calcularPromedio();
-    E.confirmandoBorrado = false;
-    E.mensajeBorrado = {tipo:'ok',texto:'✅ Las respuestas anteriores dejaron de contarse. Cualquier respuesta nueva volverá a contar con normalidad.'};
+    const ahoraISO=new Date().toISOString();
+    if(typeof window.storage!=='undefined'&&window.storage.set){await window.storage.set('config:puntoCorte',ahoraISO,true);}else{localStorage.setItem('puntoCorte',ahoraISO);}
+    E.puntoCorte=ahoraISO;E.mostrandoHistorico=false;
+    const todas=await obtener();E.registros=todas;aplicarCorte();await calcularPromedio();
+    E.confirmandoBorrado=false;E.mensajeBorrado={tipo:'ok',texto:'✅ Las respuestas anteriores dejaron de contarse. Cualquier respuesta nueva volverá a contar con normalidad.'};
     irA('panel');
   } catch(error){
-    E.confirmandoBorrado = false;
-    E.mensajeBorrado = {tipo:'error',texto:'❌ No se pudo aplicar el punto de corte. Intenta usar "🧹 Limpiar datos de prueba" en su lugar.'};
+    E.confirmandoBorrado=false;E.mensajeBorrado={tipo:'error',texto:'❌ No se pudo aplicar el punto de corte. Si el problema persiste, intenta exportar el CSV y luego refresca la página.'};
     irA('panel');
   }
 }
+
 function prepararRepaso(origen){
   const pendientes=[];for(let bi=0;bi<TOTAL;bi++){const r=E.respuestas[bi];if(r!==PREGUNTAS[bi].correct)pendientes.push(bi);}
   E.repasoPendientes=pendientes;E.repasoOrigen=origen;irA('repaso');
 }
+
 function volverInicio(){
   E={pantalla:'inicio',nombre:'',sesion:[],idx:0,respuestas:{},inicio:null,tiempo:0,cambios:0,resultado:null,promedioGrupo:null,totalRespuestasGrupo:0,consultaNombre:'',consultado:null,consultaError:false,autenticado:false,registros:[],mostrandoHistorico:false,puntoCorte:null,confirmandoBorrado:false,mensajeBorrado:null,guardando:false,errorGuardado:false,repasoPendientes:[],repasoOrigen:'resultado',_ignorarCambioPantalla:false};
   render();
@@ -546,68 +725,183 @@ function volverInicio(){
 // VISTAS
 // ================================================================
 function vistaInicio(){
-  return `<div class="tarjeta"><div class="logo">UTSC</div><h1>${CONFIG.materia}</h1><h2 class="subtitulo">Diagnóstico de conocimientos previos</h2><p class="institucion">${CONFIG.institucion}</p>${local()?'<div class="aviso-local">⚠️ Modo local: los resultados NO se guardarán en el panel docente.</div>':''}<ol class="instrucciones"><li>El diagnóstico consta de <b>${TOTAL} preguntas</b> de opción múltiple.</li><li>Tienes la opción <b>"No identifico el tema"</b> si no reconoces el contenido.</li><li>El tiempo comienza al presionar <b>"Comenzar"</b>.</li><li>Responde con honestidad — este no es un examen con calificación.</li><li>Al finalizar recibirás recomendaciones personalizadas.</li></ol><label>Nombre completo</label><input type="text" id="campo-nombre" placeholder="Escribe tu nombre completo"><label>Carrera</label><input type="text" value="${CONFIG.carrera}" readonly><label>Cuatrimestre / Grupo</label><input type="text" value="${CONFIG.grupo}" readonly><button class="btn btn-primario btn-bloque" onclick="comenzar()">Comenzar diagnóstico</button><div class="centrado" style="margin-top:16px;"><span class="enlace-tenue" onclick="irA('consultar')">¿Ya respondiste? Consulta tu resultado</span></div><div class="centrado" style="margin-top:10px;"><span class="enlace-tenue" onclick="irA('login')">Acceso al panel docente</span></div></div>`;
+  return `<div class="tarjeta">
+    <div class="logo">UTSC</div>
+    <h1>${CONFIG.materia}</h1>
+    <h2 class="subtitulo">Diagnóstico de conocimientos previos</h2>
+    <p class="institucion">${CONFIG.institucion}</p>
+    ${local() ? '<div class="aviso-local">⚠️ Modo local: los resultados NO se guardarán en el panel docente.</div>' : ''}
+    <ol class="instrucciones">
+      <li>El diagnóstico consta de <b>${TOTAL} preguntas</b> de opción múltiple.</li>
+      <li>Tienes la opción <b>"No identifico el tema"</b> si no reconoces el contenido.</li>
+      <li>El tiempo comienza al presionar <b>"Comenzar"</b>.</li>
+      <li>Responde con honestidad — este no es un examen con calificación.</li>
+      <li>Al finalizar recibirás recomendaciones personalizadas.</li>
+    </ol>
+    <label>Nombre completo</label>
+    <input type="text" id="campo-nombre" placeholder="Escribe tu nombre completo">
+    <label>Carrera</label>
+    <input type="text" value="${CONFIG.carrera}" readonly>
+    <label>Cuatrimestre / Grupo</label>
+    <input type="text" value="${CONFIG.grupo}" readonly>
+    <button class="btn btn-primario btn-bloque" onclick="comenzar()">Comenzar diagnóstico</button>
+    <div class="centrado" style="margin-top:16px;">
+      <span class="enlace-tenue" onclick="irA('consultar')">¿Ya respondiste? Consulta tu resultado</span>
+    </div>
+    <div class="centrado" style="margin-top:10px;">
+      <span class="enlace-tenue" onclick="irA('login')">Acceso al panel docente</span>
+    </div>
+  </div>`;
 }
+
 function vistaCuestionario(){
-  const sp=E.sesion[E.idx];const q=PREGUNTAS[sp.baseIndex];const sel=E.respuestas[sp.baseIndex];const pct=Math.round((E.idx/E.sesion.length)*100);
+  const sp=E.sesion[E.idx];
+  const q=PREGUNTAS[sp.baseIndex];
+  const sel=E.respuestas[sp.baseIndex];
+  const pct=Math.round((E.idx/E.sesion.length)*100);
   let optsHtml=sp.optOrder.map((orig,pos)=>`<button class="opcion ${sel===orig?'seleccionada':''}" onclick="seleccionar(${sp.baseIndex},${orig})">${String.fromCharCode(65+pos)}) ${txt(q.opts[orig])}</button>`).join('');
-  return `<div class="tarjeta"><div class="barra-progreso"><div class="barra-progreso-fill" style="width:${pct}%;"></div></div><div class="progreso-texto">Pregunta ${E.idx+1} de ${E.sesion.length}</div><div class="etiqueta-tema">${esc(q.topic)}</div><div class="pregunta-texto">${txt(q.q)}</div>${optsHtml}<button class="opcion opcion-noidentifico ${sel==='no_identifico'?'seleccionada':''}" onclick="seleccionar(${sp.baseIndex},'no_identifico')">E) No identifico el tema</button><div class="fila-botones"><button class="btn btn-secundario" onclick="anterior()" ${E.idx===0?'disabled':''}>Anterior</button><button class="btn btn-primario" onclick="siguiente()">${E.idx===E.sesion.length-1?'Enviar respuestas':'Siguiente'}</button></div></div>`;
+  return `<div class="tarjeta">
+    <div class="barra-progreso"><div class="barra-progreso-fill" style="width:${pct}%;"></div></div>
+    <div class="progreso-texto">Pregunta ${E.idx+1} de ${E.sesion.length}</div>
+    <div class="etiqueta-tema">${esc(q.topic)}</div>
+    <div class="pregunta-texto">${txt(q.q)}</div>
+    ${optsHtml}
+    <button class="opcion opcion-noidentifico ${sel==='no_identifico'?'seleccionada':''}" onclick="seleccionar(${sp.baseIndex},'no_identifico')">E) No identifico el tema</button>
+    <div class="fila-botones">
+      <button class="btn btn-secundario" onclick="anterior()" ${E.idx===0?'disabled':''}>Anterior</button>
+      <button class="btn btn-primario" onclick="siguiente()">${E.idx===E.sesion.length-1?'Enviar respuestas':'Siguiente'}</button>
+    </div>
+  </div>`;
 }
+
 function vistaCargando(msg){return `<div class="tarjeta centrado"><div class="spinner"></div><p>${esc(msg)}</p></div>`;}
 function vistaError(){return `<div class="tarjeta"><div class="logo">UTSC</div><div class="mensaje-error">No fue posible guardar tus respuestas. Intenta de nuevo.</div><button class="btn btn-primario btn-bloque" onclick="finalizar()">Reintentar</button></div>`;}
+
 function vistaResultado(){
-  const r=E.resultado;const nivel={alto:'Nivel alto',medio:'Nivel medio',bajo:'Nivel bajo – requiere refuerzo'}[r.nivel];const clase={alto:'nivel-alto',medio:'nivel-medio',bajo:'nivel-bajo'}[r.nivel];
+  const r=E.resultado;
+  const nivel={alto:'Nivel alto',medio:'Nivel medio',bajo:'Nivel bajo – requiere refuerzo'}[r.nivel];
+  const clase={alto:'nivel-alto',medio:'nivel-medio',bajo:'nivel-bajo'}[r.nivel];
   let comp='';
   if(E.promedioGrupo!==null && E.totalRespuestasGrupo > 0){
     const tu=Math.round((r.puntaje/r.total)*100);
     const grp=Math.round((E.promedioGrupo/r.total)*100);
-    comp=`<div class="comparacion-barra-wrap"><div class="comparacion-fila"><div class="nombre">Tú</div><div class="comparacion-track"><div class="comparacion-fill tu" style="width:${tu}%;"></div></div><div class="comparacion-valor">${tu}%</div></div><div class="comparacion-fila"><div class="nombre">Grupo</div><div class="comparacion-track"><div class="comparacion-fill grupo" style="width:${grp}%;"></div></div><div class="comparacion-valor">${grp}%</div></div></div><p style="text-align:center;color:var(--texto-tenue);font-size:0.78rem;margin-top:6px;">Comparación contra ${E.totalRespuestasGrupo} participante${E.totalRespuestasGrupo !== 1 ? 's' : ''}.</p>`;
+    comp=`<div class="comparacion-barra-wrap">
+      <div class="comparacion-fila"><div class="nombre">Tú</div><div class="comparacion-track"><div class="comparacion-fill tu" style="width:${tu}%;"></div></div><div class="comparacion-valor">${tu}%</div></div>
+      <div class="comparacion-fila"><div class="nombre">Grupo</div><div class="comparacion-track"><div class="comparacion-fill grupo" style="width:${grp}%;"></div></div><div class="comparacion-valor">${grp}%</div></div>
+    </div><p style="text-align:center;color:var(--texto-tenue);font-size:0.78rem;margin-top:6px;">Comparación contra ${E.totalRespuestasGrupo} participante${E.totalRespuestasGrupo !== 1 ? 's' : ''}.</p>`;
   } else comp='<p style="text-align:center;color:var(--texto-tenue);font-size:0.82rem;margin-top:16px;">No hay datos del grupo para comparar.</p>';
-  let revHtml=r.detalle.map((d,i)=>{let cl,pill,det;if(d.resp==='no_identifico'){cl='revision-noidentifico';pill='pill-noidentifico';det=`Marcaste "No identifico". Correcta: <b class="ok">${txt(d.correctOption)}</b>`;}else if(d.esCorrecta){cl='revision-correcta';pill='pill-correcta';det=`Respuesta: <b class="ok">${txt(PREGUNTAS[d.baseIndex].opts[d.resp])}</b>`;}else{cl='revision-incorrecta';pill='pill-incorrecta';det=`Respuesta: <b class="mal">${txt(PREGUNTAS[d.baseIndex].opts[d.resp])}</b> · Correcta: <b class="ok">${txt(d.correctOption)}</b>`;}const estadoTxt=d.resp==='no_identifico'?'No identifico':d.esCorrecta?'Correcta':'Incorrecta';return `<div class="revision-item ${cl}"><div class="revision-pregunta">${i+1}. ${txt(d.question)}<span class="pill-estado ${pill}">${estadoTxt}</span></div><div class="revision-detalle">${det}</div></div>`;}).join('');
+  let revHtml=r.detalle.map((d,i)=>{
+    let cl, pill, det;
+    if(d.resp==='no_identifico'){cl='revision-noidentifico';pill='pill-noidentifico';det=`Marcaste "No identifico". Correcta: <b class="ok">${txt(d.correctOption)}</b>`;}
+    else if(d.esCorrecta){cl='revision-correcta';pill='pill-correcta';det=`Respuesta: <b class="ok">${txt(PREGUNTAS[d.baseIndex].opts[d.resp])}</b>`;}
+    else{cl='revision-incorrecta';pill='pill-incorrecta';det=`Respuesta: <b class="mal">${txt(PREGUNTAS[d.baseIndex].opts[d.resp])}</b> · Correcta: <b class="ok">${txt(d.correctOption)}</b>`;}
+    const estadoTxt=d.resp==='no_identifico'?'No identifico':d.esCorrecta?'Correcta':'Incorrecta';
+    return `<div class="revision-item ${cl}"><div class="revision-pregunta">${i+1}. ${txt(d.question)}<span class="pill-estado ${pill}">${estadoTxt}</span></div><div class="revision-detalle">${det}</div></div>`;
+  }).join('');
   let temasHtml=r.temas.map(t=>`<div class="tema-item tema-${t.nivel}"><div><div class="tema-nombre">${esc(t.topic)}</div><div class="tema-puntaje">${t.correctas} de ${t.total} correctas</div></div><span class="tema-badge nivel-${t.nivel}">${t.nivel==='alto'?'Dominado':t.nivel==='medio'?'Repasar':'Requiere refuerzo'}</span></div>`).join('');
-  return `<div class="tarjeta"><div class="logo">UTSC</div><h1>${CONFIG.materia}</h1><h2 class="subtitulo">Diagnóstico de conocimientos previos</h2><p class="institucion">${CONFIG.institucion}</p><div class="centrado" style="color:var(--texto-tenue);font-size:0.9rem;">${esc(E.nombre)} · ${CONFIG.carrera} · ${CONFIG.grupo}</div><div class="resumen-puntaje"><div class="numero">${r.puntaje}<span class="de-total"> / ${r.total}</span></div><div class="nivel-badge ${clase}">${nivel}</div></div>${E.cambios>0?`<div class="aviso-cambios-resultado">⚠️ Se registró que saliste de esta pantalla ${E.cambios} ${E.cambios===1?'vez':'veces'} durante el diagnóstico.</div>`:''}<div class="stats-grid"><div class="stat-box"><div class="valor">${r.correctas}</div><div class="etiqueta">Correctas</div></div><div class="stat-box"><div class="valor">${r.incorrectas}</div><div class="etiqueta">Incorrectas</div></div><div class="stat-box"><div class="valor">${r.noIdentifico}</div><div class="etiqueta">Sin identificar</div></div><div class="stat-box"><div class="valor">${fmt(E.tiempo)}</div><div class="etiqueta">Tiempo</div></div></div>${comp}</div><div class="tarjeta"><h2 class="subtitulo" style="text-align:left;">Temas a reforzar</h2><p class="recomendacion-texto">${esc(recomendar(r.temas))}</p>${temasHtml}</div><div class="tarjeta"><h2 class="subtitulo" style="text-align:left;">Revisión de respuestas</h2>${revHtml}</div><button class="btn btn-secundario btn-bloque" onclick="prepararRepaso('resultado')" style="margin-bottom:10px;">Ver hoja de repaso</button><button class="btn btn-primario btn-bloque" onclick="volverInicio()">Volver al inicio</button>`;
+  return `<div class="tarjeta"><div class="logo">UTSC</div><h1>${CONFIG.materia}</h1><h2 class="subtitulo">Diagnóstico de conocimientos previos</h2><p class="institucion">${CONFIG.institucion}</p>
+    <div class="centrado" style="color:var(--texto-tenue);font-size:0.9rem;">${esc(E.nombre)} · ${CONFIG.carrera} · ${CONFIG.grupo}</div>
+    <div class="resumen-puntaje"><div class="numero">${r.puntaje}<span class="de-total"> / ${r.total}</span></div><div class="nivel-badge ${clase}">${nivel}</div></div>
+    ${E.cambios>0?`<div class="aviso-cambios-resultado">⚠️ Se registró que saliste de esta pantalla ${E.cambios} ${E.cambios===1?'vez':'veces'} durante el diagnóstico.</div>`:''}
+    <div class="stats-grid"><div class="stat-box"><div class="valor">${r.correctas}</div><div class="etiqueta">Correctas</div></div><div class="stat-box"><div class="valor">${r.incorrectas}</div><div class="etiqueta">Incorrectas</div></div><div class="stat-box"><div class="valor">${r.noIdentifico}</div><div class="etiqueta">Sin identificar</div></div><div class="stat-box"><div class="valor">${fmt(E.tiempo)}</div><div class="etiqueta">Tiempo</div></div></div>
+    ${comp}
+  </div>
+  <div class="tarjeta"><h2 class="subtitulo" style="text-align:left;">Temas a reforzar</h2><p class="recomendacion-texto">${esc(recomendar(r.temas))}</p>${temasHtml}</div>
+  <div class="tarjeta"><h2 class="subtitulo" style="text-align:left;">Revisión de respuestas</h2>${revHtml}</div>
+  <button class="btn btn-secundario btn-bloque" onclick="prepararRepaso('resultado')" style="margin-bottom:10px;">Ver hoja de repaso</button>
+  <button class="btn btn-primario btn-bloque" onclick="volverInicio()">Volver al inicio</button>`;
 }
+
 function vistaRepaso(){
   const pendientes=E.repasoPendientes;
   if(!pendientes||pendientes.length===0){return `<div class="tarjeta"><div class="logo">UTSC</div><p class="centrado" style="color:var(--texto-tenue);">¡Felicidades! No tienes reactivos pendientes de repasar.</p><button class="btn btn-primario btn-bloque" onclick="irA('${E.repasoOrigen}')">Volver</button></div>`;}
   let ej='',resp='',c=1;
-  pendientes.forEach(bi=>{const q=PREGUNTAS[bi];if(q.variantes&&q.variantes.length>0){q.variantes.forEach(v=>{ej+=`<div class="revision-item"><div class="etiqueta-tema" style="margin-bottom:4px;">${esc(q.topic)}</div><div class="revision-pregunta">${c}. ${txt(v.e)}</div></div>`;resp+=`<li style="margin-bottom:4px;">${txt(v.r)}</li>`;c++;});}});
+  pendientes.forEach(bi=>{const q=PREGUNTAS[bi];if(q.variantes&&q.variantes.length>0){q.variantes.forEach(v=>{ej+=`<div class="revision-item"><div class="etiqueta-tema" style="margin-bottom:6px;">${esc(q.topic)}</div><div class="revision-pregunta">${c}. ${txt(v.e)}</div></div>`;resp+=`<li style="margin-bottom:6px;">${txt(v.r)}</li>`;c++;});}});
   const fecha=new Date().toLocaleDateString('es-MX');
-  return `<div id="repaso-content"><div class="tarjeta"><div class="logo">UTSC</div><h2 class="subtitulo">📘 Hoja de repaso</h2><p style="color:var(--texto-tenue);font-size:0.85rem;">${esc(E.nombre)} · ${CONFIG.carrera} · ${CONFIG.grupo}</p><p style="color:var(--texto-tenue);font-size:0.75rem;margin-top:2px;">Fecha: ${fecha}</p></div><div class="tarjeta"><h2 class="subtitulo" style="text-align:left;">Ejercicios para practicar</h2>${ej}</div><div class="tarjeta"><h2 class="subtitulo" style="text-align:left;">Respuestas</h2><ol style="color:var(--texto);font-size:0.9rem;padding-left:20px;">${resp}</ol></div><div class="fila-botones" style="margin-top:10px;padding:0 0 12px 0;"><button class="btn btn-primario" onclick="imprimirRepaso()" style="flex:1;">🖨️ Imprimir / Guardar como PDF</button><button class="btn btn-secundario" onclick="irA('${E.repasoOrigen}')" style="flex:1;">Volver al resultado</button></div></div>`;
+  return `<div id="repaso-content">
+    <div class="tarjeta"><div class="logo">UTSC</div><h2 class="subtitulo">📘 Hoja de repaso</h2><p style="color:var(--texto-tenue);font-size:0.85rem;">${esc(E.nombre)} · ${CONFIG.carrera} · ${CONFIG.grupo}</p><p style="color:var(--texto-tenue);font-size:0.75rem;margin-top:4px;">Fecha: ${fecha}</p></div>
+    <div class="tarjeta"><h2 class="subtitulo" style="text-align:left;">Ejercicios para practicar</h2>${ej}</div>
+    <div class="tarjeta"><h2 class="subtitulo" style="text-align:left;">Respuestas</h2><ol style="color:var(--texto);font-size:0.92rem;padding-left:20px;">${resp}</ol></div>
+    <div class="fila-botones" style="margin-top:10px;padding:0 0 20px 0;">
+      <button class="btn btn-primario" onclick="imprimirRepaso()" style="flex:1;">🖨️ Imprimir / Guardar como PDF</button>
+      <button class="btn btn-secundario" onclick="irA('${E.repasoOrigen}')" style="flex:1;">Volver al resultado</button>
+    </div>
+  </div>`;
 }
+
 function imprimirRepaso(){
   const contenido=document.getElementById('repaso-content');if(!contenido){window.print();return;}
   const ventana=window.open('','_blank','width=800,height=600');if(!ventana){window.print();return;}
   const tarjetas=contenido.querySelectorAll('.tarjeta');let ejerciciosHtml='',respuestasHtml='';
   if(tarjetas.length>=3){ejerciciosHtml=tarjetas[1].outerHTML;respuestasHtml=tarjetas[2].outerHTML;}else{ejerciciosHtml=contenido.innerHTML;}
   const fecha=new Date().toLocaleDateString('es-MX');const nombre=esc(E.nombre);
-  ventana.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Hoja de repaso - Fundamentos Matemáticos</title><style>*{box-sizing:border-box;margin:0;padding:0;}body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;padding:40px;max-width:800px;margin:0 auto;color:#222;background:#fff;line-height:1.6;}.logo{text-align:center;font-size:2.5rem;font-weight:900;color:#FF8201;letter-spacing:2px;}.materia-titulo{text-align:center;font-size:1.5rem;color:#FF8201;margin-top:-4px;margin-bottom:4px;font-weight:700;}.subtitulo{text-align:center;font-size:1rem;color:#49C2B3;font-weight:500;margin-bottom:16px;}.datos{text-align:center;color:#555;font-size:0.9rem;margin-bottom:20px;}h2{color:#49C2B3;border-bottom:2px solid #49C2B3;padding-bottom:6px;margin-top:20px;margin-bottom:16px;page-break-after:avoid;}.etiqueta-tema{display:inline-block;background:rgba(73,194,179,0.15);color:#49C2B3;font-size:0.72rem;font-weight:700;letter-spacing:0.03em;text-transform:uppercase;padding:4px 10px;border-radius:20px;margin-bottom:6px;page-break-after:avoid;}.revision-item{margin-bottom:16px;padding:12px 16px;border-left:4px solid #49C2B3;background:#f5f5f5;border-radius:4px;page-break-inside:avoid;}.revision-pregunta{font-weight:600;font-size:1rem;margin-top:4px;}.frac{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;vertical-align:middle;margin:0 3px;line-height:1.05;font-size:0.94em;position:relative;top:0.05em;}.frac-num{padding:0 3px 1px;border-bottom:1.4px solid currentColor;}.frac-den{padding:1px 3px 0;}.footer{text-align:center;color:#999;font-size:0.7rem;margin-top:30px;border-top:1px solid #ddd;padding-top:16px;}.btn,.fila-botones{display:none;}@media print{body{padding:20px;}.btn,.fila-botones{display:none!important;}}</style></head><body><div class="logo">UTSC</div><div class="materia-titulo">Fundamentos Matemáticos</div><div class="subtitulo">Hoja de repaso</div><div class="datos">${nombre} · ${CONFIG.carrera} · ${CONFIG.grupo} · ${fecha}</div>${ejerciciosHtml}${respuestasHtml}<div class="footer">${CONFIG.institucion} · ${CONFIG.materia} · Hoja de repaso generada el ${fecha}</div><script>window.onload=function(){var botones=document.querySelectorAll('.btn, .fila-botones');botones.forEach(function(b){b.style.display='none';});window.print();};<\/script></body></html>`);
-  ventana.document.close();
+  ventana.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Hoja de repaso - Fundamentos Matemáticos</title><style>*{box-sizing:border-box;margin:0;padding:0;}body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;padding:40px;max-width:800px;margin:0 auto;color:#222;background:#fff;line-height:1.6;}.logo{text-align:center;font-size:2.5rem;font-weight:900;color:#FF8201;letter-spacing:2px;}.materia-titulo{text-align:center;font-size:1.5rem;color:#FF8201;margin-top:-4px;margin-bottom:4px;font-weight:700;}.subtitulo{text-align:center;font-size:1rem;color:#49C2B3;font-weight:500;margin-bottom:16px;}.datos{text-align:center;color:#555;font-size:0.9rem;margin-bottom:20px;}h2{color:#49C2B3;border-bottom:2px solid #49C2B3;padding-bottom:6px;margin-top:20px;margin-bottom:16px;page-break-after:avoid;}.etiqueta-tema{display:inline-block;background:rgba(73,194,179,0.15);color:#49C2B3;font-size:0.72rem;font-weight:700;letter-spacing:0.03em;text-transform:uppercase;padding:4px 10px;border-radius:20px;margin-bottom:6px;page-break-after:avoid;}.revision-item{margin-bottom:16px;padding:12px 16px;border-left:4px solid #49C2B3;background:#f5f5f5;border-radius:4px;page-break-inside:avoid;}.revision-pregunta{font-weight:600;font-size:1rem;margin-top:4px;}.frac{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;vertical-align:middle;margin:0 3px;line-height:1.05;font-size:0.94em;position:relative;top:0.05em;}.frac-num{padding:0 3px 1px;border-bottom:1.4px solid currentColor;}.frac-den{padding:1px 3px 0;}.footer{text-align:center;color:#999;font-size:0.7rem;margin-top:30px;border-top:1px solid #ddd;padding-top:16px;}.btn,.fila-botones{display:none;}@media print{body{padding:20px;}.btn,.fila-botones{display:none!important;}}</style></head><body>
+    <div class="logo">UTSC</div>
+    <div class="materia-titulo">Fundamentos Matemáticos</div>
+    <div class="subtitulo">Hoja de repaso</div>
+    <div class="datos">${nombre} · ${CONFIG.carrera} · ${CONFIG.grupo} · ${fecha}</div>
+    ${ejerciciosHtml}
+    ${respuestasHtml}
+    <div class="footer">${CONFIG.institucion} · ${CONFIG.materia} · Hoja de repaso generada el ${fecha}</div>
+    <script>window.onload=function(){var botones=document.querySelectorAll('.btn, .fila-botones');botones.forEach(function(b){b.style.display='none';});window.print();};<\/script>
+  </body></html>`);ventana.document.close();
 }
+
 function vistaConsultar(){
-  return `<div class="tarjeta"><div class="logo">UTSC</div><h1>${CONFIG.materia}</h1><h2 class="subtitulo">Consultar resultado</h2><p class="institucion">${CONFIG.institucion}</p><label>Nombre completo</label><input type="text" id="campo-consulta" placeholder="Escribe tu nombre exacto"><button class="btn btn-primario btn-bloque" onclick="buscarResultado()">Buscar mi resultado</button><div class="centrado" style="margin-top:16px;"><span class="enlace-tenue" onclick="irA('inicio')">Volver al inicio</span></div></div>`;
+  return `<div class="tarjeta"><div class="logo">UTSC</div><h1>${CONFIG.materia}</h1><h2 class="subtitulo">Consultar resultado</h2><p class="institucion">${CONFIG.institucion}</p>
+    <label>Nombre completo</label><input type="text" id="campo-consulta" placeholder="Escribe tu nombre exacto">
+    <button class="btn btn-primario btn-bloque" onclick="buscarResultado()">Buscar mi resultado</button>
+    <div class="centrado" style="margin-top:16px;"><span class="enlace-tenue" onclick="irA('inicio')">Volver al inicio</span></div>
+  </div>`;
 }
+
 function vistaConsultado(){
   if(E.consultaError||!E.consultado)return `<div class="tarjeta"><div class="logo">UTSC</div><div class="mensaje-error">No se encontró un resultado con ese nombre.</div><button class="btn btn-primario btn-bloque" onclick="irA('consultar')">Intentar de nuevo</button></div>`;
-  const reg=E.consultado;const pct=Math.round((reg.puntaje/reg.total)*100);const nivel=pct>=80?'alto':pct>=50?'medio':'bajo';const nTxt={alto:'Nivel alto',medio:'Nivel medio',bajo:'Nivel bajo – requiere refuerzo'}[nivel];const nCls={alto:'nivel-alto',medio:'nivel-medio',bajo:'nivel-bajo'}[nivel];const fecha=new Date(reg.fecha);const respGuardadas=reg.respuestas||{};const temas={};PREGUNTAS.forEach((q,bi)=>{if(!temas[q.topic])temas[q.topic]={correctas:0,total:0};temas[q.topic].total++;if(respGuardadas[bi]===q.correct)temas[q.topic].correctas++;});const arr=Object.keys(temas).map(t=>{const {correctas,total}=temas[t];const p=correctas/total;return {topic:t,correctas,total,porcentaje:p,nivel:p>=0.8?'alto':p>=0.5?'medio':'bajo'};}).sort((a,b)=>a.porcentaje-b.porcentaje);let temasHtml=arr.map(t=>`<div class="tema-item tema-${t.nivel}"><div><div class="tema-nombre">${esc(t.topic)}</div><div class="tema-puntaje">${t.correctas} de ${t.total} correctas</div></div><span class="tema-badge nivel-${t.nivel}">${t.nivel==='alto'?'Dominado':t.nivel==='medio'?'Repasar':'Requiere refuerzo'}</span></div>`).join('');
-  return `<div class="tarjeta"><div class="logo">UTSC</div><h1>${CONFIG.materia}</h1><h2 class="subtitulo">Diagnóstico de conocimientos previos</h2><p class="institucion">${CONFIG.institucion}</p><div class="centrado" style="color:var(--texto-tenue);font-size:0.9rem;">${esc(reg.nombre)} · ${esc(reg.carrera||CONFIG.carrera)} · ${esc(reg.grupo||CONFIG.grupo)}</div><div class="resumen-puntaje"><div class="numero">${reg.puntaje}<span class="de-total"> / ${reg.total}</span></div><div class="nivel-badge ${nCls}">${nTxt}</div></div>${(reg.cambiosPantalla||0)>0?`<div class="aviso-cambios-resultado">⚠️ Se registró que saliste de esta pantalla ${reg.cambiosPantalla} ${reg.cambiosPantalla===1?'vez':'veces'} durante el diagnóstico.</div>`:''}<div class="stats-grid"><div class="stat-box"><div class="valor">${reg.incorrectas}</div><div class="etiqueta">Incorrectas</div></div><div class="stat-box"><div class="valor">${reg.noIdentifico}</div><div class="etiqueta">Sin identificar</div></div><div class="stat-box"><div class="valor">${fmt(reg.tiempoSegundos||0)}</div><div class="etiqueta">Tiempo</div></div></div><p class="centrado" style="color:var(--texto-tenue);font-size:0.78rem;margin-top:14px;">Registrado el ${fecha.toLocaleDateString('es-MX')}</p></div><div class="tarjeta"><h2 class="subtitulo" style="text-align:left;">Temas a reforzar</h2><p class="recomendacion-texto">${esc(recomendar(arr))}</p>${temasHtml}</div><button class="btn btn-secundario btn-bloque" onclick="irA('consultar')" style="margin-bottom:10px;">Volver a buscar</button><button class="btn btn-primario btn-bloque" onclick="volverInicio()">Volver al inicio</button>`;
+  const reg=E.consultado;const pct=Math.round((reg.puntaje/reg.total)*100);const nivel=pct>=80?'alto':pct>=50?'medio':'bajo';const nTxt={alto:'Nivel alto',medio:'Nivel medio',bajo:'Nivel bajo – requiere refuerzo'}[nivel];const nCls={alto:'nivel-alto',medio:'nivel-medio',bajo:'nivel-bajo'}[nivel];const fecha=new Date(reg.fecha);const respGuardadas=reg.respuestas||{};const temas={};
+  PREGUNTAS.forEach((q,bi)=>{if(!temas[q.topic])temas[q.topic]={correctas:0,total:0};temas[q.topic].total++;if(respGuardadas[bi]===q.correct)temas[q.topic].correctas++;});
+  const arr=Object.keys(temas).map(t=>{const {correctas,total}=temas[t];const p=correctas/total;return {topic:t,correctas,total,porcentaje:p,nivel:p>=0.8?'alto':p>=0.5?'medio':'bajo'};}).sort((a,b)=>a.porcentaje-b.porcentaje);
+  let temasHtml=arr.map(t=>`<div class="tema-item tema-${t.nivel}"><div><div class="tema-nombre">${esc(t.topic)}</div><div class="tema-puntaje">${t.correctas} de ${t.total} correctas</div></div><span class="tema-badge nivel-${t.nivel}">${t.nivel==='alto'?'Dominado':t.nivel==='medio'?'Repasar':'Requiere refuerzo'}</span></div>`).join('');
+  return `<div class="tarjeta"><div class="logo">UTSC</div><h1>${CONFIG.materia}</h1><h2 class="subtitulo">Diagnóstico de conocimientos previos</h2><p class="institucion">${CONFIG.institucion}</p>
+    <div class="centrado" style="color:var(--texto-tenue);font-size:0.9rem;">${esc(reg.nombre)} · ${esc(reg.carrera||CONFIG.carrera)} · ${esc(reg.grupo||CONFIG.grupo)}</div>
+    <div class="resumen-puntaje"><div class="numero">${reg.puntaje}<span class="de-total"> / ${reg.total}</span></div><div class="nivel-badge ${nCls}">${nTxt}</div></div>
+    ${(reg.cambiosPantalla||0)>0?`<div class="aviso-cambios-resultado">⚠️ Se registró que saliste de esta pantalla ${reg.cambiosPantalla} ${reg.cambiosPantalla===1?'vez':'veces'} durante el diagnóstico.</div>`:''}
+    <div class="stats-grid"><div class="stat-box"><div class="valor">${reg.incorrectas}</div><div class="etiqueta">Incorrectas</div></div><div class="stat-box"><div class="valor">${reg.noIdentifico}</div><div class="etiqueta">Sin identificar</div></div><div class="stat-box"><div class="valor">${fmt(reg.tiempoSegundos||0)}</div><div class="etiqueta">Tiempo</div></div></div>
+    <p class="centrado" style="color:var(--texto-tenue);font-size:0.78rem;margin-top:14px;">Registrado el ${fecha.toLocaleDateString('es-MX')}</p>
+  </div>
+  <div class="tarjeta"><h2 class="subtitulo" style="text-align:left;">Temas a reforzar</h2><p class="recomendacion-texto">${esc(recomendar(arr))}</p>${temasHtml}</div>
+  <button class="btn btn-secundario btn-bloque" onclick="irA('consultar')" style="margin-bottom:10px;">Volver a buscar</button>
+  <button class="btn btn-primario btn-bloque" onclick="volverInicio()">Volver al inicio</button>`;
 }
+
 function vistaLogin(){
-  return `<div class="tarjeta"><div class="logo">UTSC</div><h1>${CONFIG.materia}</h1><h2 class="subtitulo">🔒 Panel docente</h2><p class="institucion">${CONFIG.institucion}</p><label>PIN de acceso</label><input type="password" id="campo-pin" placeholder="Ingresa el PIN" autocomplete="off"><button class="btn btn-primario btn-bloque" id="btn-entrar-docente" onclick="intentarAcceso()">Entrar</button><div class="centrado" style="margin-top:16px;"><span class="enlace-tenue" onclick="irA('inicio')">Volver al inicio</span></div></div>`;
+  return `<div class="tarjeta"><div class="logo">UTSC</div><h1>${CONFIG.materia}</h1><h2 class="subtitulo">🔒 Panel docente</h2><p class="institucion">${CONFIG.institucion}</p>
+    <label>PIN de acceso</label><input type="password" id="campo-pin" placeholder="Ingresa el PIN" autocomplete="off">
+    <button class="btn btn-primario btn-bloque" id="btn-entrar-docente" onclick="intentarAcceso()">Entrar</button>
+    <div class="centrado" style="margin-top:16px;"><span class="enlace-tenue" onclick="irA('inicio')">Volver al inicio</span></div>
+  </div>`;
 }
+
 function vistaPanel(){
   const regs=E.registros||[];const n=regs.length;const prom=n>0?regs.reduce((a,r)=>a+(r.puntaje||0),0)/n:0;const dom=n>0?Math.round((prom/(regs[0]?.total||TOTAL))*100):0;const tProm=n>0?regs.reduce((a,r)=>a+(r.tiempoSegundos||0),0)/n:0;
   const acierto=new Array(TOTAL).fill(0),noId=new Array(TOTAL).fill(0);
   regs.forEach(r=>{const resp=r.respuestas||{};for(let bi=0;bi<TOTAL;bi++){if(resp[bi]===PREGUNTAS[bi].correct)acierto[bi]++;if(resp[bi]==='no_identifico')noId[bi]++;}});
   let filasPreg=PREGUNTAS.map((q,bi)=>{const pa=n>0?Math.round((acierto[bi]/n)*100):0;const pn=n>0?Math.round((noId[bi]/n)*100):0;const qp=q.q.replace(/\[\[([^|\]]+)\|([^\]]+)\]\]/g,'$1/$2');return `<tr><td>${bi+1}</td><td>${esc(q.topic)}</td><td>${pa}%</td><td>${pn}%</td></tr>`;}).join('');
   let filasAlumnos=regs.slice().sort((a,b)=>new Date(b.fecha)-new Date(a.fecha)).map(r=>{const fecha=new Date(r.fecha);const camb=r.cambiosPantalla||0;const hi=r.horaInicio?new Date(r.horaInicio).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'}):'—';return `<tr><td>${esc(r.nombre)}</td><td>${esc(r.carrera||CONFIG.carrera)}</td><td>${esc(r.grupo||CONFIG.grupo)}</td><td>${r.puntaje}/${r.total}</td><td>${hi}</td><td>${formatoTiempo(r.tiempoSegundos||0)}</td><td style="${camb>0?'color:var(--amarillo);font-weight:700;':''}">${camb}</td><td>${fecha.toLocaleDateString('es-MX')}</td></tr>`;}).join('');
-  let zona='';
-  if(E.confirmandoBorrado){
-    zona=`<div class="mensaje-error">⚠️ Esto dejará de contar las ${n} respuestas guardadas. ¿Confirmas?</div><div class="fila-botones"><button class="btn btn-secundario" onclick="cancelarBorrado()">Cancelar</button><button class="btn btn-peligro" onclick="confirmarBorrado()">Sí, continuar</button></div>`;
-  }else{
-    zona=`<button class="btn btn-peligro" onclick="pedirBorrado()">Borrar todas las respuestas guardadas</button><button class="btn btn-peligro" onclick="limpiarAlmacenamientoLocal()" style="margin-top:10px;">🧹 Limpiar datos de prueba</button>`;
-  }
-  return `<div class="tarjeta"><div class="logo">UTSC</div><h2 class="subtitulo">📊 Panel docente</h2><p class="institucion">${CONFIG.institucion}</p>${E.mensajeBorrado?`<div class="mensaje-${E.mensajeBorrado.tipo}">${esc(E.mensajeBorrado.texto)}</div>`:''}<div class="stats-grid"><div class="stat-box"><div class="valor">${n}</div><div class="etiqueta">Respuestas</div></div><div class="stat-box"><div class="valor">${prom.toFixed(1)}/${regs[0]?.total||TOTAL}</div><div class="etiqueta">Promedio</div></div><div class="stat-box"><div class="valor">${dom}%</div><div class="etiqueta">Dominio general</div></div><div class="stat-box"><div class="valor">${formatoTiempo(Math.round(tProm))}</div><div class="etiqueta">Tiempo promedio</div></div></div></div><div class="tarjeta"><h2 class="subtitulo" style="text-align:left;">Desempeño por pregunta</h2><div class="tabla-scroll"><table class="tabla-docente"><thead><tr><th>#</th><th>Tema</th><th>% Acierto</th><th>% Sin identificar</th></tr></thead><tbody>${filasPreg||'<tr><td colspan="4" style="color:var(--texto-tenue);">Sin datos</td></tr>'}</tbody></table></div></div><div class="tarjeta"><h2 class="subtitulo" style="text-align:left;">Respuestas individuales</h2><div class="tabla-scroll"><table class="tabla-docente"><thead><tr><th>Nombre</th><th>Carrera</th><th>Grupo</th><th>Puntaje</th><th>Hora inicio</th><th>Tiempo</th><th>Cambios</th><th>Fecha</th></tr></thead><tbody>${filasAlumnos||'<tr><td colspan="8" style="color:var(--texto-tenue);">Sin respuestas</td></tr>'}</tbody></table></div><button class="btn btn-secundario btn-bloque" onclick="exportarCSV()" style="margin-top:14px;">Exportar a CSV</button>${E.puntoCorte?`<p style="margin-top:14px;font-size:0.78rem;color:var(--texto-tenue);text-align:center;">Mostrando desde ${new Date(E.puntoCorte).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'})}. <span class="enlace-tenue" onclick="alternarHistorico()">${E.mostrandoHistorico?'Ocultar histórico':'Ver todo el histórico'}</span></p>`:''}<div class="zona-riesgo"><h3>⚠️ Zona de riesgo</h3><p>Usa esta opción para dejar el panel en cero antes del examen real. Los datos no se borran permanentemente, solo dejan de contarse.</p>${zona}</div></div><button class="btn btn-secundario btn-bloque" onclick="volverInicio()">Salir del panel</button>`;
+  let zona='';if(E.confirmandoBorrado){zona=`<div class="mensaje-error">⚠️ Esto dejará de contar las ${n} respuestas guardadas. ¿Confirmas?</div><div class="fila-botones"><button class="btn btn-secundario" onclick="cancelarBorrado()">Cancelar</button><button class="btn btn-peligro" onclick="confirmarBorrado()">Sí, continuar</button></div>`;}else{zona=`<button class="btn btn-peligro" onclick="pedirBorrado()">Borrar todas las respuestas guardadas</button>`;}
+  return `<div class="tarjeta"><div class="logo">UTSC</div><h2 class="subtitulo">📊 Panel docente</h2><p class="institucion">${CONFIG.institucion}</p>
+    ${E.mensajeBorrado?`<div class="mensaje-${E.mensajeBorrado.tipo}">${esc(E.mensajeBorrado.texto)}</div>`:''}
+    <div class="stats-grid"><div class="stat-box"><div class="valor">${n}</div><div class="etiqueta">Respuestas</div></div>
+    <div class="stat-box"><div class="valor">${prom.toFixed(1)}/${regs[0]?.total||TOTAL}</div><div class="etiqueta">Promedio</div></div>
+    <div class="stat-box"><div class="valor">${dom}%</div><div class="etiqueta">Dominio general</div></div>
+    <div class="stat-box"><div class="valor">${formatoTiempo(Math.round(tProm))}</div><div class="etiqueta">Tiempo promedio</div></div></div>
+  </div>
+  <div class="tarjeta"><h2 class="subtitulo" style="text-align:left;">Desempeño por pregunta</h2><div class="tabla-scroll"><table class="tabla-docente"><thead><tr><th>#</th><th>Tema</th><th>% Acierto</th><th>% Sin identificar</th></tr></thead><tbody>${filasPreg||'<tr><td colspan="4" style="color:var(--texto-tenue);">Sin datos</td></tr>'}</tbody></table></div></div>
+  <div class="tarjeta"><h2 class="subtitulo" style="text-align:left;">Respuestas individuales</h2><div class="tabla-scroll"><table class="tabla-docente"><thead><tr><th>Nombre</th><th>Carrera</th><th>Grupo</th><th>Puntaje</th><th>Hora inicio</th><th>Tiempo</th><th>Cambios</th><th>Fecha</th></tr></thead><tbody>${filasAlumnos||'<tr><td colspan="8" style="color:var(--texto-tenue);">Sin respuestas</td></tr>'}</tbody></table></div>
+    <button class="btn btn-secundario btn-bloque" onclick="exportarCSV()" style="margin-top:14px;">Exportar a CSV</button>
+    ${E.puntoCorte?`<p style="margin-top:14px;font-size:0.78rem;color:var(--texto-tenue);text-align:center;">Mostrando desde ${new Date(E.puntoCorte).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'})}. <span class="enlace-tenue" onclick="alternarHistorico()">${E.mostrandoHistorico?'Ocultar histórico':'Ver todo el histórico'}</span></p>`:''}
+    <div class="zona-riesgo"><h3>⚠️ Zona de riesgo</h3><p>Usa esta opción para dejar el panel en cero antes del examen real. Los datos no se borran permanentemente, solo dejan de contarse.</p>${zona}</div>
+  </div>
+  <button class="btn btn-secundario btn-bloque" onclick="volverInicio()">Salir del panel</button>`;
 }
 
 // ================================================================
@@ -620,20 +914,45 @@ function render(){
   }
   app.innerHTML=html;vincularEventos();
 }
+
 function vincularEventos(){
   const btnEntrar=document.getElementById('btn-entrar-docente');if(btnEntrar){btnEntrar.addEventListener('click',intentarAcceso);}
   const campoPin=document.getElementById('campo-pin');if(campoPin){campoPin.removeEventListener('keydown',handlePinEnter);campoPin.addEventListener('keydown',handlePinEnter);}
 }
+
 function handlePinEnter(e){if(e.key==='Enter'){e.preventDefault();intentarAcceso();}}
+
+// ================================================================
+// DETECCIÓN DE CAMBIOS DE PANTALLA
+// ================================================================
 function mostrarAvisoCambioPantalla(){
   const overlay=document.createElement('div');
   overlay.className='aviso-cambio-overlay';
   overlay.innerHTML=`<div class="aviso-cambio-caja"><div class="aviso-cambio-titulo">AVISO</div><div class="aviso-cambio-mensaje">Se detectó que saliste de esta pantalla ${E.cambios} ${E.cambios===1?'vez':'veces'} durante el diagnóstico.</div><button class="btn btn-primario" onclick="this.closest('.aviso-cambio-overlay').remove()">Entendido</button></div>`;
   document.body.appendChild(overlay);
 }
-document.addEventListener('visibilitychange',function(){if(E._ignorarCambioPantalla)return;const avisoSeleccion=document.querySelector('.aviso-seleccion');if(document.hidden&&E.pantalla==='cuestionario'&&!avisoSeleccion){E.cambios++;mostrarAvisoCambioPantalla();}});
-document.addEventListener('fullscreenchange',function(){if(E._ignorarCambioPantalla)return;const avisoSeleccion=document.querySelector('.aviso-seleccion');if(!document.fullscreenElement&&E.pantalla==='cuestionario'&&!avisoSeleccion){E.cambios++;mostrarAvisoCambioPantalla();}});
-window.addEventListener('beforeunload',function(e){if(E.pantalla==='cuestionario'){e.preventDefault();e.returnValue='';}});
+
+document.addEventListener('visibilitychange', () => {
+  if (E._ignorarCambioPantalla) return;
+  
+  const avisoSeleccion = document.querySelector('.aviso-seleccion');
+  if (document.hidden && E.pantalla === 'cuestionario' && !avisoSeleccion) {
+    E.cambios++;
+    mostrarAvisoCambioPantalla();
+  }
+});
+
+document.addEventListener('fullscreenchange', () => {
+  if (E._ignorarCambioPantalla) return;
+  
+  const avisoSeleccion = document.querySelector('.aviso-seleccion');
+  if (!document.fullscreenElement && E.pantalla === 'cuestionario' && !avisoSeleccion) {
+    E.cambios++;
+    mostrarAvisoCambioPantalla();
+  }
+});
+
+window.addEventListener('beforeunload',e=>{if(E.pantalla==='cuestionario'){e.preventDefault();e.returnValue='';}});
 
 // ================================================================
 // INICIAR
