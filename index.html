@@ -246,7 +246,7 @@ let E = {
   repasoPendientes:[],
   repasoOrigen:'resultado',
   _ignorarCambioPantalla: false,
-  _pantallaAnterior:'resultado'
+  _registroParaRepaso: null
 };
 
 // ================================================================
@@ -375,7 +375,6 @@ function comenzar(){
   irA('cuestionario');
 }
 
-// CAMBIO 3: al seleccionar, elimina el aviso de selección
 function seleccionar(bi,val){
   E.respuestas[bi]=val;
   const aviso=document.querySelector('.aviso-seleccion');
@@ -384,7 +383,6 @@ function seleccionar(bi,val){
   render();
 }
 
-// CAMBIO 3: aviso personalizado que se auto-elimina
 function mostrarAvisoSeleccion(){
   E._ignorarCambioPantalla=true;
   const avisoExistente=document.querySelector('.aviso-seleccion');
@@ -557,6 +555,7 @@ async function confirmarBorrado(){
   }
 }
 
+// Prepara la hoja de repaso desde el resultado inmediato
 function prepararRepaso(origen){
   const pendientes=[];
   for(let bi=0;bi<TOTAL;bi++){
@@ -565,21 +564,49 @@ function prepararRepaso(origen){
   }
   E.repasoPendientes=pendientes;
   E.repasoOrigen=origen;
+  E._registroParaRepaso=null;
   irA('repaso');
 }
 
-// CAMBIO 4: preparar repaso desde un registro consultado
-function prepararRepasoDesdeRegistro(reg){
-  const pendientes=[];
-  const respuestasGuardadas=reg.respuestas||{};
-  for(let bi=0;bi<TOTAL;bi++){
-    const r=respuestasGuardadas[bi];
-    if(r!==PREGUNTAS[bi].correct)pendientes.push(bi);
+// Prepara la hoja de repaso desde un registro consultado
+function prepararRepasoDesdeRegistroV2(){
+  if (E.pantalla === 'resultado' && E.resultado) {
+    const pendientes = E.resultado.detalle.filter(d => !d.esCorrecta).map(d => d.baseIndex);
+    E.repasoPendientes = pendientes;
+    E.repasoOrigen = 'resultado';
+    E._registroParaRepaso = null;
+  } 
+  else if (E.consultado) {
+    const reg = E.consultado;
+    const respuestasGuardadas = reg.respuestas || {};
+    const pendientes = [];
+    for (let bi = 0; bi < TOTAL; bi++) {
+      if (respuestasGuardadas[bi] !== PREGUNTAS[bi].correct) {
+        pendientes.push(bi);
+      }
+    }
+    E.repasoPendientes = pendientes;
+    E.repasoOrigen = 'consultado';
+    E._registroParaRepaso = reg;
   }
-  E.repasoPendientes=pendientes;
-  E.repasoOrigen='consultado';
-  E._registroParaRepaso=reg;
   irA('repaso');
+}
+
+// Vuelve desde la hoja de repaso al resultado correspondiente
+function volverDesdeRepaso(){
+  if (E.repasoOrigen === 'consultado' && E._registroParaRepaso) {
+    E.consultado = E._registroParaRepaso;
+    E.consultaError = false;
+    E.pantalla = 'consultado';
+    render();
+    window.scrollTo(0,0);
+  } else if (E.repasoOrigen === 'resultado') {
+    E.pantalla = 'resultado';
+    render();
+    window.scrollTo(0,0);
+  } else {
+    volverInicio();
+  }
 }
 
 function volverInicio(){
@@ -644,10 +671,8 @@ function vistaCargando(msg){return `<div class="tarjeta centrado"><div class="sp
 
 function vistaError(){return `<div class="tarjeta"><div class="logo">UTSC</div><div class="mensaje-error">No fue posible guardar tus respuestas. Intenta de nuevo.</div><button class="btn btn-primario btn-bloque" onclick="finalizar()">Reintentar</button></div>`;}
 
-// CAMBIO 4: vista unificada de resultado (sirve para resultado inmediato y para consultado)
+// Vista unificada de resultado (para resultado inmediato y consultado)
 function vistaResultadoUnificado(datos){
-  // datos: {nombre, carrera, grupo, puntaje, total, correctas, incorrectas, noIdentifico,
-  //         tiempoSegundos, cambiosPantalla, respuestas, fecha, origen}
   const r=datos;
   const nivel={alto:'Nivel alto',medio:'Nivel medio',bajo:'Nivel bajo – requiere refuerzo'}[r.nivel];
   const clase={alto:'nivel-alto',medio:'nivel-medio',bajo:'nivel-bajo'}[r.nivel];
@@ -662,7 +687,6 @@ function vistaResultadoUnificado(datos){
     </div><p style="text-align:center;color:var(--texto-tenue);font-size:0.78rem;margin-top:6px;">Comparación contra ${E.totalRespuestasGrupo} participante${E.totalRespuestasGrupo !== 1 ? 's' : ''}.</p>`;
   } else comp='<p style="text-align:center;color:var(--texto-tenue);font-size:0.82rem;margin-top:16px;">No hay datos del grupo para comparar.</p>';
   
-  // Revisión de respuestas
   let revHtml=r.detalle.map((d,i)=>{
     let cl, pill, det;
     if(d.resp==='no_identifico'){cl='revision-noidentifico';pill='pill-noidentifico';det=`Marcaste "No identifico". Correcta: <b class="ok">${txt(d.correctOption)}</b>`;}
@@ -686,14 +710,12 @@ function vistaResultadoUnificado(datos){
   </div>
   <div class="tarjeta"><h2 class="subtitulo" style="text-align:left;">Temas a reforzar</h2><p class="recomendacion-texto">${esc(recomendar(r.temas))}</p>${temasHtml}</div>
   <div class="tarjeta"><h2 class="subtitulo" style="text-align:left;">Revisión de respuestas</h2>${revHtml}</div>
-  <button class="btn btn-secundario btn-bloque" onclick="prepararRepasoDesdeRegistro(${JSON.stringify(r).replace(/"/g,'&quot;')})" style="margin-bottom:10px;">Ver hoja de repaso</button>
+  <button class="btn btn-secundario btn-bloque" onclick="prepararRepasoDesdeRegistroV2()" style="margin-bottom:10px;">Ver hoja de repaso</button>
   <button class="btn btn-primario btn-bloque" onclick="volverInicio()">Volver al inicio</button>`;
 }
 
-// Vista de resultado inmediato (usa la vista unificada)
 function vistaResultado(){
   const r=E.resultado;
-  // Agregar el detalle y temas calculados desde las respuestas actuales
   const datos={
     nombre:E.nombre,
     carrera:CONFIG.carrera,
@@ -713,7 +735,6 @@ function vistaResultado(){
   return vistaResultadoUnificado(datos);
 }
 
-// Vista de resultado consultado (usa la vista unificada)
 function vistaConsultado(){
   if(E.consultaError||!E.consultado){
     return `<div class="tarjeta"><div class="logo">UTSC</div><div class="mensaje-error">No se encontró un resultado con ese nombre.</div><button class="btn btn-primario btn-bloque" onclick="irA('consultar')">Intentar de nuevo</button></div>`;
@@ -762,7 +783,7 @@ function vistaRepaso(){
     return `<div class="tarjeta">
       <div class="logo">UTSC</div>
       <p class="centrado" style="color:var(--texto-tenue);">¡Felicidades! No tienes reactivos pendientes de repasar.</p>
-      <button class="btn btn-primario btn-bloque" onclick="irA('${E.repasoOrigen}')">Volver</button>
+      <button class="btn btn-primario btn-bloque" onclick="volverDesdeRepaso()">Volver</button>
     </div>`;
   }
   let ej = '', resp = '', c = 1;
@@ -801,7 +822,7 @@ function vistaRepaso(){
     </div>
     <div class="fila-botones" style="margin-top:10px;padding:0 0 20px 0;">
       <button class="btn btn-primario" onclick="imprimirRepaso()" style="flex:1;">🖨️ Imprimir / Guardar como PDF</button>
-      <button class="btn btn-secundario" onclick="irA('${E.repasoOrigen}')" style="flex:1;">Volver al resultado</button>
+      <button class="btn btn-secundario" onclick="volverDesdeRepaso()" style="flex:1;">Volver al resultado</button>
     </div>
   </div>`;
 }
@@ -921,14 +942,11 @@ function vincularEventos(){
 function handlePinEnter(e) { if(e.key === 'Enter') { e.preventDefault(); intentarAcceso(); } }
 
 // ================================================================
-// CAMBIO 2: Un solo aviso de cambio de pantalla (se reemplaza)
+// DETECCIÓN DE CAMBIOS DE PANTALLA (un solo aviso)
 // ================================================================
 function mostrarAvisoCambioPantalla(){
-  // Eliminar aviso anterior si existe
   const avisoExistente = document.querySelector('.aviso-cambio-overlay');
   if(avisoExistente) avisoExistente.remove();
-  
-  // Crear nuevo aviso con el número actualizado
   const overlay = document.createElement('div');
   overlay.className = 'aviso-cambio-overlay';
   overlay.innerHTML = `
