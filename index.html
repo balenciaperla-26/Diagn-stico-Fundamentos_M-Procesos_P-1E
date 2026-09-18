@@ -193,7 +193,7 @@ table.tabla-docente td{padding:9px 10px;border-bottom:1px solid var(--borde);}
 const PREGUNTAS = [
   {topic:"Fracciones - Simplificación",q:"Simplifica la fracción [[18|24]] a su mínima expresión",opts:["[[3|4]]","[[2|3]]","[[4|5]]","[[5|6]]"],correct:0,variantes:[{e:"Simplifica la fracción [[20|30]] a su mínima expresión",r:"[[2|3]]"}]},
   {topic:"Fracciones - Suma",q:"Calcula: [[2|3]] + [[1|6]]",opts:["[[5|6]]","[[3|9]]","[[1|2]]","[[5|9]]"],correct:0,variantes:[{e:"Calcula: [[1|4]] + [[1|2]]",r:"[[3|4]]"}]},
-  {topic:"Fracciones - Multiplicación",q:"Calcula: [[3|4]] · [[2|5]]",opts:["[[3|10]]","[[5|9]]","[[2|3]]","[[6|5]]"],correct:0,variantes:[{e:"Calcula: [[2|3]] · [[3|4]]",r:"[[1|2]]"}]},
+  {topic:"Fracciones - Multiplicación",q:"Calcula: ([[3|4]])([[2|5]])",opts:["[[3|10]]","[[5|9]]","[[2|3]]","[[6|5]]"],correct:0,variantes:[{e:"Calcula: ([[2|3]])([[3|4]])",r:"[[1|2]]"}]},
   {topic:"Números negativos - Suma",q:"Calcula: 8 + (−3) + (−7)",opts:["−2","18","−12","2"],correct:0,variantes:[{e:"Calcula: 9 + (−4) + (−8)",r:"−3"}]},
   {topic:"Números negativos - Multiplicación",q:"Calcula: (−4)(−2)",opts:["8","−8","6","−6"],correct:0,variantes:[{e:"Calcula: (−5)(−3)",r:"15"}]},
   {topic:"Porcentaje",q:"Calcula el 10% de 240",opts:["24","36","15","30"],correct:0,variantes:[{e:"Calcula el 10% de 150",r:"15"}]},
@@ -210,8 +210,7 @@ const PREGUNTAS = [
   {topic:"Ecuaciones lineales",q:"Resuelve: 2(x − 3) = 10",opts:["x = 8","x = 5","x = 13","x = 3.5"],correct:0,variantes:[{e:"Resuelve: 3(x − 2) = 12",r:"x = 6"}]},
   {topic:"Ecuaciones lineales",q:"Resuelve: [[x|4]] − 2 = 3",opts:["x = 20","x = 4","x = 12","x = 5"],correct:0,variantes:[{e:"Resuelve: [[x|3]] − 1 = 4",r:"x = 15"}]},
   {topic:"Razón y proporción",q:"Si 3 cuadernos cuestan $45, ¿cuánto cuestan 5 cuadernos al mismo precio?",opts:["$75","$60","$90","$67.50"],correct:0,variantes:[{e:"Si 2 lápices cuestan $18, ¿cuánto cuestan 5 lápices?",r:"$45"}]},
-  {topic: "Lenguaje algebraico - Comprensión", q: "¿Qué expresión algebraica representa \"el producto de un número y 5\"?", opts: ["5x", "x + 5", "x − 5", "x ÷ 5"], correct: 0, variantes: [{e: "¿Qué expresión algebraica representa \"el producto de un número y 3\"?", r: "3x"}]
-}
+  {topic:"Lenguaje algebraico - Comprensión",q:"¿Qué expresión algebraica representa 'el producto de un número y 5'?",opts:["5x","x + 5","x − 5","x ÷ 5"],correct:0,variantes:[{e:"¿Qué expresión algebraica representa 'el producto de un número y 3'?",r:"3x"}]}
 ];
 
 const TOTAL = PREGUNTAS.length;
@@ -246,7 +245,8 @@ let E = {
   errorGuardado:false,
   repasoPendientes:[],
   repasoOrigen:'resultado',
-  _ignorarCambioPantalla: false
+  _ignorarCambioPantalla: false,
+  _pantallaAnterior:'resultado'
 };
 
 // ================================================================
@@ -254,24 +254,17 @@ let E = {
 // ================================================================
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a;}
 function fmt(s){const m=Math.floor(s/60), seg=s%60;return String(m).padStart(2,'0')+':'+String(seg).padStart(2,'0');}
-
-// CAMBIO 1: Formato hh:mm:ss para el tiempo
 function formatoTiempo(segundos){
   const hrs = Math.floor(segundos / 3600);
   const mins = Math.floor((segundos % 3600) / 60);
   const segs = segundos % 60;
   return String(hrs).padStart(2,'0')+':'+String(mins).padStart(2,'0')+':'+String(segs).padStart(2,'0');
 }
-
 function esc(t){const d=document.createElement('div');d.textContent=t;return d.innerHTML;}
 function frac(html){return html.replace(/\[\[([^|\]]+)\|([^\]]+)\]\]/g,(m,n,d)=>`<span class="frac"><span class="frac-num">${n}</span><span class="frac-den">${d}</span></span>`);}
 function txt(t){return frac(esc(t));}
-
-// CAMBIO 4: Detección correcta de GitHub Pages
 function local(){
-  if (window.location.hostname.includes('github.io')) {
-    return false;
-  }
+  if (window.location.hostname.includes('github.io')) return false;
   return typeof window.storage === 'undefined';
 }
 
@@ -294,7 +287,6 @@ async function obtener(){
   return [];
 }
 
-// CAMBIO 5: Función para limpiar datos
 function limpiarAlmacenamientoLocal(){
   if(confirm('⚠️ ¿Estás seguro de que quieres borrar TODOS los datos guardados? Esto no se puede deshacer.')){
     try{
@@ -383,18 +375,25 @@ function comenzar(){
   irA('cuestionario');
 }
 
-function seleccionar(bi,val){E.respuestas[bi]=val;render();}
+// CAMBIO 3: al seleccionar, elimina el aviso de selección
+function seleccionar(bi,val){
+  E.respuestas[bi]=val;
+  const aviso=document.querySelector('.aviso-seleccion');
+  if(aviso)aviso.remove();
+  E._ignorarCambioPantalla=false;
+  render();
+}
 
-// CAMBIO 2: Alerta personalizada (no usa alert())
+// CAMBIO 3: aviso personalizado que se auto-elimina
 function mostrarAvisoSeleccion(){
   E._ignorarCambioPantalla=true;
   const avisoExistente=document.querySelector('.aviso-seleccion');
   if(avisoExistente)avisoExistente.remove();
   const aviso=document.createElement('div');
   aviso.className='aviso-seleccion';
-  aviso.innerHTML='<span>⚠️ Selecciona una opción antes de continuar.</span><button class="btn btn-primario" style="padding:8px 20px;font-size:0.85rem;" onclick="this.closest(\'.aviso-seleccion\').remove(); E._ignorarCambioPantalla=false;">Entendido</button>';
+  aviso.innerHTML='<span>⚠️ Selecciona una opción antes de continuar.</span><button class="btn btn-primario" style="padding:6px 16px;font-size:0.8rem;" onclick="this.closest(\'.aviso-seleccion\').remove(); E._ignorarCambioPantalla=false;">Entendido</button>';
   document.body.appendChild(aviso);
-  setTimeout(()=>{if(aviso.parentNode)aviso.remove();E._ignorarCambioPantalla=false;},5000);
+  setTimeout(()=>{if(aviso.parentNode)aviso.remove();E._ignorarCambioPantalla=false;},3000);
 }
 
 function siguiente(){
@@ -415,7 +414,6 @@ async function finalizar(){
   try{await guardar(reg);E.guardando=false;await calcularPromedio();irA('resultado');}catch(e){E.guardando=false;E.errorGuardado=true;irA('error');}
 }
 
-// CAMBIO 3: Conteo correcto de participantes (filtra duplicados)
 async function calcularPromedio(){
   try{
     const todas=await obtener();
@@ -503,43 +501,25 @@ function aplicarCorte(){
 
 function alternarHistorico(){E.mostrandoHistorico=!E.mostrandoHistorico;aplicarCorte();render();}
 
-// CAMBIO 6: CSV con nombres cortos y tiempo hh:mm:ss
 function exportarCSV(){
-  const registros = E.registros || [];
-  const headers = ['Nombre','Carrera','Grupo','Puntaje','Total','Hora','Tiempo','Cambios','Fecha'];
-  const filas = registros.map(r => {
-    let fechaLegible = '';
-    let horaInicioLegible = '';
-    if (r.fecha) {
-      const fecha = new Date(r.fecha);
-      fechaLegible = fecha.toLocaleDateString('es-MX', {day:'2-digit', month:'2-digit', year:'numeric'});
-    }
-    if (r.horaInicio) {
-      const hora = new Date(r.horaInicio);
-      horaInicioLegible = hora.toLocaleTimeString('es-MX', {hour:'2-digit', minute:'2-digit', second:'2-digit'});
-    }
-    return [
-      r.nombre || '',
-      r.carrera || CONFIG.carrera,
-      r.grupo || CONFIG.grupo,
-      r.puntaje || 0,
-      r.total || TOTAL,
-      horaInicioLegible,
-      formatoTiempo(r.tiempoSegundos || 0),
-      r.cambiosPantalla || 0,
-      fechaLegible
-    ];
+  const registros=E.registros||[];
+  const headers=['Nombre','Carrera','Grupo','Puntaje','Total','Hora','Tiempo','Cambios','Fecha'];
+  const filas=registros.map(r=>{
+    let fechaLegible='',horaInicioLegible='';
+    if(r.fecha){const fecha=new Date(r.fecha);fechaLegible=fecha.toLocaleDateString('es-MX',{day:'2-digit',month:'2-digit',year:'numeric'});}
+    if(r.horaInicio){const hora=new Date(r.horaInicio);horaInicioLegible=hora.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit',second:'2-digit'});}
+    return [r.nombre||'',r.carrera||CONFIG.carrera,r.grupo||CONFIG.grupo,r.puntaje||0,r.total||TOTAL,horaInicioLegible,formatoTiempo(r.tiempoSegundos||0),r.cambiosPantalla||0,fechaLegible];
   });
-  const cabecera = headers.join(',');
-  const cuerpo = filas.map(f => f.join(',')).join('\n');
-  const csv = cabecera + '\n' + cuerpo;
-  const bom = '\uFEFF';
-  const csvConBOM = bom + csv;
-  const blob = new Blob([csvConBOM], { type: 'text/csv;charset=utf-8;' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'diagnostico_resultados.csv';
+  const cabecera=headers.join(',');
+  const cuerpo=filas.map(f=>f.join(',')).join('\n');
+  const csv=cabecera+'\n'+cuerpo;
+  const bom='\uFEFF';
+  const csvConBOM=bom+csv;
+  const blob=new Blob([csvConBOM],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download='diagnostico_resultados.csv';
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
@@ -552,41 +532,58 @@ function cancelarBorrado(){E.confirmandoBorrado=false;render();}
 async function confirmarBorrado(){
   irA('guardando');
   try{
-    const ahoraISO = new Date().toISOString();
-    if(typeof window.storage !== 'undefined' && window.storage.set){
-      await window.storage.set('config:puntoCorte', ahoraISO, true);
+    const ahoraISO=new Date().toISOString();
+    if(typeof window.storage!=='undefined'&&window.storage.set){
+      await window.storage.set('config:puntoCorte',ahoraISO,true);
     }
-    localStorage.setItem('puntoCorte', ahoraISO);
-    E.puntoCorte = ahoraISO;
-    E.mostrandoHistorico = false;
-    E.registros = [];
-    E.totalGrupo = 0;
-    E.totalRespuestasGrupo = 0;
-    E.promedioGrupo = null;
-    const todas = await obtener();
-    E.registros = todas;
+    localStorage.setItem('puntoCorte',ahoraISO);
+    E.puntoCorte=ahoraISO;
+    E.mostrandoHistorico=false;
+    E.registros=[];
+    E.totalGrupo=0;
+    E.totalRespuestasGrupo=0;
+    E.promedioGrupo=null;
+    const todas=await obtener();
+    E.registros=todas;
     aplicarCorte();
     await calcularPromedio();
-    E.confirmandoBorrado = false;
-    E.mensajeBorrado = {tipo:'ok', texto:'✅ Las respuestas anteriores dejaron de contarse. Cualquier respuesta nueva volverá a contar con normalidad.'};
+    E.confirmandoBorrado=false;
+    E.mensajeBorrado={tipo:'ok',texto:'✅ Las respuestas anteriores dejaron de contarse. Cualquier respuesta nueva volverá a contar con normalidad.'};
     irA('panel');
-  } catch(error){
-    E.confirmandoBorrado = false;
-    E.mensajeBorrado = {tipo:'error', texto:'❌ No se pudo aplicar el punto de corte. Intenta usar "🧹 Limpiar datos de prueba" en su lugar.'};
+  }catch(error){
+    E.confirmandoBorrado=false;
+    E.mensajeBorrado={tipo:'error',texto:'❌ No se pudo aplicar el punto de corte. Intenta usar "🧹 Limpiar datos de prueba" en su lugar.'};
     irA('panel');
   }
 }
 
 function prepararRepaso(origen){
   const pendientes=[];
-  for(let bi=0;bi<TOTAL;bi++){const r=E.respuestas[bi];if(r!==PREGUNTAS[bi].correct)pendientes.push(bi);}
+  for(let bi=0;bi<TOTAL;bi++){
+    const r=E.respuestas[bi];
+    if(r!==PREGUNTAS[bi].correct)pendientes.push(bi);
+  }
   E.repasoPendientes=pendientes;
   E.repasoOrigen=origen;
   irA('repaso');
 }
 
+// CAMBIO 4: preparar repaso desde un registro consultado
+function prepararRepasoDesdeRegistro(reg){
+  const pendientes=[];
+  const respuestasGuardadas=reg.respuestas||{};
+  for(let bi=0;bi<TOTAL;bi++){
+    const r=respuestasGuardadas[bi];
+    if(r!==PREGUNTAS[bi].correct)pendientes.push(bi);
+  }
+  E.repasoPendientes=pendientes;
+  E.repasoOrigen='consultado';
+  E._registroParaRepaso=reg;
+  irA('repaso');
+}
+
 function volverInicio(){
-  E={pantalla:'inicio',nombre:'',sesion:[],idx:0,respuestas:{},inicio:null,tiempo:0,cambios:0,resultado:null,promedioGrupo:null,totalGrupo:0,totalRespuestasGrupo:0,consultaNombre:'',consultado:null,consultaError:false,autenticado:false,registros:[],mostrandoHistorico:false,puntoCorte:null,confirmandoBorrado:false,mensajeBorrado:null,guardando:false,errorGuardado:false,repasoPendientes:[],repasoOrigen:'resultado',_ignorarCambioPantalla:false};
+  E={pantalla:'inicio',nombre:'',sesion:[],idx:0,respuestas:{},inicio:null,tiempo:0,cambios:0,resultado:null,promedioGrupo:null,totalGrupo:0,totalRespuestasGrupo:0,consultaNombre:'',consultado:null,consultaError:false,autenticado:false,registros:[],mostrandoHistorico:false,puntoCorte:null,confirmandoBorrado:false,mensajeBorrado:null,guardando:false,errorGuardado:false,repasoPendientes:[],repasoOrigen:'resultado',_ignorarCambioPantalla:false,_registroParaRepaso:null};
   render();
 }
 
@@ -647,10 +644,14 @@ function vistaCargando(msg){return `<div class="tarjeta centrado"><div class="sp
 
 function vistaError(){return `<div class="tarjeta"><div class="logo">UTSC</div><div class="mensaje-error">No fue posible guardar tus respuestas. Intenta de nuevo.</div><button class="btn btn-primario btn-bloque" onclick="finalizar()">Reintentar</button></div>`;}
 
-function vistaResultado(){
-  const r=E.resultado;
+// CAMBIO 4: vista unificada de resultado (sirve para resultado inmediato y para consultado)
+function vistaResultadoUnificado(datos){
+  // datos: {nombre, carrera, grupo, puntaje, total, correctas, incorrectas, noIdentifico,
+  //         tiempoSegundos, cambiosPantalla, respuestas, fecha, origen}
+  const r=datos;
   const nivel={alto:'Nivel alto',medio:'Nivel medio',bajo:'Nivel bajo – requiere refuerzo'}[r.nivel];
   const clase={alto:'nivel-alto',medio:'nivel-medio',bajo:'nivel-bajo'}[r.nivel];
+  
   let comp='';
   if(E.promedioGrupo!==null && E.totalRespuestasGrupo > 0){
     const tu=Math.round((r.puntaje/r.total)*100);
@@ -660,6 +661,8 @@ function vistaResultado(){
       <div class="comparacion-fila"><div class="nombre">Grupo</div><div class="comparacion-track"><div class="comparacion-fill grupo" style="width:${grp}%;"></div></div><div class="comparacion-valor">${grp}%</div></div>
     </div><p style="text-align:center;color:var(--texto-tenue);font-size:0.78rem;margin-top:6px;">Comparación contra ${E.totalRespuestasGrupo} participante${E.totalRespuestasGrupo !== 1 ? 's' : ''}.</p>`;
   } else comp='<p style="text-align:center;color:var(--texto-tenue);font-size:0.82rem;margin-top:16px;">No hay datos del grupo para comparar.</p>';
+  
+  // Revisión de respuestas
   let revHtml=r.detalle.map((d,i)=>{
     let cl, pill, det;
     if(d.resp==='no_identifico'){cl='revision-noidentifico';pill='pill-noidentifico';det=`Marcaste "No identifico". Correcta: <b class="ok">${txt(d.correctOption)}</b>`;}
@@ -668,18 +671,89 @@ function vistaResultado(){
     const estadoTxt=d.resp==='no_identifico'?'No identifico':d.esCorrecta?'Correcta':'Incorrecta';
     return `<div class="revision-item ${cl}"><div class="revision-pregunta">${i+1}. ${txt(d.question)}<span class="pill-estado ${pill}">${estadoTxt}</span></div><div class="revision-detalle">${det}</div></div>`;
   }).join('');
+  
   let temasHtml=r.temas.map(t=>`<div class="tema-item tema-${t.nivel}"><div><div class="tema-nombre">${esc(t.topic)}</div><div class="tema-puntaje">${t.correctas} de ${t.total} correctas</div></div><span class="tema-badge nivel-${t.nivel}">${t.nivel==='alto'?'Dominado':t.nivel==='medio'?'Repasar':'Requiere refuerzo'}</span></div>`).join('');
+  
+  const fechaRegistro = r.fecha ? new Date(r.fecha).toLocaleDateString('es-MX') : '';
+  
   return `<div class="tarjeta"><div class="logo">UTSC</div><h1>${CONFIG.materia}</h1><h2 class="subtitulo">Diagnóstico de conocimientos previos</h2><p class="institucion">${CONFIG.institucion}</p>
-    <div class="centrado" style="color:var(--texto-tenue);font-size:0.9rem;">${esc(E.nombre)} · ${CONFIG.carrera} · ${CONFIG.grupo}</div>
+    <div class="centrado" style="color:var(--texto-tenue);font-size:0.9rem;">${esc(r.nombre)} · ${esc(r.carrera||CONFIG.carrera)} · ${esc(r.grupo||CONFIG.grupo)}</div>
     <div class="resumen-puntaje"><div class="numero">${r.puntaje}<span class="de-total"> / ${r.total}</span></div><div class="nivel-badge ${clase}">${nivel}</div></div>
-    ${E.cambios>0?`<div class="aviso-cambios-resultado">⚠️ Se registró que saliste de esta pantalla ${E.cambios} ${E.cambios===1?'vez':'veces'} durante el diagnóstico.</div>`:''}
-    <div class="stats-grid"><div class="stat-box"><div class="valor">${r.correctas}</div><div class="etiqueta">Correctas</div></div><div class="stat-box"><div class="valor">${r.incorrectas}</div><div class="etiqueta">Incorrectas</div></div><div class="stat-box"><div class="valor">${r.noIdentifico}</div><div class="etiqueta">Sin identificar</div></div><div class="stat-box"><div class="valor">${fmt(E.tiempo)}</div><div class="etiqueta">Tiempo</div></div></div>
+    ${(r.cambiosPantalla||0)>0?`<div class="aviso-cambios-resultado">⚠️ Se registró que saliste de esta pantalla ${r.cambiosPantalla} ${r.cambiosPantalla===1?'vez':'veces'} durante el diagnóstico.</div>`:''}
+    <div class="stats-grid"><div class="stat-box"><div class="valor">${r.correctas}</div><div class="etiqueta">Correctas</div></div><div class="stat-box"><div class="valor">${r.incorrectas}</div><div class="etiqueta">Incorrectas</div></div><div class="stat-box"><div class="valor">${r.noIdentifico}</div><div class="etiqueta">Sin identificar</div></div><div class="stat-box"><div class="valor">${fmt(r.tiempoSegundos||0)}</div><div class="etiqueta">Tiempo</div></div></div>
     ${comp}
+    ${fechaRegistro?`<p class="centrado" style="color:var(--texto-tenue);font-size:0.78rem;margin-top:14px;">Registrado el ${fechaRegistro}</p>`:''}
   </div>
   <div class="tarjeta"><h2 class="subtitulo" style="text-align:left;">Temas a reforzar</h2><p class="recomendacion-texto">${esc(recomendar(r.temas))}</p>${temasHtml}</div>
   <div class="tarjeta"><h2 class="subtitulo" style="text-align:left;">Revisión de respuestas</h2>${revHtml}</div>
-  <button class="btn btn-secundario btn-bloque" onclick="prepararRepaso('resultado')" style="margin-bottom:10px;">Ver hoja de repaso</button>
+  <button class="btn btn-secundario btn-bloque" onclick="prepararRepasoDesdeRegistro(${JSON.stringify(r).replace(/"/g,'&quot;')})" style="margin-bottom:10px;">Ver hoja de repaso</button>
   <button class="btn btn-primario btn-bloque" onclick="volverInicio()">Volver al inicio</button>`;
+}
+
+// Vista de resultado inmediato (usa la vista unificada)
+function vistaResultado(){
+  const r=E.resultado;
+  // Agregar el detalle y temas calculados desde las respuestas actuales
+  const datos={
+    nombre:E.nombre,
+    carrera:CONFIG.carrera,
+    grupo:CONFIG.grupo,
+    puntaje:r.puntaje,
+    total:r.total,
+    correctas:r.correctas,
+    incorrectas:r.incorrectas,
+    noIdentifico:r.noIdentifico,
+    nivel:r.nivel,
+    tiempoSegundos:E.tiempo,
+    cambiosPantalla:E.cambios,
+    detalle:r.detalle,
+    temas:r.temas,
+    fecha:new Date().toISOString()
+  };
+  return vistaResultadoUnificado(datos);
+}
+
+// Vista de resultado consultado (usa la vista unificada)
+function vistaConsultado(){
+  if(E.consultaError||!E.consultado){
+    return `<div class="tarjeta"><div class="logo">UTSC</div><div class="mensaje-error">No se encontró un resultado con ese nombre.</div><button class="btn btn-primario btn-bloque" onclick="irA('consultar')">Intentar de nuevo</button></div>`;
+  }
+  const reg=E.consultado;
+  const pct=Math.round((reg.puntaje/reg.total)*100);
+  const nivel=pct>=80?'alto':pct>=50?'medio':'bajo';
+  const respGuardadas=reg.respuestas||{};
+  const temas={};
+  PREGUNTAS.forEach((q,bi)=>{
+    if(!temas[q.topic])temas[q.topic]={correctas:0,total:0};
+    temas[q.topic].total++;
+    if(respGuardadas[bi]===q.correct)temas[q.topic].correctas++;
+  });
+  const arrTemas=Object.keys(temas).map(t=>{
+    const {correctas,total}=temas[t];
+    const p=correctas/total;
+    return {topic:t,correctas,total,porcentaje:p,nivel:p>=0.8?'alto':p>=0.5?'medio':'bajo'};
+  }).sort((a,b)=>a.porcentaje-b.porcentaje);
+  const detalle=PREGUNTAS.map((q,bi)=>{
+    const r=respGuardadas[bi];
+    return {baseIndex:bi,topic:q.topic,question:q.q,correctOption:q.opts[q.correct],resp:r,esCorrecta:r===q.correct};
+  });
+  const datos={
+    nombre:reg.nombre,
+    carrera:reg.carrera||CONFIG.carrera,
+    grupo:reg.grupo||CONFIG.grupo,
+    puntaje:reg.puntaje,
+    total:reg.total,
+    correctas:reg.puntaje,
+    incorrectas:reg.incorrectas,
+    noIdentifico:reg.noIdentifico,
+    nivel:nivel,
+    tiempoSegundos:reg.tiempoSegundos||0,
+    cambiosPantalla:reg.cambiosPantalla||0,
+    detalle:detalle,
+    temas:arrTemas,
+    fecha:reg.fecha
+  };
+  return vistaResultadoUnificado(datos);
 }
 
 function vistaRepaso(){
@@ -706,11 +780,15 @@ function vistaRepaso(){
     }
   });
   const fecha = new Date().toLocaleDateString('es-MX');
+  const nombreRepaso = E._registroParaRepaso ? E._registroParaRepaso.nombre : E.nombre;
+  const carreraRepaso = E._registroParaRepaso ? (E._registroParaRepaso.carrera||CONFIG.carrera) : CONFIG.carrera;
+  const grupoRepaso = E._registroParaRepaso ? (E._registroParaRepaso.grupo||CONFIG.grupo) : CONFIG.grupo;
+  
   return `<div id="repaso-content">
     <div class="tarjeta">
       <div class="logo">UTSC</div>
       <h2 class="subtitulo">📘 Hoja de repaso</h2>
-      <p style="color:var(--texto-tenue);font-size:0.85rem;">${esc(E.nombre)} · ${CONFIG.carrera} · ${CONFIG.grupo}</p>
+      <p style="color:var(--texto-tenue);font-size:0.85rem;">${esc(nombreRepaso)} · ${esc(carreraRepaso)} · ${esc(grupoRepaso)}</p>
       <p style="color:var(--texto-tenue);font-size:0.75rem;margin-top:4px;">Fecha: ${fecha}</p>
     </div>
     <div class="tarjeta">
@@ -742,8 +820,10 @@ function imprimirRepaso(){
     ejerciciosHtml = contenido.innerHTML;
   }
   const fecha = new Date().toLocaleDateString('es-MX');
-  const nombre = esc(E.nombre);
-  ventana.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Hoja de repaso - Fundamentos Matemáticos</title><style>*{box-sizing:border-box;margin:0;padding:0;}body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;padding:40px;max-width:800px;margin:0 auto;color:#222;background:#fff;line-height:1.6;}.logo{text-align:center;font-size:2.5rem;font-weight:900;color:#FF8201;letter-spacing:2px;}.materia-titulo{text-align:center;font-size:1.5rem;color:#FF8201;margin-top:-4px;margin-bottom:4px;font-weight:700;}.subtitulo{text-align:center;font-size:1rem;color:#49C2B3;font-weight:500;margin-bottom:16px;}.datos{text-align:center;color:#555;font-size:0.9rem;margin-bottom:20px;}h2{color:#49C2B3;border-bottom:2px solid #49C2B3;padding-bottom:6px;margin-top:20px;margin-bottom:16px;page-break-after:avoid;}.etiqueta-tema{display:inline-block;background:rgba(73,194,179,0.15);color:#49C2B3;font-size:0.72rem;font-weight:700;letter-spacing:0.03em;text-transform:uppercase;padding:4px 10px;border-radius:20px;margin-bottom:6px;page-break-after:avoid;}.revision-item{margin-bottom:16px;padding:12px 16px;border-left:4px solid #49C2B3;background:#f5f5f5;border-radius:4px;page-break-inside:avoid;}.revision-pregunta{font-weight:600;font-size:1rem;margin-top:4px;}.frac{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;vertical-align:middle;margin:0 3px;line-height:1.05;font-size:0.94em;position:relative;top:0.05em;}.frac-num{padding:0 3px 1px;border-bottom:1.4px solid currentColor;}.frac-den{padding:1px 3px 0;}.footer{text-align:center;color:#999;font-size:0.7rem;margin-top:30px;border-top:1px solid #ddd;padding-top:16px;}.btn,.fila-botones{display:none;}@media print{body{padding:20px;}.btn,.fila-botones{display:none!important;}}</style></head><body><div class="logo">UTSC</div><div class="materia-titulo">Fundamentos Matemáticos</div><div class="subtitulo">Hoja de repaso</div><div class="datos">${nombre} · ${CONFIG.carrera} · ${CONFIG.grupo} · ${fecha}</div>${ejerciciosHtml}${respuestasHtml}<div class="footer">${CONFIG.institucion} · ${CONFIG.materia} · Hoja de repaso generada el ${fecha}</div><script>window.onload=function(){var botones=document.querySelectorAll('.btn, .fila-botones');botones.forEach(function(b){b.style.display='none';});window.print();};<\/script></body></html>`);
+  const nombreRepaso = E._registroParaRepaso ? E._registroParaRepaso.nombre : E.nombre;
+  const carreraRepaso = E._registroParaRepaso ? (E._registroParaRepaso.carrera||CONFIG.carrera) : CONFIG.carrera;
+  const grupoRepaso = E._registroParaRepaso ? (E._registroParaRepaso.grupo||CONFIG.grupo) : CONFIG.grupo;
+  ventana.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Hoja de repaso - Fundamentos Matemáticos</title><style>*{box-sizing:border-box;margin:0;padding:0;}body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;padding:40px;max-width:800px;margin:0 auto;color:#222;background:#fff;line-height:1.6;}.logo{text-align:center;font-size:2.5rem;font-weight:900;color:#FF8201;letter-spacing:2px;}.materia-titulo{text-align:center;font-size:1.5rem;color:#FF8201;margin-top:-4px;margin-bottom:4px;font-weight:700;}.subtitulo{text-align:center;font-size:1rem;color:#49C2B3;font-weight:500;margin-bottom:16px;}.datos{text-align:center;color:#555;font-size:0.9rem;margin-bottom:20px;}h2{color:#49C2B3;border-bottom:2px solid #49C2B3;padding-bottom:6px;margin-top:20px;margin-bottom:16px;page-break-after:avoid;}.etiqueta-tema{display:inline-block;background:rgba(73,194,179,0.15);color:#49C2B3;font-size:0.72rem;font-weight:700;letter-spacing:0.03em;text-transform:uppercase;padding:4px 10px;border-radius:20px;margin-bottom:6px;page-break-after:avoid;}.revision-item{margin-bottom:16px;padding:12px 16px;border-left:4px solid #49C2B3;background:#f5f5f5;border-radius:4px;page-break-inside:avoid;}.revision-pregunta{font-weight:600;font-size:1rem;margin-top:4px;}.frac{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;vertical-align:middle;margin:0 3px;line-height:1.05;font-size:0.94em;position:relative;top:0.05em;}.frac-num{padding:0 3px 1px;border-bottom:1.4px solid currentColor;}.frac-den{padding:1px 3px 0;}.footer{text-align:center;color:#999;font-size:0.7rem;margin-top:30px;border-top:1px solid #ddd;padding-top:16px;}.btn,.fila-botones{display:none;}@media print{body{padding:20px;}.btn,.fila-botones{display:none!important;}}</style></head><body><div class="logo">UTSC</div><div class="materia-titulo">Fundamentos Matemáticos</div><div class="subtitulo">Hoja de repaso</div><div class="datos">${nombreRepaso} · ${carreraRepaso} · ${grupoRepaso} · ${fecha}</div>${ejerciciosHtml}${respuestasHtml}<div class="footer">${CONFIG.institucion} · ${CONFIG.materia} · Hoja de repaso generada el ${fecha}</div><script>window.onload=function(){var botones=document.querySelectorAll('.btn, .fila-botones');botones.forEach(function(b){b.style.display='none';});window.print();};<\/script></body></html>`);
   ventana.document.close();
 }
 
@@ -754,31 +834,6 @@ function vistaConsultar(){
     <button class="btn btn-primario btn-bloque" onclick="buscarResultado()">Buscar mi resultado</button>
     <div class="centrado" style="margin-top:16px;"><span class="enlace-tenue" onclick="irA('inicio')">Volver al inicio</span></div>
   </div>`;
-}
-
-function vistaConsultado(){
-  if(E.consultaError||!E.consultado)return `<div class="tarjeta"><div class="logo">UTSC</div><div class="mensaje-error">No se encontró un resultado con ese nombre.</div><button class="btn btn-primario btn-bloque" onclick="irA('consultar')">Intentar de nuevo</button></div>`;
-  const reg=E.consultado;
-  const pct=Math.round((reg.puntaje/reg.total)*100);
-  const nivel=pct>=80?'alto':pct>=50?'medio':'bajo';
-  const nTxt={alto:'Nivel alto',medio:'Nivel medio',bajo:'Nivel bajo – requiere refuerzo'}[nivel];
-  const nCls={alto:'nivel-alto',medio:'nivel-medio',bajo:'nivel-bajo'}[nivel];
-  const fecha=new Date(reg.fecha);
-  const respGuardadas=reg.respuestas||{};
-  const temas={};
-  PREGUNTAS.forEach((q,bi)=>{if(!temas[q.topic])temas[q.topic]={correctas:0,total:0};temas[q.topic].total++;if(respGuardadas[bi]===q.correct)temas[q.topic].correctas++;});
-  const arr=Object.keys(temas).map(t=>{const {correctas,total}=temas[t];const p=correctas/total;return {topic:t,correctas,total,porcentaje:p,nivel:p>=0.8?'alto':p>=0.5?'medio':'bajo'};}).sort((a,b)=>a.porcentaje-b.porcentaje);
-  let temasHtml=arr.map(t=>`<div class="tema-item tema-${t.nivel}"><div><div class="tema-nombre">${esc(t.topic)}</div><div class="tema-puntaje">${t.correctas} de ${t.total} correctas</div></div><span class="tema-badge nivel-${t.nivel}">${t.nivel==='alto'?'Dominado':t.nivel==='medio'?'Repasar':'Requiere refuerzo'}</span></div>`).join('');
-  return `<div class="tarjeta"><div class="logo">UTSC</div><h1>${CONFIG.materia}</h1><h2 class="subtitulo">Diagnóstico de conocimientos previos</h2><p class="institucion">${CONFIG.institucion}</p>
-    <div class="centrado" style="color:var(--texto-tenue);font-size:0.9rem;">${esc(reg.nombre)} · ${esc(reg.carrera||CONFIG.carrera)} · ${esc(reg.grupo||CONFIG.grupo)}</div>
-    <div class="resumen-puntaje"><div class="numero">${reg.puntaje}<span class="de-total"> / ${reg.total}</span></div><div class="nivel-badge ${nCls}">${nTxt}</div></div>
-    ${(reg.cambiosPantalla||0)>0?`<div class="aviso-cambios-resultado">⚠️ Se registró que saliste de esta pantalla ${reg.cambiosPantalla} ${reg.cambiosPantalla===1?'vez':'veces'} durante el diagnóstico.</div>`:''}
-    <div class="stats-grid"><div class="stat-box"><div class="valor">${reg.incorrectas}</div><div class="etiqueta">Incorrectas</div></div><div class="stat-box"><div class="valor">${reg.noIdentifico}</div><div class="etiqueta">Sin identificar</div></div><div class="stat-box"><div class="valor">${fmt(reg.tiempoSegundos||0)}</div><div class="etiqueta">Tiempo</div></div></div>
-    <p class="centrado" style="color:var(--texto-tenue);font-size:0.78rem;margin-top:14px;">Registrado el ${fecha.toLocaleDateString('es-MX')}</p>
-  </div>
-  <div class="tarjeta"><h2 class="subtitulo" style="text-align:left;">Temas a reforzar</h2><p class="recomendacion-texto">${esc(recomendar(arr))}</p>${temasHtml}</div>
-  <button class="btn btn-secundario btn-bloque" onclick="irA('consultar')" style="margin-bottom:10px;">Volver a buscar</button>
-  <button class="btn btn-primario btn-bloque" onclick="volverInicio()">Volver al inicio</button>`;
 }
 
 function vistaLogin(){
@@ -866,11 +921,25 @@ function vincularEventos(){
 function handlePinEnter(e) { if(e.key === 'Enter') { e.preventDefault(); intentarAcceso(); } }
 
 // ================================================================
-// DETECCIÓN DE CAMBIOS DE PANTALLA (CAMBIO 2 aplicado)
+// CAMBIO 2: Un solo aviso de cambio de pantalla (se reemplaza)
 // ================================================================
 function mostrarAvisoCambioPantalla(){
-  const overlay=document.createElement('div');overlay.className='aviso-cambio-overlay';
-  overlay.innerHTML=`<div class="aviso-cambio-caja"><div class="aviso-cambio-titulo">AVISO</div><div class="aviso-cambio-mensaje">Se detectó que saliste de esta pantalla ${E.cambios} ${E.cambios===1?'vez':'veces'} durante el diagnóstico.</div><button class="btn btn-primario" onclick="this.closest('.aviso-cambio-overlay').remove()">Entendido</button></div>`;
+  // Eliminar aviso anterior si existe
+  const avisoExistente = document.querySelector('.aviso-cambio-overlay');
+  if(avisoExistente) avisoExistente.remove();
+  
+  // Crear nuevo aviso con el número actualizado
+  const overlay = document.createElement('div');
+  overlay.className = 'aviso-cambio-overlay';
+  overlay.innerHTML = `
+    <div class="aviso-cambio-caja">
+      <div class="aviso-cambio-titulo">AVISO</div>
+      <div class="aviso-cambio-mensaje">
+        Se detectó que saliste de esta pantalla ${E.cambios} ${E.cambios === 1 ? 'vez' : 'veces'} durante el diagnóstico.
+      </div>
+      <button class="btn btn-primario" onclick="this.closest('.aviso-cambio-overlay').remove()">Entendido</button>
+    </div>
+  `;
   document.body.appendChild(overlay);
 }
 
